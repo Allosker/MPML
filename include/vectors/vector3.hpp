@@ -16,7 +16,9 @@
 #include <utility>
 #include <stdexcept> // for: std::out_of_range()
 
+#include "utilities/types/angle.hpp"
 #include "vector2.hpp"
+
 
 namespace mpml
 {
@@ -52,7 +54,7 @@ public:
 	[[nodiscard]] constexpr T distance(const Vector3<T>& vec) const noexcept;
 	[[nodiscard]] constexpr T distance_squared(const Vector3<T>& vec) const noexcept;
 
-	[[nodiscard]] constexpr T angle(const Vector3<T>& vec) const noexcept;
+	[[nodiscard]] constexpr Angle angle(const Vector3<T>& vec) const noexcept;
 	[[nodiscard]] constexpr Vector3<T> project(const Vector3<T>& vec) const noexcept;
 	[[nodiscard]] constexpr Vector3<T> reflect(const Vector3<T>& vec) const noexcept;
 	[[nodiscard]] constexpr Vector3<T> reject(const Vector3<T>& vec) const noexcept;
@@ -175,9 +177,9 @@ inline constexpr T Vector3<T>::distance_squared(const Vector3<T>& vec) const noe
 }
 
 template<typename T>
-inline constexpr T Vector3<T>::angle(const Vector3<T>& vec) const noexcept
+inline constexpr Angle Vector3<T>::angle(const Vector3<T>& vec) const noexcept
 {
-	return T{std::acos(dot(vec) / T{length() *  vec.length()})};
+	return static_cast<Angle>(T{std::acos(dot(vec) / T{length() *  vec.length()})});
 }
 
 template<typename T>

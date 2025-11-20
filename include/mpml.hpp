@@ -4,7 +4,6 @@
 // Lib Files
 
 	// Umbrella Header
-	
 #include "vectors/vector2.hpp"
 #include "vectors/vector3.hpp"
 

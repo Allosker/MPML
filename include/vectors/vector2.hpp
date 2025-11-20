@@ -15,6 +15,8 @@
 #include <utility>
 #include <stdexcept> // for: std::out_of_range()
 
+#include "utilities/types/angle.hpp"
+
 
 namespace mpml
 	// Main Namespace
@@ -48,13 +50,14 @@ public:
 	[[nodiscard]] constexpr T distance(const Vector2<T>& vec) const noexcept;
 	[[nodiscard]] constexpr T distance_squared(const Vector2<T>& vec) const noexcept;
 
-	[[nodiscard]] constexpr T angle(const Vector2<T>& vec) const noexcept;
+	[[nodiscard]] constexpr Angle angle(const Vector2<T>& vec) const noexcept;
 	[[nodiscard]] constexpr Vector2<T> project(const Vector2<T>& vec) const noexcept;
 	[[nodiscard]] constexpr Vector2<T> reflect(const Vector2<T>& vec) const noexcept;
 	[[nodiscard]] constexpr Vector2<T> reject(const Vector2<T>& vec) const noexcept;
 
 
 	[[nodiscard]] constexpr Vector2<T> perpendicular() const noexcept;
+	[[nodiscard]] constexpr Vector2<T> rotate(Angle angle) const noexcept;
 
 	[[nodiscard]] constexpr T length() const noexcept;
 	[[nodiscard]] constexpr T length_squared() const noexcept;
@@ -164,9 +167,9 @@ inline constexpr T Vector2<T>::distance_squared(const Vector2<T>& vec) const noe
 }
 
 template<typename T>
-inline constexpr T Vector2<T>::angle(const Vector2<T>& vec) const noexcept
+inline constexpr Angle Vector2<T>::angle(const Vector2<T>& vec) const noexcept
 {
-	return std::acos(dot(vec) / T{length() * vec.length()});
+	return static_cast<Angle>(std::acos(dot(vec) / T{length() * vec.length()}));
 }
 
 template<typename T>
@@ -193,6 +196,12 @@ template<typename T>
 inline constexpr Vector2<T> Vector2<T>::perpendicular() const noexcept
 {
 	return Vector2<T>{-y, x};
+}
+
+template<typename T>
+inline constexpr Vector2<T> Vector2<T>::rotate(Angle angle) const noexcept
+{
+	return Vector2<T>{ x * std::cos(angle.angle_radians) + y * -std::sin(angle.angle_radians), x * std::sin(angle.angle_radians) + y * std::cos(angle.angle_radians)};
 }
 
 template<typename T>
