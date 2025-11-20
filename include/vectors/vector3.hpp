@@ -1,0 +1,370 @@
+#pragma once
+// MIT
+// Allosker - 2025
+// ===================================================
+// Defines a 3D vector and the basic functions it possesses
+// Although this class is small in size, it still has move/copy constructors defined as the types of its components could be of larger sizes (e.g. complex numbers)
+// 
+// Note:
+//	This class acts as the foundation of all 3D based tensors.
+// ===================================================
+
+
+// Dependencies
+#include <array>
+#include <cmath>
+#include <utility>
+#include <stdexcept> // for: std::out_of_range()
+
+#include "vector_presets.hpp"
+#include "vector2.hpp"
+
+namespace mpml
+{
+
+
+template<typename T>
+class Vector2;
+
+template<typename T>
+class Vector3
+{
+public:
+	// Initialization
+	
+
+	// Performs a copy of value to all components
+	constexpr Vector3(const T& values) noexcept;
+	// Performs a copy of value to all components
+	constexpr Vector3(T values) noexcept;
+
+	constexpr Vector3(const T& x_, const T& y_, const T& z_) noexcept;
+	constexpr Vector3(T&& x_, T&& y_, T&& z_) noexcept;
+
+	constexpr Vector3(VectorType type) noexcept;
+
+
+	constexpr Vector3(const Vector2<T>& vec2, const T& scalar) noexcept;
+	constexpr Vector3(Vector2<T>&& vec2, T&& scalar) noexcept;
+
+
+	// Operations
+
+	[[nodiscard]] constexpr T dot(const Vector3<T>& vec) noexcept;
+	[[nodiscard]] constexpr Vector3<T> cross(const Vector3<T>& vec) noexcept;
+
+	[[nodiscard]] constexpr T length() const noexcept;
+	[[nodiscard]] constexpr T length_squared() const noexcept;
+
+	[[nodiscard]] constexpr Vector3<T> normal() const noexcept;
+
+
+	// Data related
+
+	constexpr T* data_ptr() const noexcept;
+
+	constexpr T& operator[](size_t index);
+	constexpr const T& operator[](size_t index) const;
+
+
+	// Overloads
+
+	constexpr Vector3<T>& operator+=(const Vector3<T>& vec) noexcept;
+	constexpr Vector3<T>& operator-=(const Vector3<T>& vec) noexcept;
+
+	constexpr Vector3<T>& operator+=(const Vector2<T>& vec) noexcept;
+	constexpr Vector3<T>& operator-=(const Vector2<T>& vec) noexcept;
+
+	constexpr Vector3<T>& operator+=(const T& scalar) noexcept;
+	constexpr Vector3<T>& operator-=(const T& scalar) noexcept;
+	constexpr Vector3<T>& operator*=(const T& scalar) noexcept;
+	constexpr Vector3<T>& operator/=(const T& scalar) noexcept;
+
+
+	// Class members
+
+	union
+	{
+		struct { T x, y, z; };
+		struct { T r, g, b; };
+		struct { T u, v, h; };
+
+		std::array<T, 3> data;
+	};
+
+};
+
+
+// Intialization
+
+template<typename T>
+inline constexpr Vector3<T>::Vector3(const T& values) noexcept
+	: data{values, values, values}
+{
+}
+
+template<typename T>
+inline constexpr Vector3<T>::Vector3(T values) noexcept
+	: data{ std::move(values), std::move(values), std::move(values)}
+{
+}
+
+template<typename T>
+inline constexpr Vector3<T>::Vector3(const T& x_, const T& y_, const T& z_) noexcept
+	: data{x_, y_, z_}
+{
+}
+
+template<typename T>
+inline constexpr Vector3<T>::Vector3(T&& x_, T&& y_, T&& z_) noexcept
+	: data{ std::move(x_), std::move(y_), std::move(z_)}
+{
+}
+
+template<typename T>
+inline constexpr Vector3<T>::Vector3(VectorType type) noexcept
+{
+	using VT = VectorType;
+	switch (type)
+	{
+	case VT::Identity:
+		data = {(T)1,(T)1,(T)1};
+		break;
+	case VT::Xaxis:
+		data = { (T)1, (T)0, (T)0 };
+		break;
+	case VT::Yaxis:
+		data = { (T)0, (T)1, (T)0 };
+		break;
+	case VT::Zaxis:
+		data = { (T)0, (T)0, (T)1 };
+		break;
+
+	default:
+		data = {};
+		break;
+	}
+}
+
+template<typename T>
+inline constexpr Vector3<T>::Vector3(const Vector2<T>& vec2, const T& scalar) noexcept
+	: data{ vec2.x, vec2.y, scalar }
+{
+}
+
+template<typename T>
+inline constexpr Vector3<T>::Vector3(Vector2<T>&& vec2, T&& scalar) noexcept
+	: data{ std::move(vec2.x), std::move(vec2.y), std::move(scalar) }
+{
+}
+
+
+
+
+// Operations
+
+template<typename T>
+inline constexpr T Vector3<T>::dot(const Vector3<T>& vec) noexcept
+{
+	return T{x * vec.x + y * vec.y + z * vec.z};
+}
+
+template<typename T>
+inline constexpr Vector3<T> Vector3<T>::cross(const Vector3<T>& vec) noexcept
+{
+	return Vector3<T>{ 
+		y * vec.z - z * vec.y,
+		z * vec.x - x * vec.z,
+		x * vec.y - y * vec.x
+	};
+}
+
+template<typename T>
+inline constexpr T Vector3<T>::length() const noexcept
+{
+	T lengthSquared{ x * x + y * y + z * z };
+
+	if (lengthSquared == T{})
+		return T{};
+	return T{ std::sqrt(lengthSquared) };
+}
+
+template<typename T>
+inline constexpr T Vector3<T>::length_squared() const noexcept
+{
+	return T{ x * x + y * y + z * z };
+}
+
+template<typename T>
+inline constexpr Vector3<T> Vector3<T>::normal() const noexcept
+{
+	T len{ length() };
+	
+	if (len == T{})
+		return T{};
+	return Vector3<T>{ x / len, y / len, z / len};
+}
+
+
+// Data related
+
+template<typename T>
+inline constexpr T* Vector3<T>::data_ptr() const noexcept
+{
+	return &data[0];
+}
+
+template<typename T>
+inline constexpr T& Vector3<T>::operator[](size_t index)
+{
+	if (index >= data.size())
+		throw std::out_of_range("index is out of range in vector3");
+	return data[index];
+}
+
+template<typename T>
+inline constexpr const T& Vector3<T>::operator[](size_t index) const
+{
+	if (index >= data.size())
+		throw std::out_of_range("index is out of range in vector3");
+	return data[index];
+}
+
+// Member Overloads
+
+template<typename T>
+inline constexpr Vector3<T>& Vector3<T>::operator+=(const Vector3<T>& vec) noexcept
+{
+	x += vec.x;
+	y += vec.y;
+	z += vec.z;
+	return *this;
+}
+
+template<typename T>
+inline constexpr Vector3<T>& Vector3<T>::operator-=(const Vector3<T>& vec) noexcept
+{
+	x -= vec.x;
+	y -= vec.y;
+	z -= vec.z;
+	return *this;
+}
+
+template<typename T>
+inline constexpr Vector3<T>& Vector3<T>::operator+=(const Vector2<T>& vec) noexcept
+{
+	x += vec.x;
+	y += vec.y;
+	return *this;
+}
+
+template<typename T>
+inline constexpr Vector3<T>& Vector3<T>::operator-=(const Vector2<T>& vec) noexcept
+{
+	x -= vec.x;
+	y -= vec.y;
+	return *this;
+}
+
+template<typename T>
+inline constexpr Vector3<T>& Vector3<T>::operator+=(const T& scalar) noexcept
+{
+	x += scalar;
+	y += scalar;
+	z += scalar;
+	return *this;
+}
+
+template<typename T>
+inline constexpr Vector3<T>& Vector3<T>::operator-=(const T& scalar) noexcept
+{
+	x -= scalar;
+	y -= scalar;
+	z -= scalar;
+	return *this;
+}
+
+template<typename T>
+inline constexpr Vector3<T>& Vector3<T>::operator*=(const T& scalar) noexcept
+{
+	x *= scalar;
+	y *= scalar;
+	z *= scalar;
+	return *this;
+}
+
+template<typename T>
+inline constexpr Vector3<T>& Vector3<T>::operator/=(const T& scalar) noexcept
+{
+	x /= scalar;
+	y /= scalar;
+	z /= scalar;
+	return *this;
+}
+
+// Overloads
+
+template<typename T>
+inline constexpr Vector3<T> operator+(const Vector3<T>& a, const Vector3<T>& b) noexcept
+{
+	return Vector3<T>{a.x + b.x, a.y + b.y, a.z + b.z};
+}
+
+template<typename T>
+inline constexpr Vector3<T> operator-(const Vector3<T>& a, const Vector3<T>& b) noexcept
+{
+	return Vector3<T>{a.x - b.x, a.y - b.y, a.z - b.z};
+}
+
+template<typename T>
+inline constexpr Vector3<T> operator*(const Vector3<T>& a, const T& k) noexcept
+{
+	return Vector3<T>{a.x * k, a.y * k, a.z * k};
+}
+
+template<typename T>
+inline constexpr Vector3<T> operator/(const Vector3<T>& a, const T& k) noexcept
+{
+	return Vector3<T>{a.x / k, a.y / k, a.z / k};
+}
+
+template<typename T>
+inline constexpr Vector3<T> operator+(const Vector3<T>& a, const T& k) noexcept
+{
+	return Vector3<T>{a.x + k, a.y + k, a.z + k};
+}
+
+template<typename T>
+inline constexpr Vector3<T> operator-(const Vector3<T>& a, const T& k) noexcept
+{
+	return Vector3<T>{a.x - k, a.y - k, a.z - k};
+}
+
+
+template<typename T>
+inline constexpr Vector3<T> operator*(const T& k, const Vector3<T>& a) noexcept
+{
+	return Vector3<T>{ a.x * k, a.y * k, a.z * k};
+}
+
+template<typename T>
+inline constexpr Vector3<T> operator/(const T& k, const Vector3<T>& a) noexcept
+{
+	return Vector3<T>{ k / a.x, k / a.y, k / a.z };
+}
+
+template<typename T>
+inline constexpr Vector3<T> operator+(const T& k, const Vector3<T>& a) noexcept
+{
+	return Vector3<T>{a.x + k, a.y + k, a.z + k };
+}
+
+template<typename T>
+inline constexpr Vector3<T> operator-(const T& k, const Vector3<T>& a) noexcept
+{
+	return Vector3<T>{k - a.x, k - a.y, k - a.z };
+}
+
+
+
+} // mpml 
