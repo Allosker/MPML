@@ -15,8 +15,6 @@
 #include <utility>
 #include <stdexcept> // for: std::out_of_range()
 
-#include "vector_presets.hpp"
-#include "vector3.hpp"
 
 namespace mpml
 	// Main Namespace
@@ -30,7 +28,7 @@ public:
 
 	// Initialization
 
-
+	constexpr Vector2() noexcept;
 	// Performs a copy of value to all components
 	constexpr Vector2(const T& values) noexcept;
 	// Performs a copy of value to all components
@@ -38,8 +36,6 @@ public:
 
 	constexpr Vector2(const T& x_, const T& y_) noexcept;
 	constexpr Vector2(T&& x_, T&& y_) noexcept;
-
-	constexpr Vector2(const VectorType& vec_type) noexcept;
 
 
 	~Vector2() = default;
@@ -53,13 +49,12 @@ public:
 	[[nodiscard]] constexpr T distance_squared(const Vector2<T>& vec) const noexcept;
 
 	[[nodiscard]] constexpr T angle(const Vector2<T>& vec) const noexcept;
-	[[nodiscard]] constexpr Vector2<T> projection(const Vector2<T>& vec) const noexcept;
-	[[nodiscard]] constexpr Vector2<T> reflection(const Vector2<T>& vec) const noexcept;
+	[[nodiscard]] constexpr Vector2<T> project(const Vector2<T>& vec) const noexcept;
+	[[nodiscard]] constexpr Vector2<T> reflect(const Vector2<T>& vec) const noexcept;
+	[[nodiscard]] constexpr Vector2<T> reject(const Vector2<T>& vec) const noexcept;
 
 
 	[[nodiscard]] constexpr Vector2<T> perpendicular() const noexcept;
-
-	[[nodiscard]] constexpr Vector2<T> absolute() const noexcept;
 
 	[[nodiscard]] constexpr T length() const noexcept;
 	[[nodiscard]] constexpr T length_squared() const noexcept;
@@ -87,8 +82,9 @@ public:
 	constexpr Vector2<T>& operator*=(const T& scalar) noexcept;
 	constexpr Vector2<T>& operator/=(const T& scalar) noexcept;
 
-	constexpr Vector2<T>& operator-() const noexcept; 
+	constexpr Vector2<T> operator-() const noexcept; 
 	constexpr bool operator!() const noexcept;
+	constexpr bool operator==(const Vector2<T>& vec) const noexcept;
 
 	
 // Class members
@@ -102,6 +98,12 @@ public:
 		std::array<T, 2> data;
 	};
 
+
+// Predefined Types
+
+	/*static constexpr Vector2 Xaxis{ 1,0 };
+	static constexpr Vector2 Yaxis{ 0,1 };*/
+
 };
 
 
@@ -109,6 +111,12 @@ public:
 // Class definition
 
 
+
+template<typename T>
+inline constexpr Vector2<T>::Vector2() noexcept
+	: data{ T{},T{} }
+{
+}
 
 // Initialization
 template<typename T>
@@ -133,28 +141,6 @@ template<typename T>
 inline constexpr Vector2<T>::Vector2(T&& x_, T&& y_) noexcept
 	: data{ std::move(x_), std::move(y_) }
 {
-}
- 
-template<typename T>
-inline constexpr Vector2<T>::Vector2(const VectorType& vec_type) noexcept
-{
-	using VT = VectorType;
-	switch (vec_type)
-	{
-	case VT::Identity:
-		data = { (T)1,(T)1 };
-		break;
-	case VT::Xaxis:
-		data = { (T)1, (T)0 };
-		break;
-	case VT::Yaxis:
-		data = { (T)0, (T)1 };
-		break;
-
-	default:
-		data = {};
-		break;
-	}
 }
 
 
@@ -184,17 +170,22 @@ inline constexpr T Vector2<T>::angle(const Vector2<T>& vec) const noexcept
 }
 
 template<typename T>
-inline constexpr Vector2<T> Vector2<T>::projection(const Vector2<T>& vec) const noexcept
+inline constexpr Vector2<T> Vector2<T>::project(const Vector2<T>& vec) const noexcept
 {
 	Vector2<T> norm{ vec.normal() };
 	return Vector2<T>{ dot(norm) * norm };
 }
 
 template<typename T>
-inline constexpr Vector2<T> Vector2<T>::reflection(const Vector2<T>& vec) const noexcept
+inline constexpr Vector2<T> Vector2<T>::reflect(const Vector2<T>& vec) const noexcept
 {
-	Vector2<T> norm{ vec.normal() };
-	return Vector2<T>{*this - 2 * dot(norm) * norm };
+	return Vector2<T>{*this - (T)2 * project(vec) };
+}
+
+template<typename T>
+inline constexpr Vector2<T> Vector2<T>::reject(const Vector2<T>& vec) const noexcept
+{
+	return Vector2<T>{*this - project(vec)};
 }
 
 
@@ -202,12 +193,6 @@ template<typename T>
 inline constexpr Vector2<T> Vector2<T>::perpendicular() const noexcept
 {
 	return Vector2<T>{-y, x};
-}
-
-template<typename T>
-inline constexpr Vector2<T> Vector2<T>::absolute() const noexcept
-{
-	return Vector2<T>{std::abs(x), std::abs(y)};
 }
 
 template<typename T>
@@ -311,7 +296,7 @@ inline constexpr Vector2<T>& Vector2<T>::operator/=(const T& scalar) noexcept
 
 
 template<typename T>
-constexpr Vector2<T>& Vector2<T>::operator-() const noexcept
+constexpr Vector2<T> Vector2<T>::operator-() const noexcept
 {
 	return Vector2<T>{-x, -y};
 }
@@ -319,8 +304,15 @@ constexpr Vector2<T>& Vector2<T>::operator-() const noexcept
 template<typename T>
 constexpr bool Vector2<T>::operator!() const noexcept
 {
-	return (x == 0 && y == 0) ? true : false;
+	return (x == 0 && y == 0);
 }
+
+template<typename T>
+inline constexpr bool Vector2<T>::operator==(const Vector2<T>& vec) const noexcept
+{
+	return (x == vec.x && y == vec.y);
+}
+
 
 // Overloads
 template<typename T>

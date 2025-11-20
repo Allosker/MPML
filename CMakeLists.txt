@@ -25,6 +25,7 @@ file(GLOB_RECURSE INCLUDE_FILES CMAKE_CONFIGURE_DEPENDS
 # Add source and include to this project's executable.
 add_executable ( MPML
 	"${SRC_DIR}main.cpp"
+	"${INCLUDE_FILES}"
 )
 
 target_include_directories(MPML PUBLIC ${INCLUDE_DIR})

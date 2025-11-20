@@ -16,7 +16,6 @@
 #include <utility>
 #include <stdexcept> // for: std::out_of_range()
 
-#include "vector_presets.hpp"
 #include "vector2.hpp"
 
 namespace mpml
@@ -41,9 +40,6 @@ public:
 	constexpr Vector3(const T& x_, const T& y_, const T& z_) noexcept;
 	constexpr Vector3(T&& x_, T&& y_, T&& z_) noexcept;
 
-	constexpr Vector3(VectorType type) noexcept;
-
-
 	constexpr Vector3(const Vector2<T>& vec2, const T& scalar) noexcept;
 	constexpr Vector3(Vector2<T>&& vec2, T&& scalar) noexcept;
 
@@ -52,6 +48,15 @@ public:
 
 	[[nodiscard]] constexpr T dot(const Vector3<T>& vec) noexcept;
 	[[nodiscard]] constexpr Vector3<T> cross(const Vector3<T>& vec) noexcept;
+
+	[[nodiscard]] constexpr T distance(const Vector3<T>& vec) const noexcept;
+	[[nodiscard]] constexpr T distance_squared(const Vector3<T>& vec) const noexcept;
+
+	[[nodiscard]] constexpr T angle(const Vector3<T>& vec) const noexcept;
+	[[nodiscard]] constexpr Vector3<T> project(const Vector3<T>& vec) const noexcept;
+	[[nodiscard]] constexpr Vector3<T> reflect(const Vector3<T>& vec) const noexcept;
+	[[nodiscard]] constexpr Vector3<T> reject(const Vector3<T>& vec) const noexcept;
+
 
 	[[nodiscard]] constexpr T length() const noexcept;
 	[[nodiscard]] constexpr T length_squared() const noexcept;
@@ -80,6 +85,9 @@ public:
 	constexpr Vector3<T>& operator*=(const T& scalar) noexcept;
 	constexpr Vector3<T>& operator/=(const T& scalar) noexcept;
 
+	constexpr Vector3<T> operator-() const noexcept;
+	constexpr bool operator!() const noexcept;
+	constexpr bool operator==(const Vector3<T>& vec) const noexcept;
 
 	// Class members
 
@@ -122,31 +130,6 @@ inline constexpr Vector3<T>::Vector3(T&& x_, T&& y_, T&& z_) noexcept
 }
 
 template<typename T>
-inline constexpr Vector3<T>::Vector3(VectorType type) noexcept
-{
-	using VT = VectorType;
-	switch (type)
-	{
-	case VT::Identity:
-		data = {(T)1,(T)1,(T)1};
-		break;
-	case VT::Xaxis:
-		data = { (T)1, (T)0, (T)0 };
-		break;
-	case VT::Yaxis:
-		data = { (T)0, (T)1, (T)0 };
-		break;
-	case VT::Zaxis:
-		data = { (T)0, (T)0, (T)1 };
-		break;
-
-	default:
-		data = {};
-		break;
-	}
-}
-
-template<typename T>
 inline constexpr Vector3<T>::Vector3(const Vector2<T>& vec2, const T& scalar) noexcept
 	: data{ vec2.x, vec2.y, scalar }
 {
@@ -177,6 +160,43 @@ inline constexpr Vector3<T> Vector3<T>::cross(const Vector3<T>& vec) noexcept
 		z * vec.x - x * vec.z,
 		x * vec.y - y * vec.x
 	};
+}
+
+template<typename T>
+inline constexpr T Vector3<T>::distance(const Vector3<T>& vec) const noexcept
+{
+	return T{ Vector3<T>{*this - vec}.length() };
+}
+
+template<typename T>
+inline constexpr T Vector3<T>::distance_squared(const Vector3<T>& vec) const noexcept
+{
+	return T{ Vector3<T>{*this - vec}.length_squared() };
+}
+
+template<typename T>
+inline constexpr T Vector3<T>::angle(const Vector3<T>& vec) const noexcept
+{
+	return T{std::acos(dot(vec) / T{length() *  vec.length()})};
+}
+
+template<typename T>
+inline constexpr Vector3<T> Vector3<T>::project(const Vector3<T>& vec) const noexcept
+{
+	Vector3<T> norm{ vec.normal() };
+	return Vector3<T>{ dot(norm) * norm };
+}
+
+template<typename T>
+inline constexpr Vector3<T> Vector3<T>::reflect(const Vector3<T>& vec) const noexcept
+{
+	return Vector3<T>{ *this - 2 * project(vec)};
+}
+
+template<typename T>
+inline constexpr Vector3<T> Vector3<T>::reject(const Vector3<T>& vec) const noexcept
+{
+	return Vector3<T>{*this - project(vec)};
 }
 
 template<typename T>
@@ -301,6 +321,25 @@ inline constexpr Vector3<T>& Vector3<T>::operator/=(const T& scalar) noexcept
 	z /= scalar;
 	return *this;
 }
+
+template<typename T>
+inline constexpr Vector3<T> Vector3<T>::operator-() const noexcept
+{
+	return Vector3<T>{-x, -y};
+}
+
+template<typename T>
+inline constexpr bool Vector3<T>::operator!() const noexcept
+{
+	return (x == 0 && y == 0 && z == 0) ? true : false;
+}
+
+template<typename T>
+inline constexpr bool Vector3<T>::operator==(const Vector3<T>& vec) const noexcept
+{
+	return (x == vec.x && y == vec.y && z == vec.z);
+}
+
 
 // Overloads
 
