@@ -2,14 +2,9 @@
 // MIT
 // Allosker - 2025
 // ===================================================
-// This file acts as the umbrella header for all vector related files
+// This file acts as the umbrella header for all matrices related files
 // (Vector class definitions & Utilities & Overloads)
 // ===================================================
 
 
 // -- Classes
-#include "vector2.hpp"
-#include "vector3.hpp"
-
-// -- Utilities
-#include "utility.hpp"

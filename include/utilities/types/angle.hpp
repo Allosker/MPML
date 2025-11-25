@@ -15,12 +15,12 @@ namespace mpml
 	{
 		constexpr double degrees() const noexcept
 		{
-			return angle_radians;
+			return angle_radians * 180.0 / constants::PI_D;
 		}
 
 		constexpr double radians() const noexcept
 		{
-			return angle_radians * constants::PI_15 / 180.0;
+			return angle_radians;
 		}
 
 		double angle_radians;

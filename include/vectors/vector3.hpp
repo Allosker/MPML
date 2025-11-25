@@ -13,7 +13,7 @@
 // Dependencies
 #include <array>
 #include <cmath>
-#include <utility>
+#include <xutility>
 #include <stdexcept> // for: std::out_of_range()
 
 #include "utilities/types/angle.hpp"
@@ -68,10 +68,10 @@ public:
 
 	// Data related
 
-	constexpr T* data_ptr() const noexcept;
+	[[nodiscard]] constexpr T* data_ptr() const noexcept;
 
-	constexpr T& operator[](size_t index);
-	constexpr const T& operator[](size_t index) const;
+	[[nodiscard]] constexpr T& operator[](size_t index);
+	[[nodiscard]] constexpr const T& operator[](size_t index) const;
 
 
 	// Overloads

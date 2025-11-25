@@ -8,3 +8,6 @@
 #include "vectors/vector3.hpp"
 
 #include "vectors/special_overloads/iostream_vectors.hpp"
+
+
+#include "matrices/matrix2.hpp"

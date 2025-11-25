@@ -11,13 +11,13 @@ namespace mpml
 	namespace constants
 	{
 		// first 7 digits of PI
-		constexpr float PI_7{ 3.141592f };
+		constexpr float PI_F{ 3.141592f };
 		// first 15 digits of PI
-		constexpr double PI_15{ 3.14159265358979 };
+		constexpr double PI_D{ 3.14159265358979 };
 
 		// first 7 digits of E
-		constexpr float E_7{ 2.718281f };
+		constexpr float E_F{ 2.718281f };
 		// first 15 digits of E
-		constexpr double E_15{ 2.71828182845904 };
+		constexpr double E_D{ 2.71828182845904 };
 	}
 }
