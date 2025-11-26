@@ -434,10 +434,10 @@ inline constexpr Matrix2<T, data_placement> operator+(const Matrix2<T, data_plac
 {
 	Matrix2<T, data_placement> mat_r;
 
-	mat_r.a = mat1.a + mat1.a;
-	mat_r.b = mat1.b + mat1.b;
-	mat_r.c = mat1.c + mat1.c;
-	mat_r.d = mat1.d + mat1.d;
+	mat_r.a = mat1.a + mat2.a;
+	mat_r.b = mat1.b + mat2.b;
+	mat_r.c = mat1.c + mat2.c;
+	mat_r.d = mat1.d + mat2.d;
 
 	return mat_r;
 }
@@ -447,10 +447,10 @@ inline constexpr Matrix2<T, data_placement> operator-(const Matrix2<T, data_plac
 {
 	Matrix2<T, data_placement> mat_r;
 
-	mat_r.a = mat1.a - mat1.a;
-	mat_r.b = mat1.b - mat1.b;
-	mat_r.c = mat1.c - mat1.c;
-	mat_r.d = mat1.d - mat1.d;
+	mat_r.a = mat1.a - mat2.a;
+	mat_r.b = mat1.b - mat2.b;
+	mat_r.c = mat1.c - mat2.c;
+	mat_r.d = mat1.d - mat2.d;
 
 	return mat_r;
 }
