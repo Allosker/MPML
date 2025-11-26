@@ -22,6 +22,10 @@ namespace mpml
 				throw std::runtime_error("ERROR::BAD_TYPE: data placement must be either Row or Column major");
 		}
 
+		constexpr bool operator==(const Option::Data_Placement& data) const
+		{
+			return data == dat_pla;
+		}
 
 		Data_Placement dat_pla;
 	};

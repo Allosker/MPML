@@ -9,7 +9,12 @@
 using namespace mpml;
 int main()
 {
-	Vector3<float> vec2{ 3,4,5 };
+	Matrix2<float> m1{ 1,2,3,4 };
+
+	Matrix2<float> m2{ 5,6,7,8 };
+
+	Matrix2<float> m3{ m1 };
+
 
 
 	return 0;

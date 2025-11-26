@@ -11,3 +11,5 @@
 
 
 #include "matrices/matrix2.hpp"
+
+#include "matrices/special_overloads/iostream_matrices.hpp"
