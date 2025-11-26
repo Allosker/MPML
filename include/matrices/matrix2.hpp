@@ -54,6 +54,8 @@ public:
 	[[nodiscard]] constexpr std::optional < Matrix2<T, data_placement>> inverse() const;
 	[[nodiscard]] constexpr Matrix2<T, data_placement> transpose() const noexcept;
 
+	[[nodiscard]] constexpr Matrix2<T, data_placement> pow(size_t pm = 2) const noexcept;
+
 
 	// Data related
 
@@ -251,6 +253,19 @@ inline constexpr Matrix2<T, data_placement> Matrix2<T, data_placement>::transpos
 	else
 		return Matrix2<T, data_placement>{a, c, 
 										  b, d};
+}
+
+template<typename T, Option data_placement>
+inline constexpr Matrix2<T, data_placement> Matrix2<T, data_placement>::pow(size_t pm) const noexcept
+{
+	Matrix2<T, data_placement> mat{ *this };
+
+	for (size_t i{}; i < pm-1; i++)
+	{
+		mat *= *this;
+	}
+
+	return mat;
 }
 
 

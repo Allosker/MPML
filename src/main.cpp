@@ -15,7 +15,7 @@ int main()
 
 	Matrix2<float> m3{ m1 };
 
-	std::cout << m1 + m2;
+	std::cout << m1.pow(6);
 
 	return 0;
 }
