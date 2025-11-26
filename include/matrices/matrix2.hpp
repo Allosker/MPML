@@ -1,4 +1,9 @@
 #pragma once
+// MIT
+// Allosker - 2025
+// ===================================================
+// Defines a 2D matrix and all its function/math related operations.
+// ===================================================
 
 
 #include <array>
@@ -13,18 +18,18 @@ namespace mpml
 {
 
 
-template<typename T, Option data_placement=Option::Row>
+template<typename T>
 class Matrix2
 {
 public:
 
 	// Initialization
 
-	constexpr Matrix2(const Matrix2<T, data_placement>& matrix) noexcept;
-	constexpr Matrix2(Matrix2<T, data_placement>&& matrix) noexcept;
+	constexpr Matrix2(const Matrix2<T>& matrix) noexcept;
+	constexpr Matrix2(Matrix2<T>&& matrix) noexcept;
 
-	constexpr Matrix2<T, data_placement>& operator=(const Matrix2<T, data_placement>& matrix) noexcept;
-	constexpr Matrix2<T, data_placement>& operator=(Matrix2<T, data_placement>&& matrix) noexcept;
+	constexpr Matrix2<T>& operator=(const Matrix2<T>& matrix) noexcept;
+	constexpr Matrix2<T>& operator=(Matrix2<T>&& matrix) noexcept;
 
 	constexpr Matrix2(const std::array<Vector2<T>, 2>& vectors) noexcept;
 	constexpr Matrix2(std::array<Vector2<T>, 2>&& vectors) noexcept;
@@ -47,14 +52,14 @@ public:
 	[[nodiscard]] constexpr T minor(const size_t& index) const noexcept;
 
 	[[nodiscard]] constexpr T cofactor(const size_t& index) const noexcept;
-	[[nodiscard]] constexpr Matrix2<T, data_placement> cofactor_matrix() const noexcept;
+	[[nodiscard]] constexpr Matrix2<T> cofactor_matrix() const noexcept;
 
-	[[nodiscard]] constexpr Matrix2<T, data_placement> adj() const noexcept;
+	[[nodiscard]] constexpr Matrix2<T> adj() const noexcept;
 
-	[[nodiscard]] constexpr std::optional < Matrix2<T, data_placement>> inverse() const;
-	[[nodiscard]] constexpr Matrix2<T, data_placement> transpose() const noexcept;
+	[[nodiscard]] constexpr std::optional < Matrix2<T>> inverse() const;
+	[[nodiscard]] constexpr Matrix2<T> transpose() const noexcept;
 
-	[[nodiscard]] constexpr Matrix2<T, data_placement> pow(size_t pm = 2) const noexcept;
+	[[nodiscard]] constexpr Matrix2<T> pow(size_t pm = 2) const noexcept;
 
 
 	// Data related
@@ -67,14 +72,17 @@ public:
 
 	// Overloads
 
-	constexpr Matrix2<T, data_placement>& operator+=(const Matrix2<T, data_placement>& mat) noexcept;
-	constexpr Matrix2<T, data_placement>& operator-=(const Matrix2<T, data_placement>& mat) noexcept;
+	constexpr Matrix2<T>& operator+=(const Matrix2<T>& mat) noexcept;
+	constexpr Matrix2<T>& operator-=(const Matrix2<T>& mat) noexcept;
 
-	constexpr Matrix2<T, data_placement>& operator*=(const Matrix2<T, data_placement>& mat) noexcept;
-	constexpr Matrix2<T, data_placement>& operator/=(const Matrix2<T, data_placement>& mat);
+	constexpr Matrix2<T>& operator*=(const Matrix2<T>& mat) noexcept;
+	constexpr Matrix2<T>& operator/=(const Matrix2<T>& mat);
 
 
-	constexpr Matrix2<T, data_placement> operator-() const noexcept;
+	constexpr Matrix2<T>& operator*=(const T& k) noexcept;
+	constexpr Matrix2<T>& operator/=(const T& k) noexcept;
+
+	constexpr Matrix2<T> operator-() const noexcept;
 
 
 // Class Members
@@ -86,18 +94,18 @@ public:
 		std::array<T, 4> data;
 	};
 
+
 };
-
-
-template<typename T, Option data_placement>
-constexpr static Matrix2<T, data_placement> Identity
+// Common Types
+template<typename T>
+constexpr static Matrix2<T> Identity
 {
 	T{1}, T{},
 	T{}, T{1}
 };
 
-template<typename T, Option data_placement>
-constexpr static Matrix2<T, data_placement> AntiDiagonal_Identity
+template<typename T>
+constexpr static Matrix2<T> AntiDiagonal_Identity
 {
 	T{}, T{1},
 	T{1}, T{}
@@ -108,22 +116,21 @@ constexpr static Matrix2<T, data_placement> AntiDiagonal_Identity
 // Class definition
 
 
-
 // Initialization
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement>::Matrix2(const Matrix2<T, data_placement>& matrix) noexcept
+template<typename T>
+inline constexpr Matrix2<T>::Matrix2(const Matrix2<T>& matrix) noexcept
 	: data{ matrix.data }
 {
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement>::Matrix2(Matrix2<T, data_placement>&& matrix) noexcept
+template<typename T>
+inline constexpr Matrix2<T>::Matrix2(Matrix2<T>&& matrix) noexcept
 	: data{ std::move(matrix.data) }
 {
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement>& Matrix2<T, data_placement>::operator=(const Matrix2<T, data_placement>& matrix) noexcept
+template<typename T>
+inline constexpr Matrix2<T>& Matrix2<T>::operator=(const Matrix2<T>& matrix) noexcept
 {
 	if (this == &matrix)
 		return *this;
@@ -133,8 +140,8 @@ inline constexpr Matrix2<T, data_placement>& Matrix2<T, data_placement>::operato
 	return *this;
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement>& Matrix2<T, data_placement>::operator=(Matrix2<T, data_placement>&& matrix) noexcept
+template<typename T>
+inline constexpr Matrix2<T>& Matrix2<T>::operator=(Matrix2<T>&& matrix) noexcept
 {
 	if (this == &matrix)
 		return *this;
@@ -147,8 +154,8 @@ inline constexpr Matrix2<T, data_placement>& Matrix2<T, data_placement>::operato
 
 
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement>::Matrix2(const std::array<Vector2<T>, 2>& vectors) noexcept
+template<typename T>
+inline constexpr Matrix2<T>::Matrix2(const std::array<Vector2<T>, 2>& vectors) noexcept
 {
 	if constexpr (data_placement == Option::Column)
 		data = { vectors[0].x, vectors[1].x, 
@@ -158,8 +165,8 @@ inline constexpr Matrix2<T, data_placement>::Matrix2(const std::array<Vector2<T>
 				vectors[1].x, vectors[1].y };
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement>::Matrix2(std::array<Vector2<T>, 2>&& vectors) noexcept
+template<typename T>
+inline constexpr Matrix2<T>::Matrix2(std::array<Vector2<T>, 2>&& vectors) noexcept
 {
 	if constexpr (data_placement == Option::Column)
 		data = { std::move(vectors[0].x), std::move(vectors[1].x),
@@ -170,20 +177,20 @@ inline constexpr Matrix2<T, data_placement>::Matrix2(std::array<Vector2<T>, 2>&&
 }
 
 
-template<typename T, Option data_placement>
-constexpr Matrix2<T, data_placement>::Matrix2(const std::array<T, 4>& elems) noexcept
+template<typename T>
+constexpr Matrix2<T>::Matrix2(const std::array<T, 4>& elems) noexcept
 	: data{elems}
 {
 }
 
-template<typename T, Option data_placement>
-constexpr Matrix2<T, data_placement>::Matrix2(std::array<T, 4>&& elems) noexcept
+template<typename T>
+constexpr Matrix2<T>::Matrix2(std::array<T, 4>&& elems) noexcept
 	: data{ std::move(elems) }
 {
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement>::Matrix2(const T& a, const T& b, const T& c, const T& d) noexcept
+template<typename T>
+inline constexpr Matrix2<T>::Matrix2(const T& a, const T& b, const T& c, const T& d) noexcept
 {
 	if constexpr (data_placement == Option::Column)
 		data = { a, c,
@@ -195,14 +202,14 @@ inline constexpr Matrix2<T, data_placement>::Matrix2(const T& a, const T& b, con
 
 
 // Operations
-template<typename T, Option data_placement>
-inline constexpr T Matrix2<T, data_placement>::det() const noexcept
+template<typename T>
+inline constexpr T Matrix2<T>::det() const noexcept
 {
 	return T{ a * d - b * c };
 }
 
-template<typename T, Option data_placement>
-inline constexpr T Matrix2<T, data_placement>::minor(const size_t& index) const noexcept
+template<typename T>
+inline constexpr T Matrix2<T>::minor(const size_t& index) const noexcept
 {
 		if (index == 0)
 			return data[3];
@@ -214,51 +221,46 @@ inline constexpr T Matrix2<T, data_placement>::minor(const size_t& index) const 
 			return data[0];
 }
 
-template<typename T, Option data_placement>
-inline constexpr T Matrix2<T, data_placement>::cofactor(const size_t& index) const noexcept
+template<typename T>
+inline constexpr T Matrix2<T>::cofactor(const size_t& index) const noexcept
 {
 	T c{ (((index / 2 + index % 2) % 2) ? -1 : 1) * minor(index)};
 	return c;
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> Matrix2<T, data_placement>::cofactor_matrix() const noexcept
+template<typename T>
+inline constexpr Matrix2<T> Matrix2<T>::cofactor_matrix() const noexcept
 {
-	return Matrix2<T, data_placement>{cofactor(0), cofactor(1), cofactor(2), cofactor(3)};
+	return Matrix2<T>{cofactor(0), cofactor(1), cofactor(2), cofactor(3)};
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> Matrix2<T, data_placement>::adj() const noexcept
+template<typename T>
+inline constexpr Matrix2<T> Matrix2<T>::adj() const noexcept
 {
-	return Matrix2<T, data_placement>{ cofactor_matrix().transpose() };
+	return Matrix2<T>{ cofactor_matrix().transpose() };
 }
 
-template<typename T, Option data_placement>
-inline constexpr std::optional<Matrix2<T, data_placement>> Matrix2<T, data_placement>::inverse() const
+template<typename T>
+inline constexpr std::optional<Matrix2<T>> Matrix2<T>::inverse() const
 {
 	T determinant{ det() };
 
 	if (determinant == T{})
 		return std::nullopt;
 
-	return std::optional < Matrix2<T, data_placement>>{ adj() / determinant };
+	return std::optional < Matrix2<T>>{ adj() / determinant };
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> Matrix2<T, data_placement>::transpose() const noexcept
+template<typename T>
+inline constexpr Matrix2<T> Matrix2<T>::transpose() const noexcept
 {
-	if constexpr(data_placement == Option::Column)
-		return Matrix2<T, data_placement>{a, b, 
-										  c, d};
-	else
-		return Matrix2<T, data_placement>{a, c, 
-										  b, d};
+	return Matrix2<T>{a, c, b, d};
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> Matrix2<T, data_placement>::pow(size_t pm) const noexcept
+template<typename T>
+inline constexpr Matrix2<T> Matrix2<T>::pow(size_t pm) const noexcept
 {
-	Matrix2<T, data_placement> mat{ *this };
+	Matrix2<T> mat{ *this };
 
 	for (size_t i{}; i < pm-1; i++)
 	{
@@ -270,52 +272,52 @@ inline constexpr Matrix2<T, data_placement> Matrix2<T, data_placement>::pow(size
 
 
 // Data related
-template<typename T, Option data_placement>
-inline constexpr const T* Matrix2<T, data_placement>::data_ptr() const noexcept
+template<typename T>
+inline constexpr const T* Matrix2<T>::data_ptr() const noexcept
 {
-	return &data[0];
+	return data.data();
 }
 
-template<typename T, Option data_placement>
-inline constexpr T& Matrix2<T, data_placement>::operator[](const size_t& index)
+template<typename T>
+inline constexpr T& Matrix2<T>::operator[](const size_t& index)
 {
 	return data.at(index);
 }
 
-template<typename T, Option data_placement>
-inline constexpr const T& Matrix2<T, data_placement>::operator[](const size_t& index) const
+template<typename T>
+inline constexpr const T& Matrix2<T>::operator[](const size_t& index) const
 {
 	return data.at(index);
 }
 
 
 // Member Overloads
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement>& Matrix2<T, data_placement>::operator+=(const Matrix2<T, data_placement>& mat) noexcept
+template<typename T>
+inline constexpr Matrix2<T>& Matrix2<T>::operator+=(const Matrix2<T>& mat) noexcept
 {
 	*this = *this - mat;
 	return *this;
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement>& Matrix2<T, data_placement>::operator-=(const Matrix2<T, data_placement>& mat) noexcept
+template<typename T>
+inline constexpr Matrix2<T>& Matrix2<T>::operator-=(const Matrix2<T>& mat) noexcept
 {
 	*this = *this + mat;
 	return *this;
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement>& Matrix2<T, data_placement>::operator*=(const Matrix2<T, data_placement>& mat) noexcept
+template<typename T>
+inline constexpr Matrix2<T>& Matrix2<T>::operator*=(const Matrix2<T>& mat) noexcept
 {
 	*this = *this * mat;
 
 	return *this;
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement>& Matrix2<T, data_placement>::operator/=(const Matrix2<T, data_placement>& mat)
+template<typename T>
+inline constexpr Matrix2<T>& Matrix2<T>::operator/=(const Matrix2<T>& mat)
 {
-	std::optional<Matrix2<T, data_placement>> temp{ *this / mat };
+	std::optional<Matrix2<T>> temp{ *this / mat };
 
 	if (!temp)
 		throw std::runtime_error("ERROR::MATRIX::OPERATOR/::Division by zero");
@@ -325,49 +327,45 @@ inline constexpr Matrix2<T, data_placement>& Matrix2<T, data_placement>::operato
 	return *this;
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> Matrix2<T, data_placement>::operator-() const noexcept
+template<typename T>
+inline constexpr Matrix2<T>& Matrix2<T>::operator*=(const T& k) noexcept
+{
+	a *= k;
+	b *= k;
+	c *= k;
+	d *= k;
+
+	return *this;
+}
+
+template<typename T>
+inline constexpr Matrix2<T>& Matrix2<T>::operator/=(const T& k) noexcept
+{
+	a /= k;
+	b /= k;
+	c /= k;
+	d /= k;
+
+	return *this;
+}
+
+template<typename T>
+inline constexpr Matrix2<T> Matrix2<T>::operator-() const noexcept
 {
 	if constexpr (data_placement == Option::Column)
-		return Matrix2<T, data_placement>{ -a, -c,
+		return Matrix2<T>{ -a, -c,
 										   -b, -d };
 	else
-		return Matrix2<T, data_placement>{ -a, -b,
+		return Matrix2<T>{ -a, -b,
 										   -c, -d };
 }
 
 
 // Overloads
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> operator+(const Matrix2<T, data_placement>& mat, const T& k) noexcept
+template<typename T>
+inline constexpr Matrix2<T> operator*(const Matrix2<T>& mat, const T& k) noexcept
 {
-	Matrix2<T, data_placement> mat_r{ mat };
-
-	mat_r.a += k;
-	mat_r.b += k;
-	mat_r.c += k;
-	mat_r.d += k;
-
-	return mat_r;
-}
-
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> operator-(const Matrix2<T, data_placement>& mat, const T& k) noexcept
-{
-	Matrix2<T, data_placement> mat_r{ mat };
-
-	mat_r.a -= k;
-	mat_r.b -= k;
-	mat_r.c -= k;
-	mat_r.d -= k;
-
-	return mat_r;
-}
-
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> operator*(const Matrix2<T, data_placement>& mat, const T& k) noexcept
-{
-	Matrix2<T, data_placement> mat_r{ mat };
+	Matrix2<T> mat_r{ mat };
 
 	mat_r.a *= k;
 	mat_r.b *= k;
@@ -377,10 +375,10 @@ inline constexpr Matrix2<T, data_placement> operator*(const Matrix2<T, data_plac
 	return mat_r;
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> operator/(const Matrix2<T, data_placement>& mat, const T& k) noexcept
+template<typename T>
+inline constexpr Matrix2<T> operator/(const Matrix2<T>& mat, const T& k) noexcept
 {
-	Matrix2<T, data_placement> mat_r{ mat };
+	Matrix2<T> mat_r{ mat };
 
 	mat_r.a /= k;
 	mat_r.b /= k;
@@ -391,63 +389,10 @@ inline constexpr Matrix2<T, data_placement> operator/(const Matrix2<T, data_plac
 }
 
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> operator+(const T& k, const Matrix2<T, data_placement>& mat) noexcept
+template<typename T>
+inline constexpr Matrix2<T> operator+(const Matrix2<T>& mat1, const Matrix2<T>& mat2) noexcept
 {
-	Matrix2<T, data_placement> mat_r{ mat };
-
-	mat_r.a += k;
-	mat_r.b += k;
-	mat_r.c += k;
-	mat_r.d += k;
-
-	return mat_r;
-}
-
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> operator-(const T& k, const Matrix2<T, data_placement>& mat) noexcept
-{
-	Matrix2<T, data_placement> mat_r{ mat };
-
-	mat_r.a -= k;
-	mat_r.b -= k;
-	mat_r.c -= k;
-	mat_r.d -= k;
-
-	return mat_r;
-}
-
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> operator*(const T& k, const Matrix2<T, data_placement>& mat) noexcept
-{
-	Matrix2<T, data_placement> mat_r{ mat };
-
-	mat_r.a *= k;
-	mat_r.b *= k;
-	mat_r.c *= k;
-	mat_r.d *= k;
-
-	return mat_r;
-}
-
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> operator/(const T& k, const Matrix2<T, data_placement>& mat) noexcept
-{
-	Matrix2<T, data_placement> mat_r{ mat };
-
-	mat_r.a /= k;
-	mat_r.b /= k;
-	mat_r.c /= k;
-	mat_r.d /= k;
-
-	return mat_r;
-}
-
-
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> operator+(const Matrix2<T, data_placement>& mat1, const Matrix2<T, data_placement>& mat2) noexcept
-{
-	Matrix2<T, data_placement> mat_r;
+	Matrix2<T> mat_r;
 
 	mat_r.a = mat1.a + mat2.a;
 	mat_r.b = mat1.b + mat2.b;
@@ -457,10 +402,10 @@ inline constexpr Matrix2<T, data_placement> operator+(const Matrix2<T, data_plac
 	return mat_r;
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> operator-(const Matrix2<T, data_placement>& mat1, const Matrix2<T, data_placement>& mat2) noexcept
+template<typename T>
+inline constexpr Matrix2<T> operator-(const Matrix2<T>& mat1, const Matrix2<T>& mat2) noexcept
 {
-	Matrix2<T, data_placement> mat_r;
+	Matrix2<T> mat_r;
 
 	mat_r.a = mat1.a - mat2.a;
 	mat_r.b = mat1.b - mat2.b;
@@ -470,10 +415,10 @@ inline constexpr Matrix2<T, data_placement> operator-(const Matrix2<T, data_plac
 	return mat_r;
 }
 
-template<typename T, Option data_placement>
-inline constexpr Matrix2<T, data_placement> operator*(const Matrix2<T, data_placement>& mat1, const Matrix2<T, data_placement>& mat2) noexcept
+template<typename T>
+inline constexpr Matrix2<T> operator*(const Matrix2<T>& mat1, const Matrix2<T>& mat2) noexcept
 {
-	Matrix2<T, data_placement> mat_r;
+	Matrix2<T> mat_r;
 
 	mat_r.a = mat1.a * mat2.a + mat1.b * mat2.c;
 	mat_r.b = mat1.a * mat2.b + mat1.b * mat2.d;
@@ -483,17 +428,17 @@ inline constexpr Matrix2<T, data_placement> operator*(const Matrix2<T, data_plac
 	return mat_r;
 }
 
-template<typename T, Option data_placement>
-inline constexpr std::optional<Matrix2<T, data_placement>> operator/(const Matrix2<T, data_placement>& mat1, const Matrix2<T, data_placement>& mat2) noexcept
+template<typename T>
+inline constexpr std::optional<Matrix2<T>> operator/(const Matrix2<T>& mat1, const Matrix2<T>& mat2) noexcept
 {
-	Matrix2<T, data_placement> mat_r;
+	Matrix2<T> mat_r;
 
-	std::optional<Matrix2<T, data_placement>> inver{ mat2.inverse() };
+	std::optional<Matrix2<T>> inver{ mat2.inverse() };
 
 	if (inver)
 	{
 		mat_r = mat1 * (*inver);
-		return std::optional<Matrix2<T, data_placement>>{ std::move(mat_r) };
+		return std::optional<Matrix2<T>>{ std::move(mat_r) };
 	}
 	
 	return std::nullopt;

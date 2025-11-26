@@ -102,7 +102,22 @@ public:
 		std::array<T, 3> data;
 	};
 
+
 };
+// Common Types
+template<typename T>
+constexpr static Vector3 Xaxis3{ 1,0,0 };
+
+template<typename T>
+constexpr static Vector3 Yaxis3{ 0,1,0 };
+
+template<typename T>
+constexpr static Vector3 Zaxis3{ 0,0,1 };
+
+
+
+// Class Definition
+
 
 
 // Intialization
@@ -233,7 +248,7 @@ inline constexpr Vector3<T> Vector3<T>::normal() const noexcept
 template<typename T>
 inline constexpr T* Vector3<T>::data_ptr() const noexcept
 {
-	return &data[0];
+	return data.data();
 }
 
 template<typename T>

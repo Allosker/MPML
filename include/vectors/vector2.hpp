@@ -102,12 +102,13 @@ public:
 	};
 
 
-// Predefined Types
-
-	/*static constexpr Vector2 Xaxis{ 1,0 };
-	static constexpr Vector2 Yaxis{ 0,1 };*/
-
 };
+// Common Types
+template<typename T>
+constexpr static Vector2 Xaxis2{ 1,0 };
+
+template<typename T>
+constexpr static Vector2 Yaxis2{ 0,1 };
 
 
 
@@ -233,7 +234,7 @@ inline constexpr Vector2<T> Vector2<T>::normal() const noexcept
 template<typename T>
 inline constexpr const T* Vector2<T>::data_ptr() const noexcept
 {
-	return &data[0];
+	return data.data();
 }
 
 template<typename T>
