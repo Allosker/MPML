@@ -9,13 +9,39 @@
 using namespace mpml;
 int main()
 {
-	Matrix2<float> m1{ 1,2,3,4 };
+	Matrix3<float> mat1{ 
+		1,2,3,
+		4,9,6,
+		7,8,9 
+	};
+	Matrix3<float> mat2{ 
+		10,11,12,
+		13,14,15,
+		16,17,18
+	};
 
-	Matrix2<float> m2{ 5,6,7,8 };
+	Matrix4<float> m
+	{
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 10, 11, 12,
+		13, 14, 15, 16
+	};
 
-	Matrix2<float> m3{ m1 };
+	Matrix4<float> m2
+	{
+		1, 2, 3, 4,
+		5, 6, 7, 8,
+		9, 10, 11, 12,
+		13, 14, 15, 16
+	};
 
-	std::cout << m1.pow(6);
+	Vector4<float> v
+	{
+		1,2,3
+	};
+
+	std::cout << Matrix4<float>{ m2 * mat::translate{v} };
 
 	return 0;
 }

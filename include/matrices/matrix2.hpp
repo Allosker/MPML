@@ -2,7 +2,7 @@
 // MIT
 // Allosker - 2025
 // ===================================================
-// Defines a 2D matrix and all its function/math related operations.
+// Defines a 2D 2x2 matrix and all its function/math related operations.
 // ===================================================
 
 
@@ -12,7 +12,6 @@
 
 #include "vectors/vector2.hpp"
 
-#include "utilities/data_types/data_orga.hpp"
 
 namespace mpml
 {
@@ -31,12 +30,10 @@ public:
 	constexpr Matrix2<T>& operator=(const Matrix2<T>& matrix) noexcept;
 	constexpr Matrix2<T>& operator=(Matrix2<T>&& matrix) noexcept;
 
-	constexpr Matrix2(const std::array<Vector2<T>, 2>& vectors) noexcept;
-	constexpr Matrix2(std::array<Vector2<T>, 2>&& vectors) noexcept;
+	constexpr Matrix2(const Vector2<T>& vec1, const Vector2<T>& vec2) noexcept;
+	constexpr Matrix2(Vector2<T>&& vec1, Vector2<T>&& vec2) noexcept;
 
-	// Allows the user to override data placement
 	constexpr Matrix2(const std::array<T, 4>& elems) noexcept;
-	// Allows the user to override data placement
 	constexpr Matrix2(std::array<T, 4>&& elems) noexcept;
 
 	constexpr Matrix2(const T& a = {}, const T& b = {}, const T& c = {}, const T& d = {}) noexcept;
@@ -48,8 +45,7 @@ public:
 	// Operations
 
 	[[nodiscard]] constexpr T det() const noexcept;
-	// In case of an incorrect index, the first entry will be returned 
-	[[nodiscard]] constexpr T minor(const size_t& index) const noexcept;
+	[[nodiscard]] constexpr T minor(const size_t& index) const;
 
 	[[nodiscard]] constexpr T cofactor(const size_t& index) const noexcept;
 	[[nodiscard]] constexpr Matrix2<T> cofactor_matrix() const noexcept;
@@ -82,14 +78,18 @@ public:
 	constexpr Matrix2<T>& operator*=(const T& k) noexcept;
 	constexpr Matrix2<T>& operator/=(const T& k) noexcept;
 
-	constexpr Matrix2<T> operator-() const noexcept;
+	[[nodiscard]] constexpr Matrix2<T> operator-() const noexcept;
 
 
 // Class Members
 
 	union
 	{
-		struct { T a, b; T c, d; };
+		struct 
+		{ 
+			T a, b;
+			T c, d;
+		};
 		
 		std::array<T, 4> data;
 	};
@@ -98,14 +98,14 @@ public:
 };
 // Common Types
 template<typename T>
-constexpr static Matrix2<T> Identity
+constexpr static Matrix2<T> Identity2
 {
 	T{1}, T{},
 	T{}, T{1}
 };
 
 template<typename T>
-constexpr static Matrix2<T> AntiDiagonal_Identity
+constexpr static Matrix2<T> AntiDiagonal_Identity2
 {
 	T{}, T{1},
 	T{1}, T{}
@@ -152,28 +152,18 @@ inline constexpr Matrix2<T>& Matrix2<T>::operator=(Matrix2<T>&& matrix) noexcept
 }
 
 
-
-
 template<typename T>
-inline constexpr Matrix2<T>::Matrix2(const std::array<Vector2<T>, 2>& vectors) noexcept
+inline constexpr Matrix2<T>::Matrix2(const Vector2<T>& vec1, const Vector2<T>& vec2) noexcept
 {
-	if constexpr (data_placement == Option::Column)
-		data = { vectors[0].x, vectors[1].x, 
-				vectors[0].y, vectors[1].y };
-	else
-		data = { vectors[0].x, vectors[0].y, 
-				vectors[1].x, vectors[1].y };
+	data = { vec1.x, vec1.y,
+			vec2.x, vec2.y };
 }
 
 template<typename T>
-inline constexpr Matrix2<T>::Matrix2(std::array<Vector2<T>, 2>&& vectors) noexcept
+inline constexpr Matrix2<T>::Matrix2(Vector2<T>&& vec1, Vector2<T>&& vec2) noexcept
 {
-	if constexpr (data_placement == Option::Column)
-		data = { std::move(vectors[0].x), std::move(vectors[1].x),
-				std::move(vectors[0].y), std::move(vectors[1].y) };
-	else
-		data = { std::move(vectors[0].x), std::move(vectors[0].y),
-				std::move(vectors[1].x), std::move(vectors[1].y) };
+	data = { std::move(vec1.x), std::move(vec1.y),
+			std::move(vec2.x), std::move(vec2.y) };
 }
 
 
@@ -192,12 +182,8 @@ constexpr Matrix2<T>::Matrix2(std::array<T, 4>&& elems) noexcept
 template<typename T>
 inline constexpr Matrix2<T>::Matrix2(const T& a, const T& b, const T& c, const T& d) noexcept
 {
-	if constexpr (data_placement == Option::Column)
-		data = { a, c,
-				b, d };
-	else
-		data = { a, b, 
-				c, d };
+	data = { a, b, 
+			c, d };
 }
 
 
@@ -209,16 +195,18 @@ inline constexpr T Matrix2<T>::det() const noexcept
 }
 
 template<typename T>
-inline constexpr T Matrix2<T>::minor(const size_t& index) const noexcept
+inline constexpr T Matrix2<T>::minor(const size_t& index) const
 {
-		if (index == 0)
-			return data[3];
-		else if (index == 1)
-			return data[2];
-		else if (index == 2)
-			return data[1];
-		else
-			return data[0];
+	if (index == 0)
+		return data[3];
+	else if (index == 1)
+		return data[2];
+	else if (index == 2)
+		return data[1];
+	else if (index == 3)
+		return data[0];
+	else
+		throw std::length_error("ERROR:MATRIX2::FUNCTION_MINOR::INDEX::Index is out of range");
 }
 
 template<typename T>
@@ -254,7 +242,8 @@ inline constexpr std::optional<Matrix2<T>> Matrix2<T>::inverse() const
 template<typename T>
 inline constexpr Matrix2<T> Matrix2<T>::transpose() const noexcept
 {
-	return Matrix2<T>{a, c, b, d};
+	return Matrix2<T>{a, c,
+					  b, d};
 }
 
 template<typename T>
@@ -295,14 +284,14 @@ inline constexpr const T& Matrix2<T>::operator[](const size_t& index) const
 template<typename T>
 inline constexpr Matrix2<T>& Matrix2<T>::operator+=(const Matrix2<T>& mat) noexcept
 {
-	*this = *this - mat;
+	*this = *this + mat;
 	return *this;
 }
 
 template<typename T>
 inline constexpr Matrix2<T>& Matrix2<T>::operator-=(const Matrix2<T>& mat) noexcept
 {
-	*this = *this + mat;
+	*this = *this - mat;
 	return *this;
 }
 
@@ -352,12 +341,7 @@ inline constexpr Matrix2<T>& Matrix2<T>::operator/=(const T& k) noexcept
 template<typename T>
 inline constexpr Matrix2<T> Matrix2<T>::operator-() const noexcept
 {
-	if constexpr (data_placement == Option::Column)
-		return Matrix2<T>{ -a, -c,
-										   -b, -d };
-	else
-		return Matrix2<T>{ -a, -b,
-										   -c, -d };
+	return Matrix2<T>{ -a, -b, -c, -d };
 }
 
 
@@ -442,6 +426,13 @@ inline constexpr std::optional<Matrix2<T>> operator/(const Matrix2<T>& mat1, con
 	}
 	
 	return std::nullopt;
+}
+
+
+template<typename T>
+inline constexpr Vector2<T> operator*(const Matrix2<T>& mat, const Vector2<T>& vec) noexcept
+{
+	return Vector2<T>{ vec.x * mat.a + vec.y * mat.c, vec.x * mat.b + vec.y * mat.d };
 }
 
 
