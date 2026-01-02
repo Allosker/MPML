@@ -3,7 +3,7 @@
 ## Purpose of MPML
 
 MPML is a Multi-Purpose Math Library (hence the acronym) with a special emphasis on **Graphics Mathematics**; as such, the library is meant to be used with *OpenGL*, *DirectX*, and *Vulkan*. 
-MPML was mainly written as part of my own ecosystem which are all meant to be used with my forthcoming **Graphics Engine**; MPML aspires to be at its core.
+MPML was mainly written as part of my own ecosystem (along with many more libraries) which are all meant to be used with my forthcoming **Graphics Engine**; MPML aspires to be at its core.
 
 ## Features
 
@@ -21,6 +21,8 @@ MPML shall feature a wide range of *mathematical operations* but is for now limi
   - 3x3
   - 4x4
 - **Quaternions**
+- **Utility Functions**
+  - Tensors
 
 ### Specialized Types
 
