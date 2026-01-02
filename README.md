@@ -1,24 +1,46 @@
 # MPML -- Multi-Purpose Math Library
 
-// Brief
+## Purpose of MPML
 
-MPML is a small math library that implements basic mathematical types such as:
+MPML is a Multi-Purpose Math Library (hence the acronym) with a special emphasis on **Graphics Mathematics**; as such, the library is meant to be used with *OpenGL*, *DirectX*, and *Vulkan*. 
+MPML was mainly written as part of my own ecosystem which are all meant to be used with my forthcoming **Graphics Engine**; MPML aspires to be at its core.
 
-2,3,4 dimensional vectors,
-(general vector type)
-2,3,4 dimensional matrices,
-(general matrix type)
+## Features
 
-*General types are those whose members can only be accessed through indexing, thus making them less user friendly, they are also quite expensive since algorithms such as the Row/Column-major index mapping formula must be used for them to work (e.g. 4D matrices (2x2x2x2)), and even though those types may not be used that often, the library tends to be multi-purpose for any general usage.
+MPML shall feature a wide range of *mathematical operations* but is for now limited to what is necessary:
 
-However some other types such as Ranges, and Quaternions alongside Angles are defined.
+- **Constants**
+- **Ranges** (in developement)
+- **Angles**
+- **Vectors**
+  - 2D
+  - 3D
+  - 4D (operates like 3D)
+- **Matrices**
+  - 2x2
+  - 3x3
+  - 4x4
+- **Quaternions**
+
+### Specialized Types
+
+MPML is designed to be Multi-Purpose (even though its current state may say otherwise), thereby possessing generalized types. As such, generalized *vectors*, *matrices*, and *quaternions* are indexed types and can be accessed via `operator[]`. While less intuitive than an *anonymous struct*, this allows for more flexibility when accessing multi-dimensional matrices/vectors.
+(As of the day of writing no such type is yet availble).
+
+## Design Goals
+
+- Provide a consistant interface across various types and mathematical concepts.
+- Maintain balance between flexibility and performances.
+- Remains:
+  - Dependency-free
+  - Header-only
+  - Easy to integrate and use
+- Provides suitability for modern C++ as the library is *constexpr friendly*.
+
+#### Last words
+
+The library is free to use as per its [license](https://github.com/Allosker/MPML/blob/master/LICENSE.txt). Note: this is subject to changes.
 
 
-
-This little library is mainly for me, I want to create my very own ecosystem!
-And I hope this library will be part of a much larger system!
-
-This library is also focused on maths applicable to the graphics programming world, albeit a general library.
-As such, all my libraries respectively based on: openGL, Vulkan, and DirectX will be built using this math library at their core.
 
 
