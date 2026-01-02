@@ -82,8 +82,8 @@ namespace mpml
 		constexpr Vector3<T>& operator*=(const T& scalar) noexcept;
 		constexpr Vector3<T>& operator/=(const T& scalar) noexcept;
 
-		constexpr Vector3<T> operator-() const noexcept;
-		constexpr bool operator!() const noexcept;
+		[[nodiscard]] constexpr Vector3<T> operator-() const noexcept;
+		[[nodiscard]] constexpr bool operator!() const noexcept;
 		constexpr bool operator==(const Vector3<T>& vec) const noexcept;
 
 		// Class members
@@ -101,13 +101,13 @@ namespace mpml
 	};
 	// Common Types
 	template<typename T>
-	constexpr static Vector3 Xaxis3{ 1,0,0 };
+	constexpr static Vector3<T> Xaxis3{ 1,0,0 };
 
 	template<typename T>
-	constexpr static Vector3 Yaxis3{ 0,1,0 };
+	constexpr static Vector3<T> Yaxis3{ 0,1,0 };
 
 	template<typename T>
-	constexpr static Vector3 Zaxis3{ 0,0,1 };
+	constexpr static Vector3<T> Zaxis3{ 0,0,1 };
 
 
 

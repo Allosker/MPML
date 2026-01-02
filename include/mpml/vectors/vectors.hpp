@@ -13,4 +13,4 @@
 #include "vector4.hpp"
 
 // -- Utilities
-#include "utility.hpp"
+#include "vector_utility.hpp"

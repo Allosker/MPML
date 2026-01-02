@@ -12,12 +12,5 @@
 #include "matrices/matrix3.hpp"
 #include "matrices/matrix4.hpp"
 
-
-/*
-	a, b, c, d, 
-	e, f, g, h,
-	i, j, k, l,
-	m, n, o, p
-
-
-*/
+// -- Utilities
+#include "matrices/matrix_utility.hpp"

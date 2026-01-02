@@ -38,6 +38,8 @@ namespace mpml
 		constexpr Vector2(T&& x_, T&& y_) noexcept;
 
 
+
+
 		~Vector2() = default;
 	
 
@@ -83,8 +85,8 @@ namespace mpml
 		constexpr Vector2<T>& operator*=(const T& scalar) noexcept;
 		constexpr Vector2<T>& operator/=(const T& scalar) noexcept;
 
-		constexpr Vector2<T> operator-() const noexcept; 
-		constexpr bool operator!() const noexcept;
+		[[nodiscard]] constexpr Vector2<T> operator-() const noexcept;
+		[[nodiscard]] constexpr bool operator!() const noexcept;
 		constexpr bool operator==(const Vector2<T>& vec) const noexcept;
 
 	
@@ -193,7 +195,7 @@ namespace mpml
 	template<typename T>
 	inline constexpr Vector2<T> Vector2<T>::rotate(Angle angle) const noexcept
 	{
-		return Vector2<T>{ x * std::cos(angle.angle_radians) + y * -std::sin(angle.angle_radians), x * std::sin(angle.angle_radians) + y * std::cos(angle.angle_radians)};
+		return Vector2<T>{ x * std::cos(angle.angle) + y * -std::sin(angle.angle), x * std::sin(angle.angle) + y * std::cos(angle.angle)};
 	}
 
 	template<typename T>

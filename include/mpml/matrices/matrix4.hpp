@@ -1,3 +1,4 @@
+#pragma once
 // MIT
 // Allosker - 2025
 // ===================================================
@@ -27,6 +28,9 @@ namespace mpml
 
 		constexpr Matrix4(const Matrix4<T>& matrix) noexcept;
 		constexpr Matrix4(Matrix4<T>&& matrix) noexcept;
+
+		constexpr Matrix4(const Matrix3<T>& matrix) noexcept;
+		constexpr Matrix4(Matrix3<T>&& matrix) noexcept;
 
 		constexpr Matrix4<T>& operator=(const Matrix4<T>& matrix) noexcept;
 		constexpr Matrix4<T>& operator=(Matrix4<T>&& matrix) noexcept;
@@ -145,6 +149,30 @@ namespace mpml
 	template<typename T>
 	inline constexpr Matrix4<T>::Matrix4(Matrix4<T>&& matrix) noexcept
 		: data{ std::move(matrix.data) }
+	{
+	}
+
+	template<typename T>
+	inline constexpr Matrix4<T>::Matrix4(const Matrix3<T>& matrix) noexcept
+		: data
+		{ 
+			matrix.a, matrix.b, matrix.c, 0,
+			matrix.d, matrix.e, matrix.f, 0,
+			matrix.g, matrix.h, matrix.i, 0,
+				   0,		 0,		   0, 1
+		}
+	{
+	}
+
+	template<typename T>
+	inline constexpr Matrix4<T>::Matrix4(Matrix3<T>&& matrix) noexcept
+		: data
+		{
+			std::move(matrix.a), std::move(matrix.b), std::move(matrix.c), 0,
+			std::move(matrix.d), std::move(matrix.e), std::move(matrix.f), 0,
+			std::move(matrix.g), std::move(matrix.h), std::move(matrix.i), 0,
+							  0,				   0,					0, 1
+		}
 	{
 	}
 

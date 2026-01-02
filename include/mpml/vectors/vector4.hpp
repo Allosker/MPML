@@ -88,8 +88,8 @@ namespace mpml
 		constexpr Vector4<T>& operator*=(const T& scalar) noexcept;
 		constexpr Vector4<T>& operator/=(const T& scalar) noexcept;
 
-		constexpr Vector4<T> operator-() const noexcept;
-		constexpr bool operator!() const noexcept;
+		[[nodiscard]] constexpr Vector4<T> operator-() const noexcept;
+		[[nodiscard]] constexpr bool operator!() const noexcept;
 		constexpr bool operator==(const Vector4<T>& vec) const noexcept;
 
 
