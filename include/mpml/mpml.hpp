@@ -6,12 +6,12 @@
 
 
 // Lib Files
-#include "matrices/matrix.hpp"
+#include "mpml/matrices/matrix.hpp"
 
-#include "vectors/vectors.hpp"
+#include "mpml/vectors/vectors.hpp"
 
-#include "quaternions/quaternions.hpp"
+#include "mpml/quaternions/quaternions.hpp"
 
-#include "utilities/numbers.hpp"
-#include "utilities/types/angle.hpp"
+#include "mpml/utilities/numbers.hpp"
+#include "mpml/utilities/types/angle.hpp"
 

@@ -10,9 +10,9 @@
 #include <xutility>
 #include <optional>
 
-#include "vectors/vector3.hpp"
-#include "vectors/vector4.hpp"
-#include "matrices/matrix3.hpp"
+#include "mpml/vectors/vector3.hpp"
+#include "mpml/vectors/vector4.hpp"
+#include "mpml/matrices/matrix3.hpp"
 
 
 namespace mpml
@@ -36,7 +36,6 @@ namespace mpml
 		constexpr Matrix4<T>& operator=(Matrix4<T>&& matrix) noexcept;
 
 		constexpr Matrix4(const Vector4<T>& vec1, const Vector4<T>& vec2, const Vector4<T>& vec3, const Vector4<T>& vec4) noexcept;
-		constexpr Matrix4(Vector4<T>&& vec1, Vector4<T>&& vec2, Vector4<T>&& vec3, Vector4<T>&& vec4) noexcept;
 
 		// Allows the user to override data placement
 		constexpr Matrix4(const std::array<T, 16>& elems) noexcept;
@@ -110,7 +109,7 @@ namespace mpml
 				T m, n, o, p;
 			};
 
-			std::array<T, 16> data;
+			std::array<T, 16> data{};
 		};
 
 
@@ -208,17 +207,6 @@ namespace mpml
 				 vec4.x, vec4.y, vec4.z, vec4.w
 		};
 	}
-
-	template<typename T>
-	inline constexpr Matrix4<T>::Matrix4(Vector4<T>&& vec1, Vector4<T>&& vec2, Vector4<T>&& vec3, Vector4<T>&& vec4) noexcept
-	{
-		data = { std::move(vec1.x), std::move(vec1.y), std::move(vec1.z), std::move(vec1.w),
-				 std::move(vec2.x), std::move(vec2.y), std::move(vec2.z), std::move(vec2.w),
-				 std::move(vec3.x), std::move(vec3.y), std::move(vec3.z), std::move(vec3.w),
-				 std::move(vec4.x), std::move(vec4.y), std::move(vec4.z), std::move(vec4.w)
-		};
-	}
-
 
 	template<typename T>
 	inline constexpr Matrix4<T>::Matrix4(const std::array<T, 16>& elems) noexcept
@@ -463,6 +451,9 @@ namespace mpml
 	template<typename T>
 	inline constexpr Matrix4<T> Matrix4<T>::pow(size_t pm) const noexcept
 	{
+		if (pm == 0)
+			return Identity4;
+
 		Matrix4<T> mat{ *this };
 
 		for (size_t i{}; i < pm - 1; i++)

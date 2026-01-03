@@ -8,9 +8,9 @@
 
 
 // -- Classes
-#include "vector2.hpp"
-#include "vector3.hpp"
-#include "vector4.hpp"
+#include "mpml/vectors/vector2.hpp"
+#include "mpml/vectors/vector3.hpp"
+#include "mpml/vectors/vector4.hpp"
 
 // -- Utilities
-#include "vector_utility.hpp"
+#include "mpml/vectors/vector_utility.hpp"

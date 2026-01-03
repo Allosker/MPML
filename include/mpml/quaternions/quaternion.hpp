@@ -9,9 +9,9 @@
 #include <array>
 #include <cmath>
 
-#include "utilities/types/angle.hpp"
+#include "mpml/utilities/types/angle.hpp"
 
-#include "vectors/vector3.hpp"
+#include "mpml/vectors/vector3.hpp"
 
 namespace mpml
 {
@@ -213,18 +213,18 @@ inline constexpr Quaternion<T> Quaternion<T>::inverse() const noexcept
 template<typename T>
 inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle angle, const Vector3<T>& axis) const noexcept
 {
-	Vector3<T> n_axis{ axis.normal() };
+	const Vector3<T> n_axis{ axis.normal() };
 
-	T s{ static_cast<T>(std::sin(angle.asRadians() / 2.)) };
+	const T s{ static_cast<T>(std::sin(angle.asRadians() / 2.)) };
 	return Quaternion<T>{ static_cast<T>(std::cos(angle.asRadians() / 2.)), n_axis.x * s, n_axis.y * s, n_axis.z * s};
 }
 
 template<typename T>
 inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle angle) const noexcept
 {
-	Vector3<T> n_axis = Vector3<T>{ x,y,z }.normal();
+	const Vector3<T> n_axis = Vector3<T>{ x,y,z }.normal();
 
-	T s{ static_cast<T>(std::sin(angle.asRadians() / 2.)) };
+	const T s{ static_cast<T>(std::sin(angle.asRadians() / 2.)) };
 	return Quaternion<T>{ static_cast<T>(std::cos(angle.asRadians() / 2.)), n_axis.x * s, n_axis.y * s, n_axis.z * s };
 }
 

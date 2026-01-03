@@ -10,8 +10,8 @@
 #include <xutility>
 #include <optional>
 
-#include "vectors/vector3.hpp"
-#include "matrices/matrix2.hpp"
+#include "mpml/vectors/vector3.hpp"
+#include "mpml/matrices/matrix2.hpp"
 
 
 namespace mpml
@@ -32,7 +32,6 @@ namespace mpml
 		constexpr Matrix3<T>& operator=(Matrix3<T>&& matrix) noexcept;
 
 		constexpr Matrix3(const Vector3<T>& vec1, const Vector3<T>& vec2, const Vector3<T>& vec3) noexcept;
-		constexpr Matrix3(Vector3<T>&& vec1, Vector3<T>&& vec2, Vector3<T>&& vec3) noexcept;
 
 		constexpr Matrix3(const std::array<T, 9>& elems) noexcept;
 		constexpr Matrix3(std::array<T, 9>&& elems) noexcept;
@@ -97,7 +96,7 @@ namespace mpml
 				T g, h, i;
 			};
 
-			std::array<T, 9> data;
+			std::array<T, 9> data{};
 		};
 
 
@@ -168,16 +167,6 @@ namespace mpml
 				 vec3.x, vec3.y, vec3.z
 		};
 	}
-
-	template<typename T>
-	inline constexpr Matrix3<T>::Matrix3(Vector3<T>&& vec1, Vector3<T>&& vec2, Vector3<T>&& vec3) noexcept
-	{
-		data = { std::move(vec1.x), std::move(vec1.y), std::move(vec1.z),
-				 std::move(vec2.x), std::move(vec2.y), std::move(vec2.z),
-				 std::move(vec3.x), std::move(vec3.y), std::move(vec3.z)
-		};
-	}
-
 
 	template<typename T>
 	inline constexpr Matrix3<T>::Matrix3(const std::array<T, 9>& elems) noexcept
@@ -342,6 +331,9 @@ namespace mpml
 	template<typename T>
 	inline constexpr Matrix3<T> Matrix3<T>::pow(size_t pm) const noexcept
 	{
+		if (pm == 0)
+			return Identity3;
+
 		Matrix3<T> mat{ *this };
 
 		for (size_t i{}; i < pm - 1; i++)

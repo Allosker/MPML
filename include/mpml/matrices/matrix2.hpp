@@ -10,7 +10,7 @@
 #include <xutility>
 #include <optional>
 
-#include "vectors/vector2.hpp"
+#include "mpml/vectors/vector2.hpp"
 
 
 namespace mpml
@@ -31,7 +31,6 @@ public:
 	constexpr Matrix2<T>& operator=(Matrix2<T>&& matrix) noexcept;
 
 	constexpr Matrix2(const Vector2<T>& vec1, const Vector2<T>& vec2) noexcept;
-	constexpr Matrix2(Vector2<T>&& vec1, Vector2<T>&& vec2) noexcept;
 
 	constexpr Matrix2(const std::array<T, 4>& elems) noexcept;
 	constexpr Matrix2(std::array<T, 4>&& elems) noexcept;
@@ -45,7 +44,7 @@ public:
 	// Operations
 
 	[[nodiscard]] constexpr T det() const noexcept;
-	[[nodiscard]] constexpr T minor(const size_t& index) const;
+	[[nodiscard]] constexpr T minor(size_t index) const;
 
 	[[nodiscard]] constexpr T cofactor(const size_t& index) const noexcept;
 	[[nodiscard]] constexpr Matrix2<T> cofactor_matrix() const noexcept;
@@ -91,21 +90,21 @@ public:
 			T c, d;
 		};
 		
-		std::array<T, 4> data;
+		std::array<T, 4> data{};
 	};
 
 
 };
 // Common Types
 template<typename T>
-constexpr static Matrix2<T> Identity2
+inline constexpr static Matrix2<T> Identity2
 {
 	T{1}, T{},
 	T{}, T{1}
 };
 
 template<typename T>
-constexpr static Matrix2<T> AntiDiagonal_Identity2
+inline constexpr static Matrix2<T> AntiDiagonal_Identity2
 {
 	T{}, T{1},
 	T{1}, T{}
@@ -160,14 +159,6 @@ inline constexpr Matrix2<T>::Matrix2(const Vector2<T>& vec1, const Vector2<T>& v
 }
 
 template<typename T>
-inline constexpr Matrix2<T>::Matrix2(Vector2<T>&& vec1, Vector2<T>&& vec2) noexcept
-{
-	data = { std::move(vec1.x), std::move(vec1.y),
-			std::move(vec2.x), std::move(vec2.y) };
-}
-
-
-template<typename T>
 constexpr Matrix2<T>::Matrix2(const std::array<T, 4>& elems) noexcept
 	: data{elems}
 {
@@ -195,7 +186,7 @@ inline constexpr T Matrix2<T>::det() const noexcept
 }
 
 template<typename T>
-inline constexpr T Matrix2<T>::minor(const size_t& index) const
+inline constexpr T Matrix2<T>::minor(size_t index) const
 {
 	if (index == 0)
 		return data[3];
@@ -236,7 +227,7 @@ inline constexpr std::optional<Matrix2<T>> Matrix2<T>::inverse() const
 	if (determinant == T{})
 		return std::nullopt;
 
-	return std::optional < Matrix2<T>>{ adj() / determinant };
+	return std::optional<Matrix2<T>>{ adj() / determinant };
 }
 
 template<typename T>
@@ -249,6 +240,9 @@ inline constexpr Matrix2<T> Matrix2<T>::transpose() const noexcept
 template<typename T>
 inline constexpr Matrix2<T> Matrix2<T>::pow(size_t pm) const noexcept
 {
+	if (pm == 0)
+		return Identity2;
+
 	Matrix2<T> mat{ *this };
 
 	for (size_t i{}; i < pm-1; i++)

@@ -5,9 +5,9 @@
 // Mostly for Graphics Matrix functions, defines some utility functions to create matrices
 // ===================================================
 
-#include "matrices/matrix4.hpp"
+#include "mpml/matrices/matrix4.hpp"
 
-#include "vectors/vectors.hpp"
+#include "mpml/vectors/vectors.hpp"
 
 
 namespace mpml
@@ -37,20 +37,20 @@ namespace mpml
 	}
 
 	template<typename T>
-	[[nodiscard]] Matrix4<T> perspective(const T& width, const T& height, const T& near, const T& far, const T& fov, bool right_handed=false)
+	[[nodiscard]] constexpr Matrix4<T> perspective(const T& width, const T& height, const T& near, const T& far, const T& fov, bool right_handed=false)
 	{
-		if (near < 0 || far < near)
+		if constexpr (near < 0 || far < near)
 			throw std::runtime_error("ERROR::MATH::PERSPECTIVE_MATRIX::Far/Near planes is/are too low");
-		if (width == 0 || height == 0)
+		if constexpr (width == 0 || height == 0)
 			throw std::runtime_error("ERROR::MATH::DIVISION_BY_ZERO");
 
 
-		T f{ 1 / (std::tan(fov / 2)) };
+		const T f{ 1 / (std::tan(fov / 2)) };
 		
-		T a{ width / height };
+		const T a{ width / height };
 
 
-		if (!right_handed)
+		if constexpr (!right_handed)
 			return Matrix4<T>
 			{
 				(f / a), 0, 0, 0,
@@ -71,9 +71,9 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> lookAt(const Vector3<T>& eye, const Vector3<T>& center, const Vector3<T>& up) noexcept
 	{
-		Vector3<T> f{ Vector3<T>{center - eye}.normal() };
-		Vector3<T> s{ Vector3<T>{f.cross(up)}.normal() };
-		Vector3<T> u{ s.cross(f) };
+		const Vector3<T> f{ Vector3<T>{center - eye}.normal() };
+		const Vector3<T> s{ Vector3<T>{f.cross(up)}.normal() };
+		const Vector3<T> u{ s.cross(f) };
 
 		return Matrix4<T>
 		{

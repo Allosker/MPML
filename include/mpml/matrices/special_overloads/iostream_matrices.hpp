@@ -7,11 +7,11 @@
 
 #include <iostream>
 
-#include "matrices/matrix.hpp"
+#include "mpml/matrices/matrix.hpp"
 
 namespace mpml
 {
-	static bool print_linear{ false };
+	inline bool print_linear{ false };
 
 
 	template<typename T>

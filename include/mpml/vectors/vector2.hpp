@@ -15,7 +15,7 @@
 #include <xutility>
 #include <stdexcept> // for: std::out_of_range()
 
-#include "utilities/types/angle.hpp"
+#include "mpml/utilities/types/angle.hpp"
 
 
 namespace mpml
@@ -33,6 +33,12 @@ namespace mpml
 		constexpr Vector2() noexcept;
 		// Performs a copy of values to all components
 		constexpr Vector2(const T& values) noexcept;
+
+		constexpr Vector2(const Vector2&) noexcept = default;
+		constexpr Vector2& operator=(const Vector2&) noexcept = default;
+
+		constexpr Vector2(Vector2&&) noexcept = default;
+		constexpr Vector2& operator=(Vector2&&) noexcept = default;
 
 		constexpr Vector2(const T& x_, const T& y_) noexcept;
 		constexpr Vector2(T&& x_, T&& y_) noexcept;
@@ -86,7 +92,6 @@ namespace mpml
 		constexpr Vector2<T>& operator/=(const T& scalar) noexcept;
 
 		[[nodiscard]] constexpr Vector2<T> operator-() const noexcept;
-		[[nodiscard]] constexpr bool operator!() const noexcept;
 		constexpr bool operator==(const Vector2<T>& vec) const noexcept;
 
 	
@@ -105,10 +110,10 @@ namespace mpml
 	};
 	// Common Types
 	template<typename T>
-	constexpr static Vector2 Xaxis2{ 1,0 };
+	inline constexpr Vector2 Xaxis2{ 1,0 };
 
 	template<typename T>
-	constexpr static Vector2 Yaxis2{ 0,1 };
+	inline constexpr Vector2 Yaxis2{ 0,1 };
 
 
 
@@ -176,7 +181,7 @@ namespace mpml
 	template<typename T>
 	inline constexpr Vector2<T> Vector2<T>::reflect(const Vector2<T>& vec) const noexcept
 	{
-		return Vector2<T>{*this - (T)2 * project(vec) };
+		return Vector2<T>{*this - static_cast<T>(2) * project(vec) };
 	}
 
 	template<typename T>
@@ -296,12 +301,6 @@ namespace mpml
 	constexpr Vector2<T> Vector2<T>::operator-() const noexcept
 	{
 		return Vector2<T>{-x, -y};
-	}
-
-	template<typename T>
-	constexpr bool Vector2<T>::operator!() const noexcept
-	{
-		return (x == 0 && y == 0);
 	}
 
 	template<typename T>

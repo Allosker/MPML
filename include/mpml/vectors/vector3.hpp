@@ -16,8 +16,8 @@
 #include <xutility>
 #include <stdexcept> // for: std::out_of_range()
 
-#include "utilities/types/angle.hpp"
-#include "vector2.hpp"
+#include "mpml/utilities/types/angle.hpp"
+#include "mpml/vectors/vector2.hpp"
 
 
 namespace mpml
@@ -36,6 +36,12 @@ namespace mpml
 		constexpr Vector3() noexcept;
 		// Performs a copy of values to all components
 		constexpr Vector3(const T& values) noexcept;
+
+		constexpr Vector3(const Vector3&) noexcept = default;
+		constexpr Vector3& operator=(const Vector3&) noexcept = default;
+
+		constexpr Vector3(Vector3&&) noexcept = default;
+		constexpr Vector3& operator=(Vector3&&) noexcept = default;
 
 		constexpr Vector3(const T& x_, const T& y_, const T& z_) noexcept;
 		constexpr Vector3(T&& x_, T&& y_, T&& z_) noexcept;
@@ -83,7 +89,6 @@ namespace mpml
 		constexpr Vector3<T>& operator/=(const T& scalar) noexcept;
 
 		[[nodiscard]] constexpr Vector3<T> operator-() const noexcept;
-		[[nodiscard]] constexpr bool operator!() const noexcept;
 		constexpr bool operator==(const Vector3<T>& vec) const noexcept;
 
 		// Class members
@@ -101,13 +106,13 @@ namespace mpml
 	};
 	// Common Types
 	template<typename T>
-	constexpr static Vector3<T> Xaxis3{ 1,0,0 };
+	inline constexpr Vector3<T> Xaxis3{ 1,0,0 };
 
 	template<typename T>
-	constexpr static Vector3<T> Yaxis3{ 0,1,0 };
+	inline constexpr Vector3<T> Yaxis3{ 0,1,0 };
 
 	template<typename T>
-	constexpr static Vector3<T> Zaxis3{ 0,0,1 };
+	inline constexpr Vector3<T> Zaxis3{ 0,0,1 };
 
 
 
@@ -310,13 +315,6 @@ namespace mpml
 	inline constexpr Vector3<T> Vector3<T>::operator-() const noexcept
 	{
 		return Vector3<T>{-x, -y};
-	}
-
-
-	template<typename T>
-	inline constexpr bool Vector3<T>::operator!() const noexcept
-	{
-		return (x == 0 && y == 0 && z == 0) ? true : false;
 	}
 
 	template<typename T>

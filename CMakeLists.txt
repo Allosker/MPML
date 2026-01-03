@@ -21,16 +21,18 @@ set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/")
 # Seek all files (recursively)
 file(GLOB_RECURSE INCLUDE_FILES CMAKE_CONFIGURE_DEPENDS
 	"${INCLUDE_DIR}/*.hpp"
-	"${INCLUDE_DIR}/*.h"
+	"${INCLUDE_DIR}/*.cpp"
 )
 
 
 # Add source and include to this project's executable.
 
-add_library(MPML INTERFACE)
+add_executable(MPML "${PROJECT_SOURCE_DIR}/include/mpml.cpp")
+
+#add_library(MPML INTERFACE)
 
 target_include_directories(MPML
-	INTERFACE
+	PRIVATE
 		
 		${INCLUDE_FILES}	
 
@@ -39,11 +41,4 @@ target_include_directories(MPML
 		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET MPML PROPERTY CXX_STANDARD 20)
-endif()
-
-# define the library
-
-target_compile_features(MPML INTERFACE cxx_std_20)
+target_compile_features(MPML PRIVATE cxx_std_20)

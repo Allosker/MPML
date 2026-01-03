@@ -5,7 +5,7 @@
 // Defines a utility class for angles as well as a bunch of conversions
 // ===================================================
 
-#include "utilities/numbers.hpp"
+#include "mpml/utilities/numbers.hpp"
 
 namespace mpml
 {
@@ -15,13 +15,13 @@ namespace mpml
 	{ 
 		static constexpr Angle fromDegrees(float degrees) noexcept
 		{
-			return degrees * constants::PI_F / 180.f;
+			return Angle{ degrees * constants::PI_F / 180.f };
 		}
 
 
 		static constexpr Angle fromRadians(float radians) noexcept
 		{
-			return radians;
+			return Angle{ radians };
 		}
 
 
@@ -38,8 +38,8 @@ namespace mpml
 
 	private:
 
-		constexpr Angle(float deg)
-			: angle{ deg }
+		explicit constexpr Angle(float rad)
+			: angle{ rad }
 		{
 		}
 

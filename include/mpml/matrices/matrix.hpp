@@ -8,9 +8,9 @@
 
 
 // -- Classes
-#include "matrices/matrix2.hpp"
-#include "matrices/matrix3.hpp"
-#include "matrices/matrix4.hpp"
+#include "mpml/matrices/matrix2.hpp"
+#include "mpml/matrices/matrix3.hpp"
+#include "mpml/matrices/matrix4.hpp"
 
 // -- Utilities
-#include "matrices/matrix_utility.hpp"
+#include "mpml/matrices/matrix_utility.hpp"

@@ -14,12 +14,11 @@
 
 // Dependencies
 #include <array>
-#include <cmath>
 #include <xutility>
 #include <stdexcept> // for: std::out_of_range()
 
-#include "utilities/types/angle.hpp"
-#include "Vector3.hpp"
+#include "mpml/utilities/types/angle.hpp"
+#include "mpml/vectors/Vector3.hpp"
 
 
 namespace mpml
@@ -39,6 +38,12 @@ namespace mpml
 		constexpr Vector4() noexcept;
 		// Performs a copy of values to all components
 		constexpr Vector4(const T& values) noexcept;
+
+		constexpr Vector4(const Vector4&) noexcept = default;
+		constexpr Vector4& operator=(const Vector4&) noexcept = default;
+
+		constexpr Vector4(Vector4&&) noexcept = default;
+		constexpr Vector4& operator=(Vector4&&) noexcept = default;
 
 		constexpr Vector4(const T& x_, const T& y_, const T& z_, const T& w_ = static_cast<T>(1)) noexcept;
 		constexpr Vector4(T&& x_, T&& y_, T&& z_, T&& w_) noexcept;
@@ -89,7 +94,6 @@ namespace mpml
 		constexpr Vector4<T>& operator/=(const T& scalar) noexcept;
 
 		[[nodiscard]] constexpr Vector4<T> operator-() const noexcept;
-		[[nodiscard]] constexpr bool operator!() const noexcept;
 		constexpr bool operator==(const Vector4<T>& vec) const noexcept;
 
 
@@ -108,16 +112,16 @@ namespace mpml
 	};
 	// Common Types
 	template<typename T>
-	constexpr static Vector4<T> Xaxis4{ 1,0,0,0 };
+	inline constexpr Vector4<T> Xaxis4{ 1,0,0,0 };
 
 	template<typename T>
-	constexpr static Vector4<T> Yaxis4{ 0,1,0,0 };
+	inline constexpr Vector4<T> Yaxis4{ 0,1,0,0 };
 
 	template<typename T>
-	constexpr static Vector4<T> Zaxis4{ 0,0,1,0 };
+	inline constexpr Vector4<T> Zaxis4{ 0,0,1,0 };
 
 	template<typename T>
-	constexpr static Vector4<T> Waxis4{ 0,0,0,1 };
+	inline constexpr Vector4<T> Waxis4{ 0,0,0,1 };
 
 
 
@@ -220,7 +224,7 @@ namespace mpml
 	template<typename T>
 	inline constexpr Vector4<T> Vector4<T>::reflect(const Vector4<T>& vec) const noexcept
 	{
-		return Vector4<T>{ *this - 2 * project(vec)};
+		return Vector4<T>{ *this - static_cast<T>(2) * project(vec)};
 	}
 
 	template<typename T>
@@ -327,13 +331,6 @@ namespace mpml
 	inline constexpr Vector4<T> Vector4<T>::operator-() const noexcept
 	{
 		return Vector4<T>{-x, -y};
-	}
-
-
-	template<typename T>
-	inline constexpr bool Vector4<T>::operator!() const noexcept
-	{
-		return (x == 0 && y == 0 && z == 0);
 	}
 
 	template<typename T>

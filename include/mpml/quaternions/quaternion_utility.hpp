@@ -5,12 +5,12 @@
 // Defines some overload for Quaternions as well as rotation utilities
 // ===================================================
 
-#include "quaternions/quaternion.hpp"
+#include "mpml/quaternions/quaternion.hpp"
 
-#include "matrices/matrix3.hpp"
-#include "matrices/matrix4.hpp"
+#include "mpml/matrices/matrix3.hpp"
+#include "mpml/matrices/matrix4.hpp"
 
-#include "utilities/types/angle.hpp"
+#include "mpml/utilities/types/angle.hpp"
 
 namespace mpml
 {
@@ -39,9 +39,9 @@ namespace mpml
 		Quaternion<T> rotation_q{ 0, axis };
 		rotation_q = rotation_q.rotate(angle);
 		
-		Quaternion<T> rotating_q{ 0, vector };
+		const Quaternion<T> rotating_q{ 0, vector };
 
-		Quaternion<T> rotated_q{ rotation_q * rotating_q * rotation_q.conjugate() };
+		const Quaternion<T> rotated_q{ rotation_q * rotating_q * rotation_q.conjugate() };
 
 
 		return rotated_q;
@@ -50,7 +50,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Vector3<T> rotation_as_vector(Angle angle, const Vector3<T>& vector, const Vector3<T>& axis) noexcept
 	{
-		Quaternion<T> rotated{ rotation_as_quaternion<T>(angle, vector, axis) };
+		const Quaternion<T> rotated{ rotation_as_quaternion<T>(angle, vector, axis) };
 
 		return Vector3<T>{ rotated.x, rotated.y, rotated.z };
 	}
