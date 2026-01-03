@@ -1,7 +1,7 @@
 ﻿# CMakeList.txt : CMake project for MPML, include source and define
 # project specific logic here.
 #
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.20)
 
 # Enable Hot Reload for MSVC compilers if supported.
 if (POLICY CMP0141)
@@ -11,34 +11,47 @@ endif()
 
 project ( 
 	MPML
-	VERSION 1.0.1
+	VERSION 1.0.11
 	LANGUAGES CXX
 )
 
-# Create paths to file folders
-set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/")
 
-# Seek all files (recursively)
-file(GLOB_RECURSE INCLUDE_FILES CMAKE_CONFIGURE_DEPENDS
-	"${INCLUDE_DIR}/*.hpp"
-	"${INCLUDE_DIR}/*.cpp"
-)
+# Make library
+
+add_library(MPML INTERFACE)
+
+add_library(MPML::MPML ALIAS MPML)
 
 
-# Add source and include to this project's executable.
-
-add_executable(MPML "${PROJECT_SOURCE_DIR}/include/mpml.cpp")
-
-#add_library(MPML INTERFACE)
 
 target_include_directories(MPML
-	PRIVATE
-		
-		${INCLUDE_FILES}	
+	INTERFACE
 
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 		
-		$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+		$<INSTALL_INTERFACE:include>
 )
 
-target_compile_features(MPML PRIVATE cxx_std_20)
+target_compile_features(MPML INTERFACE cxx_std_20)
+
+
+# Dowloading Rules
+
+include(GNUInstallDirs)
+
+
+install(
+	TARGETS MPML
+	EXPORT MPMLTargets
+)
+
+install(
+	DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+	DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(
+	EXPORT MPMLTargets
+	NAMESPACE MPML::
+	DESTINATION ${CMAKE_INSTAL_LIBDIR}/cmake/MPML
+)
