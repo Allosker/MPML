@@ -97,14 +97,14 @@ public:
 };
 // Common Types
 template<typename T>
-inline constexpr static Matrix2<T> Identity2
+inline constexpr Matrix2<T> Identity2
 {
 	T{1}, T{},
 	T{}, T{1}
 };
 
 template<typename T>
-inline constexpr static Matrix2<T> AntiDiagonal_Identity2
+inline constexpr Matrix2<T> AntiDiagonal_Identity2
 {
 	T{}, T{1},
 	T{1}, T{}

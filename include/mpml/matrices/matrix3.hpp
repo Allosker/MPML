@@ -103,7 +103,7 @@ namespace mpml
 	};
 	// Common Types
 	template<typename T>
-	constexpr static Matrix3<T> Identity3
+	inline constexpr static Matrix3<T> Identity3
 	{
 		T{1}, T{}, T{},
 		T{}, T{1}, T{},
@@ -111,7 +111,7 @@ namespace mpml
 	};
 
 	template<typename T>
-	constexpr static Matrix3<T> AntiDiagonal_Identity3
+	inline constexpr Matrix3<T> AntiDiagonal_Identity3
 	{
 		T{}, T{}, T{1},
 		T{}, T{1}, T{},
