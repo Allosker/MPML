@@ -39,8 +39,8 @@ public:
 
 
 	// Operations
-	[[nodiscard]] constexpr Quaternion<T>& dot(const Quaternion<T>& q) const noexcept;
-	[[nodiscard]] constexpr Quaternion<T>& cross(const Quaternion<T>& q) const noexcept;
+	[[nodiscard]] constexpr T dot(const Quaternion<T>& q) const noexcept;
+	[[nodiscard]] constexpr T cross(const Quaternion<T>& q) const noexcept;
 
 	[[nodiscard]] constexpr Quaternion<T> conjugate() const noexcept;
 	[[nodiscard]] constexpr T length() const noexcept;
@@ -154,15 +154,15 @@ constexpr inline Quaternion<T>& Quaternion<T>::operator=(Quaternion<T>&& q) noex
 
 // Operations
 template<typename T>
-inline constexpr Quaternion<T>& Quaternion<T>::dot(const Quaternion<T>& q) const noexcept
+inline constexpr T Quaternion<T>::dot(const Quaternion<T>& q) const noexcept
 {
-	return Quaternion<T>{ s * q.s + x * q.x + y * q.y + z * q.z };
+	return T{ s * q.s + x * q.x + y * q.y + z * q.z };
 }
 
 template<typename T>
-inline constexpr Quaternion<T>& Quaternion<T>::cross(const Quaternion<T>& q) const noexcept
+inline constexpr T Quaternion<T>::cross(const Quaternion<T>& q) const noexcept
 {
-	return Quaternion<T>{y* q.z - q.y * z + z * q.x - q.z * x + x * q.y - q.x * y};
+	return T{y* q.z - q.y * z + z * q.x - q.z * x + x * q.y - q.x * y};
 }
 
 template<typename T>

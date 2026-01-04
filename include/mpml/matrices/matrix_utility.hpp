@@ -36,36 +36,29 @@ namespace mpml
 		return new_mat;
 	}
 
-	template<typename T>
-	[[nodiscard]] constexpr Matrix4<T> perspective(const int width, const int height, const T& near, const T& far, const Angle& fov, bool right_handed=false)
+	template<typename T, typename U>
+	[[nodiscard]] constexpr Matrix4<T> perspective(const Angle& fov, const U width, const U height, const T& near, const T& far, bool right_handed = false)
 	{
-		if constexpr (near < 0 || far < near)
+		if (near < 0 || far < near)
 			throw std::runtime_error("ERROR::MATH::PERSPECTIVE_MATRIX::Far/Near planes is/are too low");
-		if constexpr (width == 0 || height == 0)
+		if (width == 0 || height == 0)
 			throw std::runtime_error("ERROR::MATH::DIVISION_BY_ZERO");
 
 
-		const T f{ 1 / (std::tan(fov.asRadians() / 2)) };
-		
-		const int a{ width / height };
+		const T ratio{ static_cast<T>(width) / static_cast<T>(height) };
 
+		const T t{ std::tan(fov.asRadians() / static_cast<T>(2)) };
 
-		if constexpr (!right_handed)
+		if (right_handed)
 			return Matrix4<T>
-			{
-				(f / a), 0, 0, 0,
-				0, f, 0, 0,
-				0, 0, (far / (far - near)), -((near * far) / (far - near)),
-				0, 0, 1, 0
-			};
+		{
+			static_cast<T>(1) / (ratio * t), 0, 0, 0,
+				0, static_cast<T>(1) / (t), 0, 0,
+				0, 0, -(far + near) / (far - near), -static_cast<T>(1),
+				0, 0, -(static_cast<T>(2) * far * near) / (far - near), static_cast<T>(1)
+		};
 		else
-			return Matrix4<T>
-			{
-				(f / a), 0, 0, 0,
-				0, f, 0, 0,
-				0, 0, ((far + near) / (near - far)), -((2 * far * near) / (near - far)),
-				0, 0, -1, 0
-			};
+			throw std::runtime_error("ERROR::LEFT_HANDED_PERSPECTIVE_MATRIX::Matrix not defined for now");
 	}
 
 	template<typename T>

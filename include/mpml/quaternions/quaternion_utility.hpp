@@ -20,18 +20,11 @@ namespace mpml
 	{
 		return Matrix3<T>
 		{
-			1 - 2*(q.y*q.y + q.z*q.z), 2*(q.x*q.y - q.a*q.z)    , 2*(q.x*q.z + q.a*q.y),
-			2*(q.x*q.y + q.a*q.z)	 , 1 - 2*(q.x*q.x + q.z*q.z), 2*(q.y*q.z - q.a*q.x),
-			2*(q.x*q.z - q.a*q.y)    , 2*(q.y*q.z + q.a*q.x)    , 1 - 2*(q.x*q.x + q.y*q.y)
+			1 - 2 * (q.y * q.y + q.z * q.z), 2 * (q.x * q.y - q.a * q.z), 2 * (q.x * q.z + q.a * q.y),
+			2 * (q.x * q.y + q.a * q.z), 1 - 2 * (q.x * q.x + q.z * q.z), 2 * (q.y * q.z - q.a * q.x),
+			2 * (q.x * q.z - q.a * q.y), 2 * (q.y * q.z + q.a * q.x), 1 - 2 * (q.x * q.x + q.y * q.y)
 		};
 	}
-
-	template<typename T>
-	[[nodiscard]] constexpr Matrix4<T> rotation_matrix(const Quaternion<T>& q) noexcept
-	{
-		return Matrix4<T>{ rotation_matrix<T>(q) };
-	}
-
 
 	template<typename T>
 	[[nodiscard]] constexpr Quaternion<T> rotation_as_quaternion(Angle angle, const Vector3<T>& vector, const Vector3<T>& axis) noexcept
