@@ -37,7 +37,7 @@ namespace mpml
 	}
 
 	template<typename T>
-	[[nodiscard]] constexpr Matrix4<T> perspective(const T& width, const T& height, const T& near, const T& far, const T& fov, bool right_handed=false)
+	[[nodiscard]] constexpr Matrix4<T> perspective(const int width, const int height, const T& near, const T& far, const Angle& fov, bool right_handed=false)
 	{
 		if constexpr (near < 0 || far < near)
 			throw std::runtime_error("ERROR::MATH::PERSPECTIVE_MATRIX::Far/Near planes is/are too low");
@@ -45,9 +45,9 @@ namespace mpml
 			throw std::runtime_error("ERROR::MATH::DIVISION_BY_ZERO");
 
 
-		const T f{ 1 / (std::tan(fov / 2)) };
+		const T f{ 1 / (std::tan(fov.asRadians() / 2)) };
 		
-		const T a{ width / height };
+		const int a{ width / height };
 
 
 		if constexpr (!right_handed)
