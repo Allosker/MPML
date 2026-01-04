@@ -77,7 +77,7 @@ namespace mpml
 
 		// Data related
 
-		[[nodiscard]] constexpr T* data_ptr() const noexcept;
+		[[nodiscard]] constexpr const T* data_ptr() const noexcept;
 
 		[[nodiscard]] constexpr T& operator[](size_t index);
 		[[nodiscard]] constexpr const T& operator[](size_t index) const;
@@ -262,7 +262,7 @@ namespace mpml
 
 	// Data related
 	template<typename T>
-	inline constexpr T* Vector4<T>::data_ptr() const noexcept
+	inline constexpr const T* Vector4<T>::data_ptr() const noexcept
 	{
 		return data.data();
 	}
