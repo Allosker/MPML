@@ -57,8 +57,8 @@ namespace mpml
 
 		// Operations
 
-		[[nodiscard]] constexpr T dot(const Vector4<T>& vec) noexcept;
-		[[nodiscard]] constexpr Vector4<T> cross(const Vector4<T>& vec) noexcept;
+		[[nodiscard]] constexpr T dot(const Vector4<T>& vec) const noexcept;
+		[[nodiscard]] constexpr Vector4<T> cross(const Vector4<T>& vec) const noexcept;
 
 		[[nodiscard]] constexpr T distance(const Vector4<T>& vec) const noexcept;
 		[[nodiscard]] constexpr T distance_squared(const Vector4<T>& vec) const noexcept;
@@ -181,13 +181,13 @@ namespace mpml
 
 	// Operations
 	template<typename T>
-	inline constexpr T Vector4<T>::dot(const Vector4<T>& vec) noexcept
+	inline constexpr T Vector4<T>::dot(const Vector4<T>& vec) const noexcept
 	{
 		return T{ x * vec.x + y * vec.y + z * vec.z };
 	}
 
 	template<typename T>
-	inline constexpr Vector4<T> Vector4<T>::cross(const Vector4<T>& vec) noexcept
+	inline constexpr Vector4<T> Vector4<T>::cross(const Vector4<T>& vec) const noexcept
 	{
 		return Vector4<T>{
 			y * vec.z - z * vec.y,
