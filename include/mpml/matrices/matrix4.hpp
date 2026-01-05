@@ -481,7 +481,7 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Vector<T>& Matrix4<T>::operator[](const size_t& index)
+	inline constexpr Vector4<T>& Matrix4<T>::operator[](const size_t& index)
 	{
 		switch (index)
 		{
