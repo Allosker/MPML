@@ -93,8 +93,8 @@ public:
 
 		struct
 		{
-			Vector2<T> row0;
-			Vector2<T> row1;
+			Vector2<T> col0;
+			Vector2<T> col1;
 		};
 		
 		std::array<T, 4> data{};
@@ -274,11 +274,11 @@ inline constexpr Vector2<T>& Matrix2<T>::operator[](const size_t& index)
 	switch (index)
 	{
 	case 0:
-		return row0;
+		return col0;
 		break;
 
 	case 1:
-		return row1;
+		return col1;
 		break;
 
 	default:
@@ -293,11 +293,11 @@ inline constexpr const Vector2<T>& Matrix2<T>::operator[](const size_t& index) c
 	switch (index)
 	{
 	case 0:
-		return row0;
+		return col0;
 		break;
 
 	case 1:
-		return row1;
+		return col1;
 		break;
 
 	default:

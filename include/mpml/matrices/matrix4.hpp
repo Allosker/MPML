@@ -111,10 +111,10 @@ namespace mpml
 
 			struct
 			{
-				Vector4<T> row0;
-				Vector4<T> row1;
-				Vector4<T> row2;
-				Vector4<T> row3;
+				Vector4<T> col0;
+				Vector4<T> col1;
+				Vector4<T> col2;
+				Vector4<T> col3;
 			};
 
 			std::array<T, 16> data{};
@@ -486,19 +486,19 @@ namespace mpml
 		switch (index)
 		{
 		case 0:
-			return row0;
+			return col0;
 			break;
 
 		case 1:
-			return row1;
+			return col1;
 			break;
 
 		case 2:
-			return row2;
+			return col2;
 			break;
 
 		case 3:
-			return row3;
+			return col3;
 			break;
 
 		default:
@@ -513,19 +513,19 @@ namespace mpml
 		switch (index)
 		{
 		case 0:
-			return row0;
+			return col0;
 			break;
 
 		case 1:
-			return row1;
+			return col1;
 			break;
 
 		case 2:
-			return row2;
+			return col2;
 			break;
 
 		case 3:
-			return row3;
+			return col3;
 			break;
 
 		default:
