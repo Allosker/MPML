@@ -3,6 +3,7 @@
 // Allosker - 2025
 // ===================================================
 // This file acts as the umbrella header for all matrices related files
+// Matrices are stored as Column-Major
 // (Vector class definitions & Utilities & Overloads)
 // ===================================================
 

@@ -9,6 +9,7 @@
 #include <array>
 #include <xutility>
 #include <optional>
+#include <stdexcept>
 
 #include "mpml/vectors/vector2.hpp"
 
@@ -61,8 +62,8 @@ public:
 
 	[[nodiscard]] constexpr const T* data_ptr() const noexcept;
 
-	[[nodiscard]] constexpr T& operator[](const size_t& index);
-	[[nodiscard]] constexpr const T& operator[](const size_t& index) const;
+	[[nodiscard]] constexpr Vector2<T>& operator[](const size_t& index);
+	[[nodiscard]] constexpr const Vector2<T>& operator[](const size_t& index) const;
 
 
 	// Overloads
@@ -88,6 +89,12 @@ public:
 		{ 
 			T a, b;
 			T c, d;
+		};
+
+		struct
+		{
+			Vector2<T> row0;
+			Vector2<T> row1;
 		};
 		
 		std::array<T, 4> data{};
@@ -262,15 +269,41 @@ inline constexpr const T* Matrix2<T>::data_ptr() const noexcept
 }
 
 template<typename T>
-inline constexpr T& Matrix2<T>::operator[](const size_t& index)
+inline constexpr Vector2<T>& Matrix2<T>::operator[](const size_t& index)
 {
-	return data.at(index);
+	switch (index)
+	{
+	case 0:
+		return row0;
+		break;
+
+	case 1:
+		return row1;
+		break;
+
+	default:
+		std::out_of_range("Index out of range");
+		break;
+	}
 }
 
 template<typename T>
-inline constexpr const T& Matrix2<T>::operator[](const size_t& index) const
+inline constexpr const Vector2<T>& Matrix2<T>::operator[](const size_t& index) const
 {
-	return data.at(index);
+	switch (index)
+	{
+	case 0:
+		return row0;
+		break;
+
+	case 1:
+		return row1;
+		break;
+
+	default:
+		std::out_of_range("Index out of range");
+		break;
+	}
 }
 
 

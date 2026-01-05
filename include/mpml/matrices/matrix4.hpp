@@ -2,7 +2,7 @@
 // MIT
 // Allosker - 2025
 // ===================================================
-// Defines a 2D matrix and all its function/math related operations.
+// Defines a 2D 4x4 matrix and all its function/math related operations.
 // ===================================================
 
 
@@ -78,8 +78,8 @@ namespace mpml
 
 		[[nodiscard]] constexpr const T* data_ptr() const noexcept;
 
-		[[nodiscard]] constexpr T& operator[](const size_t& index);
-		[[nodiscard]] constexpr const T& operator[](const size_t& index) const;
+		[[nodiscard]] constexpr Vector4<T>& operator[](const size_t& index);
+		[[nodiscard]] constexpr const Vector4<T>& operator[](const size_t& index) const;
 
 
 		// Overloads
@@ -107,6 +107,14 @@ namespace mpml
 				T e, f, g, h;
 				T i, j, k, l;
 				T m, n, o, p;
+			};
+
+			struct
+			{
+				Vector4<T> row0;
+				Vector4<T> row1;
+				Vector4<T> row2;
+				Vector4<T> row3;
 			};
 
 			std::array<T, 16> data{};
@@ -473,15 +481,57 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr T& Matrix4<T>::operator[](const size_t& index)
+	inline constexpr Vector<T>& Matrix4<T>::operator[](const size_t& index)
 	{
-		return data.at(index);
+		switch (index)
+		{
+		case 0:
+			return row0;
+			break;
+
+		case 1:
+			return row1;
+			break;
+
+		case 2:
+			return row2;
+			break;
+
+		case 3:
+			return row3;
+			break;
+
+		default:
+			std::out_of_range("Index out of range");
+			break;
+		}
 	}
 
 	template<typename T>
-	inline constexpr const T& Matrix4<T>::operator[](const size_t& index) const
+	inline constexpr const Vector4<T>& Matrix4<T>::operator[](const size_t& index) const
 	{
-		return data.at(index);
+		switch (index)
+		{
+		case 0:
+			return row0;
+			break;
+
+		case 1:
+			return row1;
+			break;
+
+		case 2:
+			return row2;
+			break;
+
+		case 3:
+			return row3;
+			break;
+
+		default:
+			std::out_of_range("Index out of range");
+			break;
+		}
 	}
 
 

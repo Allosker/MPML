@@ -66,8 +66,8 @@ namespace mpml
 
 		[[nodiscard]] constexpr const T* data_ptr() const noexcept;
 
-		[[nodiscard]] constexpr T& operator[](const size_t& index);
-		[[nodiscard]] constexpr const T& operator[](const size_t& index) const;
+		[[nodiscard]] constexpr Vector3<T>& operator[](const size_t& index);
+		[[nodiscard]] constexpr const Vector3<T>& operator[](const size_t& index) const;
 
 
 		// Overloads
@@ -94,6 +94,13 @@ namespace mpml
 				T a, b, c;
 				T d, e, f;
 				T g, h, i;
+			};
+
+			struct
+			{
+				Vector3<T> row0;
+				Vector3<T> row1;
+				Vector3<T> row2;
 			};
 
 			std::array<T, 9> data{};
@@ -353,15 +360,49 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr T& Matrix3<T>::operator[](const size_t& index)
+	inline constexpr Vector3<T>& Matrix3<T>::operator[](const size_t& index)
 	{
-		return data.at(index);
+		switch (index)
+		{
+		case 0:
+			return row0;
+			break;
+
+		case 1:
+			return row1;
+			break;
+
+		case 2:
+			return row2;
+			break;
+
+		default:
+			std::out_of_range("Index out of range");
+			break;
+		}
 	}
 
 	template<typename T>
-	inline constexpr const T& Matrix3<T>::operator[](const size_t& index) const
+	inline constexpr const Vector3<T>& Matrix3<T>::operator[](const size_t& index) const
 	{
-		return data.at(index);
+		switch (index)
+		{
+		case 0:
+			return row0;
+			break;
+
+		case 1:
+			return row1;
+			break;
+
+		case 2:
+			return row2;
+			break;
+
+		default:
+			std::out_of_range("Index out of range");
+			break;
+		}
 	}
 
 
