@@ -35,6 +35,16 @@ namespace mpml
 			return angle;
 		}
 
+		constexpr float toRadians(float degrees) const noexcept
+		{
+			return degrees * constants::PI_F / 180.f;
+		}
+
+		constexpr float toDegrees(float radians) const noexcept
+		{
+			return radians * 180.f / constants::PI_F;
+		}
+
 
 	private:
 
