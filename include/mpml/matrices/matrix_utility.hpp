@@ -70,10 +70,10 @@ namespace mpml
 
 		return Matrix4<T>
 		{
-			s.x, s.y, s.z, -(s.dot(eye)),
-			u.x, u.y, u.z, -(u.dot(eye)),
-			-f.x, -f.y, -f.z, f.dot(eye),
-			0, 0, 0, 1
+			s.x, u.x, -f.x, 0,
+				s.y, u.y, -f.y, 0,
+				s.z, u.z, -f.z, 0,
+				-(s.dot(eye)), -(u.dot(eye)), f.dot(eye), 1
 		};
 	}
 
@@ -82,10 +82,10 @@ namespace mpml
 	{
 		return Matrix4<T>
 		{
-			camSide.x, camSide.y, camSide.z, -(camSide.dot(camPos)),
-			camUp.x, camUp.y, camUp.z, -(camUp.dot(camPos)),
-			-camForward.x, -camForward.y, -camForward.z, camForward.dot(camPos),
-			0, 0, 0, 1
+			camSide.x, camUp.x, -camForward.x, 0,
+				camSide.y, camUp.y, -camForward.y, 0,
+				camSide.z, camUp.z, -camForward.z, 0,
+				-(camSide.dot(camPos)), -(camUp.dot(camPos)), camForward.dot(camPos), 1
 		};
 	}
 
