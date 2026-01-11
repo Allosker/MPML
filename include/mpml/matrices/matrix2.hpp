@@ -60,6 +60,7 @@ public:
 
 	// Data related
 
+	[[nodiscard]] constexpr T* data_ptr() noexcept;
 	[[nodiscard]] constexpr const T* data_ptr() const noexcept;
 
 	[[nodiscard]] constexpr Vector2<T>& operator[](const size_t& index);
@@ -262,6 +263,12 @@ inline constexpr Matrix2<T> Matrix2<T>::pow(size_t pm) const noexcept
 
 
 // Data related
+template<typename T>
+inline constexpr T* Matrix2<T>::data_ptr() noexcept
+{
+	return data.data();
+}
+
 template<typename T>
 inline constexpr const T* Matrix2<T>::data_ptr() const noexcept
 {
