@@ -98,7 +98,7 @@ namespace mpml
 		{
 			struct { T x, y, z; };
 			struct { T r, g, b; };
-			struct { T u, v, h; };
+			struct { T h, s, v; };
 
 			std::array<T, 3> data;
 		};
