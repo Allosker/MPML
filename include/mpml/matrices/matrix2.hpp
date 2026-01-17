@@ -250,7 +250,7 @@ template<typename T>
 inline constexpr Matrix2<T> Matrix2<T>::pow(size_t pm) const noexcept
 {
 	if (pm == 0)
-		return Identity2;
+		return Identity2<T>;
 
 	Matrix2<T> mat{ *this };
 

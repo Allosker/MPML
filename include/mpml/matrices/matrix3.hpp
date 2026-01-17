@@ -342,7 +342,7 @@ namespace mpml
 	inline constexpr Matrix3<T> Matrix3<T>::pow(size_t pm) const noexcept
 	{
 		if (pm == 0)
-			return Identity3;
+			return Identity3<T>;
 
 		Matrix3<T> mat{ *this };
 
