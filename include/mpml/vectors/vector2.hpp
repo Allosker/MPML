@@ -12,7 +12,8 @@
 // Dependencies
 #include <array>
 #include <cmath>
-#include <xutility>
+#include <utility>
+#include <algorithm>
 #include <stdexcept> // for: std::out_of_range()
 
 #include "mpml/utilities/types/angle.hpp"
