@@ -7,7 +7,8 @@
 
 
 #include <array>
-#include <xutility>
+#include <utility>
+#include <algorithm>
 #include <optional>
 #include <stdexcept>
 
@@ -102,22 +103,22 @@ public:
 	};
 
 
-};
-// Common Types
-template<typename T>
-inline constexpr Matrix2<T> Identity2
-{
-	T{1}, T{},
-	T{}, T{1}
-};
+// Common types
 
-template<typename T>
-inline constexpr Matrix2<T> AntiDiagonal_Identity2
-{
-	T{}, T{1},
-	T{1}, T{}
-};
+	static constexpr Matrix2<T> Identity
+	{
+		T{1}, T{},
+		T{}, T{1}
+	};
 
+	static constexpr Matrix2<T> AntiDiagonal_Identity
+	{
+		T{}, T{1},
+		T{1}, T{}
+	};
+
+
+};
 
 
 // Class definition
@@ -249,7 +250,7 @@ template<typename T>
 inline constexpr Matrix2<T> Matrix2<T>::pow(size_t pm) const noexcept
 {
 	if (pm == 0)
-		return Identity2;
+		return Matrix2<T>::Identity;
 
 	Matrix2<T> mat{ *this };
 

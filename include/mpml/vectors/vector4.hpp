@@ -14,11 +14,12 @@
 
 // Dependencies
 #include <array>
-#include <xutility>
+#include <utility>
+#include <algorithm>
 #include <stdexcept> // for: std::out_of_range()
 
 #include "mpml/utilities/types/angle.hpp"
-#include "mpml/vectors/Vector3.hpp"
+#include "mpml/vectors/vector3.hpp"
 
 
 namespace mpml

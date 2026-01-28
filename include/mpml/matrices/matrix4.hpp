@@ -7,7 +7,8 @@
 
 
 #include <array>
-#include <xutility>
+#include <utility>
+#include <algorithm>
 #include <optional>
 
 #include "mpml/vectors/vector3.hpp"
@@ -122,26 +123,26 @@ namespace mpml
 		};
 
 
-	};
 	// Common Types
-	template<typename T>
-	inline constexpr Matrix4<T> Identity4
-	{
-		T{1}, T{}, T{}, T{},
-		T{}, T{1}, T{}, T{},
-		T{}, T{}, T{1}, T{},
-		T{}, T{}, T{}, T{1}
-	};
 
-	template<typename T>
-	inline constexpr Matrix4<T> AntiDiagonal_Identity4
-	{
-		T{}, T{}, T{}, T{1},
-		T{}, T{}, T{1}, T{},
-		T{}, T{1}, T{}, T{},
-		T{1}, T{}, T{}, T{}
-	};
+		static constexpr Matrix4<T> Identity
+		{
+			T{1}, T{}, T{}, T{},
+			T{}, T{1}, T{}, T{},
+			T{}, T{}, T{1}, T{},
+			T{}, T{}, T{}, T{1}
+		};
 
+		static constexpr Matrix4<T> AntiDiagonal_Identity
+		{
+			T{}, T{}, T{}, T{1},
+			T{}, T{}, T{1}, T{},
+			T{}, T{1}, T{}, T{},
+			T{1}, T{}, T{}, T{}
+		};
+
+
+	};
 
 
 	// Class definition
@@ -461,7 +462,7 @@ namespace mpml
 	inline constexpr Matrix4<T> Matrix4<T>::pow(size_t pm) const noexcept
 	{
 		if (pm == 0)
-			return Identity4;
+			return Identity4<T>;
 
 		Matrix4<T> mat{ *this };
 

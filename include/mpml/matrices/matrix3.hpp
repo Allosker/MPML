@@ -7,7 +7,8 @@
 
 
 #include <array>
-#include <xutility>
+#include <utility>
+#include <algorithm>
 #include <optional>
 
 #include "mpml/vectors/vector3.hpp"
@@ -109,24 +110,24 @@ namespace mpml
 		};
 
 
-	};
 	// Common Types
-	template<typename T>
-	inline constexpr static Matrix3<T> Identity3
-	{
-		T{1}, T{}, T{},
-		T{}, T{1}, T{},
-		T{}, T{}, T{1}
-	};
+	
+		static constexpr static Matrix3<T> Identity
+		{
+			T{1}, T{}, T{},
+			T{}, T{1}, T{},
+			T{}, T{}, T{1}
+		};
 
-	template<typename T>
-	inline constexpr Matrix3<T> AntiDiagonal_Identity3
-	{
-		T{}, T{}, T{1},
-		T{}, T{1}, T{},
-		T{1}, T{}, T{}
-	};
+		static constexpr Matrix3<T> AntiDiagonal_Identity
+		{
+			T{}, T{}, T{1},
+			T{}, T{1}, T{},
+			T{1}, T{}, T{}
+		};
 
+
+	};
 
 
 	// Class definition
@@ -341,7 +342,7 @@ namespace mpml
 	inline constexpr Matrix3<T> Matrix3<T>::pow(size_t pm) const noexcept
 	{
 		if (pm == 0)
-			return Identity3;
+			return Matrix3<T>::Identity;
 
 		Matrix3<T> mat{ *this };
 
