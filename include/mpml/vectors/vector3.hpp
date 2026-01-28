@@ -40,14 +40,14 @@ namespace mpml
 		constexpr Vector3(const Vector3&) noexcept = default;
 		constexpr Vector3& operator=(const Vector3&) noexcept = default;
 
-		constexpr Vector3(Vector3&&) noexcept = default;
-		constexpr Vector3& operator=(Vector3&&) noexcept = default;
-
 		constexpr Vector3(const T& x_, const T& y_, const T& z_) noexcept;
 		constexpr Vector3(T&& x_, T&& y_, T&& z_) noexcept;
 
 		constexpr Vector3(const Vector2<T>& vec2, const T& scalar) noexcept;
 		constexpr Vector3(Vector2<T>&& vec2, T&& scalar) noexcept;
+
+		template<typename U>
+		constexpr Vector3(const Vector3<U>& vec) noexcept;
 
 
 		// Operations
@@ -68,6 +68,8 @@ namespace mpml
 		[[nodiscard]] constexpr T length_squared() const noexcept;
 
 		[[nodiscard]] constexpr Vector3<T> normal() const noexcept;
+
+		[[nodiscard]] constexpr T det(const Vector3& vec) const noexcept;
 
 
 		// Data related
@@ -90,7 +92,13 @@ namespace mpml
 		constexpr Vector3<T>& operator/=(const T& scalar) noexcept;
 
 		[[nodiscard]] constexpr Vector3<T> operator-() const noexcept;
-		constexpr bool operator==(const Vector3<T>& vec) const noexcept;
+
+		[[nodiscard]] constexpr bool operator<(const Vector3<T>& vec) const noexcept;
+		[[nodiscard]] constexpr bool operator>(const Vector3<T>& vec) const noexcept;
+		[[nodiscard]] constexpr bool operator<=(const Vector3<T>& vec) const noexcept;
+		[[nodiscard]] constexpr bool operator>=(const Vector3<T>& vec) const noexcept;
+
+		[[nodiscard]] constexpr bool operator==(const Vector3<T>& vec) const noexcept;
 
 		// Class members
 
@@ -159,7 +167,12 @@ namespace mpml
 	{
 	}
 
-
+	template<typename T>
+	template<typename U>
+	inline constexpr Vector3<T>::Vector3(const Vector3<U>& vec) noexcept
+		: x{static_cast<U>(vec.x)}, y{ static_cast<U>(vec.y) }, z{ static_cast<U>(vec.z) }
+	{
+	}
 
 
 	// Operations
@@ -243,6 +256,12 @@ namespace mpml
 		return Vector3<T>{ x / len, y / len, z / len};
 	}
 
+	template<typename T>
+	inline constexpr T Vector3<T>::det(const Vector3<T>& vec) const noexcept
+	{
+		return cross(vec).dot({ {}, {}, {} };
+	}
+
 
 	// Data related
 	template<typename T>
@@ -321,6 +340,30 @@ namespace mpml
 	inline constexpr Vector3<T> Vector3<T>::operator-() const noexcept
 	{
 		return Vector3<T>{-x, -y};
+	}
+
+	template<typename T>
+	inline constexpr bool Vector3<T>::operator<(const Vector3<T>& vec) const noexcept
+	{
+		return (x < vec.x && y < vec.y && z < vec.z);
+	}
+
+	template<typename T>
+	inline constexpr bool Vector3<T>::operator>(const Vector3<T>& vec) const noexcept
+	{
+		return (x > vec.x && y > vec.y && z > vec.z);
+	}
+
+	template<typename T>
+	inline constexpr bool Vector3<T>::operator<=(const Vector3<T>& vec) const noexcept
+	{
+		return *this < vec || *this == vec;
+	}
+
+	template<typename T>
+	inline constexpr bool Vector3<T>::operator>=(const Vector3<T>& vec) const noexcept
+	{
+		return *this > vec || *this == vec;
 	}
 
 	template<typename T>

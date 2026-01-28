@@ -15,7 +15,6 @@ project (
 	LANGUAGES CXX
 )
 
-
 # Make library
 
 add_library(MPML INTERFACE)
@@ -35,11 +34,14 @@ target_include_directories(MPML
 target_compile_features(MPML INTERFACE cxx_std_20)
 
 
+add_executable(app "${CMAKE_SOURCE_DIR}/mpml.cpp")
+target_compile_features(app PRIVATE cxx_std_20)
+
 # Dowloading Rules
 
 include(GNUInstallDirs)
 
-
+ 
 install(
 	TARGETS MPML
 	EXPORT MPMLTargets

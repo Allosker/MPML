@@ -24,7 +24,6 @@
 namespace mpml
 {
 
-
 	template<typename T>
 	class Vector3;
 
@@ -42,9 +41,6 @@ namespace mpml
 		constexpr Vector4(const Vector4&) noexcept = default;
 		constexpr Vector4& operator=(const Vector4&) noexcept = default;
 
-		constexpr Vector4(Vector4&&) noexcept = default;
-		constexpr Vector4& operator=(Vector4&&) noexcept = default;
-
 		constexpr Vector4(const T& x_, const T& y_, const T& z_, const T& w_ = static_cast<T>(1)) noexcept;
 		constexpr Vector4(T&& x_, T&& y_, T&& z_, T&& w_) noexcept;
 
@@ -53,6 +49,9 @@ namespace mpml
 
 		constexpr Vector4(const Vector3<T>& vec3, const T& scalar = static_cast<T>(1)) noexcept;
 		constexpr Vector4(Vector3<T>&& vec3, T&& scalar) noexcept;
+
+		template<typename U>
+		constexpr Vector4(const Vector4<U>& vec) noexcept;
 
 
 		// Operations
@@ -95,7 +94,8 @@ namespace mpml
 		constexpr Vector4<T>& operator/=(const T& scalar) noexcept;
 
 		[[nodiscard]] constexpr Vector4<T> operator-() const noexcept;
-		constexpr bool operator==(const Vector4<T>& vec) const noexcept;
+
+		[[nodiscard]] constexpr bool operator==(const Vector4<T>& vec) const noexcept;
 
 
 	// Class members
@@ -176,6 +176,13 @@ namespace mpml
 	template<typename T>
 	inline constexpr Vector4<T>::Vector4(Vector3<T>&& vec3, T&& scalar) noexcept
 		: data{ std::move(vec3.x), std::move(vec3.y), std::move(vec3.z), std::move(scalar) }
+	{
+	}
+
+	template<typename T>
+	template<typename U>
+	inline constexpr mpml::Vector4<T>::Vector4(const Vector4<U>& vec) noexcept
+		: x{static_cast<U>(vec.x)}, y{ static_cast<U>(vec.y) }, z{ static_cast<U>(vec.z) }, w{ static_cast<U>(vec.w) }
 	{
 	}
 

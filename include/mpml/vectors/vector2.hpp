@@ -37,13 +37,11 @@ namespace mpml
 		constexpr Vector2(const Vector2&) noexcept = default;
 		constexpr Vector2& operator=(const Vector2&) noexcept = default;
 
-		constexpr Vector2(Vector2&&) noexcept = default;
-		constexpr Vector2& operator=(Vector2&&) noexcept = default;
-
 		constexpr Vector2(const T& x_, const T& y_) noexcept;
 		constexpr Vector2(T&& x_, T&& y_) noexcept;
 
-
+		template<typename U>
+		constexpr Vector2(const Vector2<U>& vec) noexcept;
 
 
 		~Vector2() = default;
@@ -70,7 +68,7 @@ namespace mpml
 
 		[[nodiscard]] constexpr Vector2<T> normal() const noexcept;
 
-
+		[[nodiscard]] constexpr T det(const Vector2& vec) const noexcept;
 
 
 		// Data related
@@ -93,7 +91,13 @@ namespace mpml
 		constexpr Vector2<T>& operator/=(const T& scalar) noexcept;
 
 		[[nodiscard]] constexpr Vector2<T> operator-() const noexcept;
-		constexpr bool operator==(const Vector2<T>& vec) const noexcept;
+
+		[[nodiscard]] constexpr bool operator<(const Vector2<T>& vec) const noexcept;
+		[[nodiscard]] constexpr bool operator>(const Vector2<T>& vec) const noexcept;
+		[[nodiscard]] constexpr bool operator<=(const Vector2<T>& vec) const noexcept;
+		[[nodiscard]] constexpr bool operator>=(const Vector2<T>& vec) const noexcept;
+
+		[[nodiscard]] constexpr bool operator==(const Vector2<T>& vec) const noexcept;
 
 	
 	// Class members
@@ -143,6 +147,13 @@ namespace mpml
 	template<typename T>
 	inline constexpr Vector2<T>::Vector2(T&& x_, T&& y_) noexcept
 		: data{ std::move(x_), std::move(y_) }
+	{
+	}
+
+	template<typename T>
+	template<typename U>
+	inline constexpr Vector2<T>::Vector2(const Vector2<U>& vec) noexcept
+		: x{static_cast<U>(vec.x)}, y{static_cast<U>(vec.y)}
 	{
 	}
 
@@ -229,6 +240,12 @@ namespace mpml
 		return Vector2<T>{x / len, y / len};
 	}
 
+	template<typename T>
+	inline constexpr T Vector2<T>::det(const Vector2<T>& vec) const noexcept
+	{
+		return x * vec.y - y * vec.x;
+	}
+
 
 	// Data related
 	template<typename T>
@@ -311,6 +328,30 @@ namespace mpml
 	}
 
 	template<typename T>
+	inline constexpr bool Vector2<T>::operator<(const Vector2<T>& vec) const noexcept
+	{
+		return (x < vec.x && y < vec.y);
+	}
+
+	template<typename T>
+	inline constexpr bool Vector2<T>::operator>(const Vector2<T>& vec) const noexcept
+	{
+		return (x > vec.x && y > vec.y);
+	}
+
+	template<typename T>
+	inline constexpr bool Vector2<T>::operator<=(const Vector2<T>& vec) const noexcept
+	{
+		return *this < vec || *this == vec;
+	}
+
+	template<typename T>
+	inline constexpr bool Vector2<T>::operator>=(const Vector2<T>& vec) const noexcept
+	{
+		return *this > vec || *this == vec;
+	}
+
+	template<typename T>
 	inline constexpr bool Vector2<T>::operator==(const Vector2<T>& vec) const noexcept
 	{
 		return (x == vec.x && y == vec.y);
@@ -380,6 +421,6 @@ namespace mpml
 		return Vector2<T>{ k / a.x , k / a.y };
 	}
 
-	
+
 
 } // mpml
