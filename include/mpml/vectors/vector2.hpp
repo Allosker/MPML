@@ -39,7 +39,6 @@ namespace mpml
 		constexpr Vector2& operator=(const Vector2&) noexcept = default;
 
 		constexpr Vector2(const T& x_, const T& y_) noexcept;
-		constexpr Vector2(T&& x_, T&& y_) noexcept;
 
 		template<typename U>
 		constexpr Vector2(const Vector2<U>& vec) noexcept;
@@ -146,15 +145,9 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Vector2<T>::Vector2(T&& x_, T&& y_) noexcept
-		: data{ std::move(x_), std::move(y_) }
-	{
-	}
-
-	template<typename T>
 	template<typename U>
 	inline constexpr Vector2<T>::Vector2(const Vector2<U>& vec) noexcept
-		: x{static_cast<U>(vec.x)}, y{static_cast<U>(vec.y)}
+		: x{ static_cast<T>(vec.x)}, y{ static_cast<T>(vec.y)}
 	{
 	}
 

@@ -27,21 +27,20 @@ namespace mpml
 		// Initialization
 
 		constexpr Matrix3(const Matrix3<T>& matrix) noexcept;
-		constexpr Matrix3(Matrix3<T>&& matrix) noexcept;
-
 		constexpr Matrix3<T>& operator=(const Matrix3<T>& matrix) noexcept;
-		constexpr Matrix3<T>& operator=(Matrix3<T>&& matrix) noexcept;
 
 		constexpr Matrix3(const Vector3<T>& vec1, const Vector3<T>& vec2, const Vector3<T>& vec3) noexcept;
 
 		constexpr Matrix3(const std::array<T, 9>& elems) noexcept;
-		constexpr Matrix3(std::array<T, 9>&& elems) noexcept;
 
 		constexpr Matrix3(
 			const T& a = {}, const T& b = {}, const T& c = {},
 			const T& d = {}, const T& e = {}, const T& f = {},
 			const T& g = {}, const T& h = {}, const T& i = {}
 		) noexcept;
+
+		template<typename U> 
+		constexpr Matrix3(const Matrix3<U>& mat) noexcept;
 
 
 		~Matrix3() = default;
@@ -141,12 +140,6 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Matrix3<T>::Matrix3(Matrix3<T>&& matrix) noexcept
-		: data{ std::move(matrix.data) }
-	{
-	}
-
-	template<typename T>
 	inline constexpr Matrix3<T>& Matrix3<T>::operator=(const Matrix3<T>& matrix) noexcept
 	{
 		if (this == &matrix)
@@ -156,18 +149,6 @@ namespace mpml
 
 		return *this;
 	}
-
-	template<typename T>
-	inline constexpr Matrix3<T>& Matrix3<T>::operator=(Matrix3<T>&& matrix) noexcept
-	{
-		if (this == &matrix)
-			return *this;
-
-		data = std::move(matrix.data);
-
-		return *this;
-	}
-
 
 	template<typename T>
 	inline constexpr Matrix3<T>::Matrix3(const Vector3<T>& vec1, const Vector3<T>& vec2, const Vector3<T>& vec3) noexcept
@@ -185,18 +166,19 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Matrix3<T>::Matrix3(std::array<T, 9>&& elems) noexcept
-		: data{ std::move(elems) }
-	{
-	}
-
-	template<typename T>
 	inline constexpr Matrix3<T>::Matrix3(const T& a, const T& b, const T& c, const T& d, const T& e, const T& f, const T& g, const T& h, const T& i) noexcept
 	{
 		data = { a, b, c,
 				 d, e, f,
 				 g, h, i
 		};
+	}
+
+	template<typename T>
+	template<typename U>
+	inline constexpr Matrix3<T>::Matrix3(const Matrix3<U>& mat) noexcept
+	{
+		std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const T& x) { return static_cast<T>(x) });
 	}
 
 

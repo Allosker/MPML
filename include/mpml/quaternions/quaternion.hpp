@@ -26,16 +26,15 @@ public:
 	constexpr Quaternion() noexcept;
 
 	constexpr Quaternion(const T& s, const T& x, const T& y, const T& z) noexcept;
-	constexpr Quaternion(T&& s, T&& x, T&& y, T&& z) noexcept;
 
 	constexpr Quaternion(const T& s, const Vector3<T>& v) noexcept;
-	constexpr Quaternion(T&& s, Vector3<T>&& v) noexcept;
 
 	constexpr Quaternion(const Quaternion<T>& q) noexcept;
-	constexpr Quaternion(Quaternion<T>&& q) noexcept;
 
 	constexpr Quaternion<T>& operator=(const Quaternion<T>& q) noexcept;
-	constexpr Quaternion<T>& operator=(Quaternion<T>&& q) noexcept;
+
+	template<typename U>
+	constexpr Quaternion(const Quaternion<U>& q) noexcept;
 
 
 	// Operations
@@ -98,20 +97,8 @@ constexpr inline Quaternion<T>::Quaternion(const T& s, const T& x, const T& y, c
 }
 
 template<typename T>
-constexpr inline Quaternion<T>::Quaternion(T&& s, T&& x, T&& y, T&& z) noexcept
-	: data{ std::move(s), std::move(x), std::move(y), std::move(z)}
-{
-}
-
-template<typename T>
 inline constexpr Quaternion<T>::Quaternion(const T& s, const Vector3<T>& v) noexcept
 	: data{s, v.x, v.y, v.z}
-{
-}
-
-template<typename T>
-inline constexpr Quaternion<T>::Quaternion(T&& s, Vector3<T>&& v) noexcept
-	: data{ std::move(s), std::move(v.x), std::move(v.y), std::move(v.z) }
 {
 }
 
@@ -121,13 +108,6 @@ constexpr inline Quaternion<T>::Quaternion(const Quaternion<T>& q) noexcept
 	: data{q.s, q.x, q.y, q.z}
 {
 }
-
-template<typename T>
-constexpr inline Quaternion<T>::Quaternion(Quaternion<T>&& q) noexcept
-	: data{ std::move(q.s), std::move(q.x), std::move(q.y), std::move(q.z)}
-{
-}
-
 
 template<typename T>
 constexpr inline Quaternion<T>& Quaternion<T>::operator=(const Quaternion<T>& q) noexcept
@@ -141,14 +121,10 @@ constexpr inline Quaternion<T>& Quaternion<T>::operator=(const Quaternion<T>& q)
 }
 
 template<typename T>
-constexpr inline Quaternion<T>& Quaternion<T>::operator=(Quaternion<T>&& q) noexcept
+template<typename U>
+constexpr Quaternion<T>::Quaternion(const Quaternion<U>& q) noexcept
+	: data{static_cast<T>(q.s), static_cast<T>(q.x), static_cast<T>(q.y), static_cast<T>(q.z) }
 {
-	if (this == &q)
-		return *this;
-
-	data = std::move(q.data);
-
-	return *this;
 }
 
 

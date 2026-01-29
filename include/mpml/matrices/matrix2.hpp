@@ -27,18 +27,16 @@ public:
 	// Initialization
 
 	constexpr Matrix2(const Matrix2<T>& matrix) noexcept;
-	constexpr Matrix2(Matrix2<T>&& matrix) noexcept;
-
 	constexpr Matrix2<T>& operator=(const Matrix2<T>& matrix) noexcept;
-	constexpr Matrix2<T>& operator=(Matrix2<T>&& matrix) noexcept;
+
+	constexpr Matrix2(const std::array<T, 4>& elems) noexcept;
 
 	constexpr Matrix2(const Vector2<T>& vec1, const Vector2<T>& vec2) noexcept;
 
-	constexpr Matrix2(const std::array<T, 4>& elems) noexcept;
-	constexpr Matrix2(std::array<T, 4>&& elems) noexcept;
-
 	constexpr Matrix2(const T& a = {}, const T& b = {}, const T& c = {}, const T& d = {}) noexcept;
 
+	template<typename U>
+	constexpr Matrix2(const Matrix2<U>& mat) noexcept;
 
 	~Matrix2() = default;
 
@@ -132,29 +130,12 @@ inline constexpr Matrix2<T>::Matrix2(const Matrix2<T>& matrix) noexcept
 }
 
 template<typename T>
-inline constexpr Matrix2<T>::Matrix2(Matrix2<T>&& matrix) noexcept
-	: data{ std::move(matrix.data) }
-{
-}
-
-template<typename T>
 inline constexpr Matrix2<T>& Matrix2<T>::operator=(const Matrix2<T>& matrix) noexcept
 {
 	if (this == &matrix)
 		return *this;
 	
 	data = matrix.data;
-
-	return *this;
-}
-
-template<typename T>
-inline constexpr Matrix2<T>& Matrix2<T>::operator=(Matrix2<T>&& matrix) noexcept
-{
-	if (this == &matrix)
-		return *this;
-
-	data = std::move(matrix.data);
 
 	return *this;
 }
@@ -174,16 +155,17 @@ constexpr Matrix2<T>::Matrix2(const std::array<T, 4>& elems) noexcept
 }
 
 template<typename T>
-constexpr Matrix2<T>::Matrix2(std::array<T, 4>&& elems) noexcept
-	: data{ std::move(elems) }
-{
-}
-
-template<typename T>
 inline constexpr Matrix2<T>::Matrix2(const T& a, const T& b, const T& c, const T& d) noexcept
 {
 	data = { a, b, 
 			c, d };
+}
+
+template<typename T>
+template<typename U>
+inline constexpr Matrix2<T>::Matrix2(const Matrix2<U>& mat) noexcept
+{
+	std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const T& x){ return static_cast<T>(x) });
 }
 
 

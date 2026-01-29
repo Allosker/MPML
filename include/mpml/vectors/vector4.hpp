@@ -43,13 +43,10 @@ namespace mpml
 		constexpr Vector4& operator=(const Vector4&) noexcept = default;
 
 		constexpr Vector4(const T& x_, const T& y_, const T& z_, const T& w_ = static_cast<T>(1)) noexcept;
-		constexpr Vector4(T&& x_, T&& y_, T&& z_, T&& w_) noexcept;
 
 		constexpr Vector4(const Vector2<T>& vec2_1, const Vector2<T>& vec2_2) noexcept;
-		constexpr Vector4(Vector2<T>&& vec2_1,Vector2<T>&& vec2_2) noexcept;
 
 		constexpr Vector4(const Vector3<T>& vec3, const T& scalar = static_cast<T>(1)) noexcept;
-		constexpr Vector4(Vector3<T>&& vec3, T&& scalar) noexcept;
 
 		template<typename U>
 		constexpr Vector4(const Vector4<U>& vec) noexcept;
@@ -151,20 +148,8 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Vector4<T>::Vector4(T&& x_, T&& y_, T&& z_, T&& w_) noexcept
-		: x{std::move(x_)}, y{ std::move(y_) }, z{ std::move(z_) }, w{ std::move(w_) }
-	{
-	}
-
-	template<typename T>
 	inline constexpr Vector4<T>::Vector4(const Vector2<T>& vec2_1, const Vector2<T>& vec2_2) noexcept
 		: x{vec2_1.x}, y{vec2_1.y}, z{vec2_2.x}, w{vec2_2.y}
-	{
-	}
-
-	template<typename T>
-	inline constexpr Vector4<T>::Vector4(Vector2<T>&& vec2_1, Vector2<T>&& vec2_2) noexcept
-		: x{ std::move(vec2_1.x) }, y{ std::move(vec2_1.y) }, z{ std::move(vec2_2.x) }, w{ std::move(vec2_2.y) }
 	{
 	}
 
@@ -175,15 +160,9 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Vector4<T>::Vector4(Vector3<T>&& vec3, T&& scalar) noexcept
-		: data{ std::move(vec3.x), std::move(vec3.y), std::move(vec3.z), std::move(scalar) }
-	{
-	}
-
-	template<typename T>
 	template<typename U>
-	inline constexpr mpml::Vector4<T>::Vector4(const Vector4<U>& vec) noexcept
-		: x{static_cast<U>(vec.x)}, y{ static_cast<U>(vec.y) }, z{ static_cast<U>(vec.z) }, w{ static_cast<U>(vec.w) }
+	inline constexpr Vector4<T>::Vector4(const Vector4<U>& vec) noexcept
+		: x{static_cast<T>(vec.x)}, y{ static_cast<T>(vec.y) }, z{ static_cast<T>(vec.z) }, w{ static_cast<T>(vec.w) }
 	{
 	}
 
