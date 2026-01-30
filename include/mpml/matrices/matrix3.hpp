@@ -178,7 +178,7 @@ namespace mpml
 	template<typename U>
 	inline constexpr Matrix3<T>::Matrix3(const Matrix3<U>& mat) noexcept
 	{
-		std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const T& x) { return static_cast<T>(x) });
+		std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const T& x) { return static_cast<T>(x); });
 	}
 
 

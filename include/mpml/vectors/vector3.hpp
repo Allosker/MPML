@@ -246,7 +246,7 @@ namespace mpml
 	template<typename T>
 	inline constexpr T Vector3<T>::det(const Vector3<T>& vec) const noexcept
 	{
-		return cross(vec).dot({ {}, {}, {} };
+		return cross(vec).dot({ {}, {}, {} });
 	}
 
 

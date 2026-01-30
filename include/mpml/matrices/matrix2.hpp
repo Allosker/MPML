@@ -165,7 +165,7 @@ template<typename T>
 template<typename U>
 inline constexpr Matrix2<T>::Matrix2(const Matrix2<U>& mat) noexcept
 {
-	std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const T& x){ return static_cast<T>(x) });
+	std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const T& x) { return static_cast<T>(x); });
 }
 
 
