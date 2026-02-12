@@ -5,7 +5,7 @@
 // Defines a utility class for angles as well as a bunch of conversions
 // ===================================================
 
-#include "include/mpml/utilities/numbers.hpp"
+#include "mpml/utilities/numbers.hpp"
 
 namespace mpml
 {

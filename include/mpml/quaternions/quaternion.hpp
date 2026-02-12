@@ -54,7 +54,7 @@ public:
 
 	// Data Related
 
-	[[nodiscard]] constexpr T* data_ptr() const noexcept;
+	[[nodiscard]] constexpr T* data_ptr() noexcept;
 	[[nodiscard]] constexpr const T* data_ptr() const noexcept;
 
 	[[nodiscard]] constexpr T& operator[](size_t index);
@@ -210,13 +210,13 @@ inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle angle) const noexcept
 
 // Data Related
 template<typename T>
-inline constexpr T* Quaternion<T>::data_ptr() const noexcept
+inline constexpr T* Quaternion<T>::data_ptr() noexcept
 {
 	return &s;
 }
 
 template<typename T>
-inline constexpr T* Quaternion<T>::data_ptr() const noexcept
+inline constexpr const T* Quaternion<T>::data_ptr() const noexcept
 {
 	return &s;
 }
