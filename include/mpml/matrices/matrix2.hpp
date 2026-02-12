@@ -103,19 +103,19 @@ public:
 
 // Common types
 
-	static constexpr Matrix2<T> Identity
-	{
-		T{1}, T{},
-		T{}, T{1}
-	};
 
-	static constexpr Matrix2<T> AntiDiagonal_Identity
-	{
-		T{}, T{1},
-		T{1}, T{}
-	};
+};
 
+constexpr Matrix2<T> Identity2
+{
+	T{1}, T{},
+	T{}, T{1}
+};
 
+constexpr Matrix2<T> AntiDiagonal_Identity2
+{
+	T{}, T{1},
+	T{1}, T{}
 };
 
 

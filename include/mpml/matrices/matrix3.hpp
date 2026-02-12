@@ -110,22 +110,22 @@ namespace mpml
 
 
 	// Common Types
-	
-		static constexpr static Matrix3<T> Identity
-		{
-			T{1}, T{}, T{},
-			T{}, T{1}, T{},
-			T{}, T{}, T{1}
-		};
-
-		static constexpr Matrix3<T> AntiDiagonal_Identity
-		{
-			T{}, T{}, T{1},
-			T{}, T{1}, T{},
-			T{1}, T{}, T{}
-		};
 
 
+	};
+
+	constexpr Matrix3<T> Identity3
+	{
+		T{1}, T{}, T{},
+		T{}, T{1}, T{},
+		T{}, T{}, T{1}
+	};
+
+	constexpr Matrix3<T> AntiDiagonal_Identity3
+	{
+		T{}, T{}, T{1},
+		T{}, T{1}, T{},
+		T{1}, T{}, T{}
 	};
 
 

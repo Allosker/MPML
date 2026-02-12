@@ -101,8 +101,6 @@ namespace mpml
 		T z{};
 
 		static constexpr size_t size{ 3 };
-
-		static_assert(std::is_standard_layout_v<Vector3<T>>, "All members of Vector3 must be contiguous in memory");
 	};
 	// Common Types
 	template<typename T>

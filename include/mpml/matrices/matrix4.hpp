@@ -120,23 +120,23 @@ namespace mpml
 
 	// Common Types
 
-		static constexpr Matrix4<T> Identity
-		{
-			T{1}, T{}, T{}, T{},
-			T{}, T{1}, T{}, T{},
-			T{}, T{}, T{1}, T{},
-			T{}, T{}, T{}, T{1}
-		};
 
-		static constexpr Matrix4<T> AntiDiagonal_Identity
-		{
-			T{}, T{}, T{}, T{1},
-			T{}, T{}, T{1}, T{},
-			T{}, T{1}, T{}, T{},
-			T{1}, T{}, T{}, T{}
-		};
+	};
 
+	constexpr Matrix4<T> Identity4
+	{
+		T{1}, T{}, T{}, T{},
+		T{}, T{1}, T{}, T{},
+		T{}, T{}, T{1}, T{},
+		T{}, T{}, T{}, T{1}
+	};
 
+	constexpr Matrix4<T> AntiDiagonal_Identity4
+	{
+		T{}, T{}, T{}, T{1},
+		T{}, T{}, T{1}, T{},
+		T{}, T{1}, T{}, T{},
+		T{1}, T{}, T{}, T{}
 	};
 
 

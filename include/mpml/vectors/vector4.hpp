@@ -105,7 +105,6 @@ namespace mpml
 	
 		static constexpr size_t size{ 4 };
 
-		static_assert(std::is_standard_layout_v<Vector4<T>>, "All members of Vector4 must be contiguous in memory");
 	};
 	// Common Types
 	template<typename T>
@@ -318,12 +317,6 @@ namespace mpml
 	inline constexpr Vector4<T> Vector4<T>::operator-() const noexcept
 	{
 		return Vector4<T>{-x, -y};
-	}
-
-	template<typename T>
-	inline constexpr bool Vector4<T>::operator==(const Vector4<T>& vec) const noexcept
-	{
-		return (x == vec.x && y == vec.y && z == vec.z);
 	}
 
 
