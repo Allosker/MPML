@@ -123,6 +123,7 @@ namespace mpml
 
 	};
 
+	template<typename T>
 	constexpr Matrix4<T> Identity4
 	{
 		T{1}, T{}, T{}, T{},
@@ -131,6 +132,7 @@ namespace mpml
 		T{}, T{}, T{}, T{1}
 	};
 
+	template<typename T>
 	constexpr Matrix4<T> AntiDiagonal_Identity4
 	{
 		T{}, T{}, T{}, T{1},

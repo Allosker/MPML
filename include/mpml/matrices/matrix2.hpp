@@ -106,12 +106,14 @@ public:
 
 };
 
+template<typename T>
 constexpr Matrix2<T> Identity2
 {
 	T{1}, T{},
 	T{}, T{1}
 };
 
+template<typename T>
 constexpr Matrix2<T> AntiDiagonal_Identity2
 {
 	T{}, T{1},
