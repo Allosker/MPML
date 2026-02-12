@@ -10,7 +10,6 @@
 
 
 // Dependencies
-#include <array>
 #include <cmath>
 #include <utility>
 #include <algorithm>
@@ -31,8 +30,7 @@ namespace mpml
 
 		// Initialization
 
-		constexpr Vector2() noexcept;
-		// Performs a copy of values to all components
+		constexpr Vector2() noexcept = default;
 		constexpr Vector2(const T& values) noexcept;
 
 		constexpr Vector2(const Vector2&) noexcept = default;
@@ -92,26 +90,17 @@ namespace mpml
 
 		[[nodiscard]] constexpr Vector2<T> operator-() const noexcept;
 
-		[[nodiscard]] constexpr bool operator<(const Vector2<T>& vec) const noexcept;
-		[[nodiscard]] constexpr bool operator>(const Vector2<T>& vec) const noexcept;
-		[[nodiscard]] constexpr bool operator<=(const Vector2<T>& vec) const noexcept;
-		[[nodiscard]] constexpr bool operator>=(const Vector2<T>& vec) const noexcept;
-
-		[[nodiscard]] constexpr bool operator==(const Vector2<T>& vec) const noexcept;
+		[[nodiscard]] constexpr auto operator<=>(const Vector2<T>&) const noexcept = default;
 
 	
 	// Class members
 
-		union
-		{
-			struct { T x, y; };
-			struct { T r, g; };
-			struct { T u, v; };
+		T x{};
+		T y{};
 
-			std::array<T, 2> data;
-		};
+		static constexpr size_t size{ 2 };
 
-
+		static_assert(std::is_standard_layout_v<Vector2<T>>, "All members of Vector2 must be contiguous in memory");
 	};
 	// Common Types
 	template<typename T>
@@ -127,20 +116,14 @@ namespace mpml
 
 	// Initialization
 	template<typename T>
-	inline constexpr Vector2<T>::Vector2() noexcept
-		: data{ T{},T{} }
-	{
-	}
-
-	template<typename T>
 	inline constexpr Vector2<T>::Vector2(const T& values) noexcept
-		: data{values, values}
+		: x{ values }, y{ values }
 	{
 	}
 
 	template<typename T>
 	inline constexpr Vector2<T>::Vector2(const T& x_, const T& y_) noexcept
-		: data{x_, y_}
+		: x{x_}, y{y_}
 	{
 	}
 
@@ -245,29 +228,29 @@ namespace mpml
 	template<typename T>
 	inline constexpr T* Vector2<T>::data_ptr() noexcept
 	{
-		return data.data();
+		return &x;
 	}
 
 	template<typename T>
 	inline constexpr const T* Vector2<T>::data_ptr() const noexcept
 	{
-		return data.data();
+		return &x;
 	}
 
 	template<typename T>
 	inline constexpr T& Vector2<T>::operator[](size_t index)
 	{
-		if (index >= data.size())
+		if (index >= size)
 			throw std::out_of_range("index is out of range in vector2");
-		return data[index];
+		return *(&x + index);
 	}
 
 	template<typename T>
 	inline constexpr const T& Vector2<T>::operator[](size_t index) const
 	{
-		if (index >= data.size())
+		if (index >= size)
 			throw std::out_of_range("index is out of range in vector2");
-		return data[index];
+		return *(&x + index);
 	}
 
 
@@ -319,36 +302,6 @@ namespace mpml
 	constexpr Vector2<T> Vector2<T>::operator-() const noexcept
 	{
 		return Vector2<T>{-x, -y};
-	}
-
-	template<typename T>
-	inline constexpr bool Vector2<T>::operator<(const Vector2<T>& vec) const noexcept
-	{
-		return (x < vec.x && y < vec.y);
-	}
-
-	template<typename T>
-	inline constexpr bool Vector2<T>::operator>(const Vector2<T>& vec) const noexcept
-	{
-		return (x > vec.x && y > vec.y);
-	}
-
-	template<typename T>
-	inline constexpr bool Vector2<T>::operator<=(const Vector2<T>& vec) const noexcept
-	{
-		return *this < vec || *this == vec;
-	}
-
-	template<typename T>
-	inline constexpr bool Vector2<T>::operator>=(const Vector2<T>& vec) const noexcept
-	{
-		return *this > vec || *this == vec;
-	}
-
-	template<typename T>
-	inline constexpr bool Vector2<T>::operator==(const Vector2<T>& vec) const noexcept
-	{
-		return (x == vec.x && y == vec.y);
 	}
 
 

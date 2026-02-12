@@ -11,7 +11,6 @@
 
 
 // Dependencies
-#include <array>
 #include <cmath>
 #include <utility>
 #include <algorithm>
@@ -34,8 +33,7 @@ namespace mpml
 	public:
 		// Initialization
 	
-		constexpr Vector3() noexcept;
-		// Performs a copy of values to all components
+		constexpr Vector3() noexcept = default;
 		constexpr Vector3(const T& values) noexcept;
 
 		constexpr Vector3(const Vector3&) noexcept = default;
@@ -92,25 +90,19 @@ namespace mpml
 
 		[[nodiscard]] constexpr Vector3<T> operator-() const noexcept;
 
-		[[nodiscard]] constexpr bool operator<(const Vector3<T>& vec) const noexcept;
-		[[nodiscard]] constexpr bool operator>(const Vector3<T>& vec) const noexcept;
-		[[nodiscard]] constexpr bool operator<=(const Vector3<T>& vec) const noexcept;
-		[[nodiscard]] constexpr bool operator>=(const Vector3<T>& vec) const noexcept;
+		[[nodiscard]] constexpr auto operator<=>(const Vector3<T>&) const noexcept = default;
 
-		[[nodiscard]] constexpr bool operator==(const Vector3<T>& vec) const noexcept;
 
 		// Class members
 
-		union
-		{
-			struct { T x, y, z; };
-			struct { T r, g, b; };
-			struct { T h, s, v; };
 
-			std::array<T, 3> data;
-		};
+		T x{};
+		T y{};
+		T z{};
 
+		static constexpr size_t size{ 3 };
 
+		static_assert(std::is_standard_layout_v<Vector3<T>>, "All members of Vector3 must be contiguous in memory");
 	};
 	// Common Types
 	template<typename T>
@@ -131,26 +123,20 @@ namespace mpml
 	// Intialization
 
 	template<typename T>
-	inline constexpr Vector3<T>::Vector3() noexcept
-		: data{ T{}, T{}, T{} }
-	{
-	}
-
-	template<typename T>
 	inline constexpr Vector3<T>::Vector3(const T& values) noexcept
-		: data{values, values, values}
+		: x{ values }, y{ values }, z{ values }
 	{
 	}
 
 	template<typename T>
 	inline constexpr Vector3<T>::Vector3(const T& x_, const T& y_, const T& z_) noexcept
-		: data{x_, y_, z_}
+		: x{ x_ }, y{ y_ }, z{ z_ }
 	{
 	}
 
 	template<typename T>
 	inline constexpr Vector3<T>::Vector3(const Vector2<T>& vec2, const T& scalar) noexcept
-		: data{ vec2.x, vec2.y, scalar }
+		: x{ vec2.x }, y{ vec2.y }, z{ scalar }
 	{
 	}
 
@@ -254,29 +240,29 @@ namespace mpml
 	template<typename T>
 	inline constexpr T* Vector3<T>::data_ptr() noexcept
 	{
-		return data.data();
+		return &x;
 	}
 
 	template<typename T>
 	inline constexpr const T* Vector3<T>::data_ptr() const noexcept
 	{
-		return data.data();
+		return &x;
 	}
 
 	template<typename T>
 	inline constexpr T& Vector3<T>::operator[](size_t index)
 	{
-		if (index >= data.size())
+		if (index >= size)
 			throw std::out_of_range("index is out of range in vector3");
-		return data[index];
+		return *(&x + index);
 	}
 
 	template<typename T>
 	inline constexpr const T& Vector3<T>::operator[](size_t index) const
 	{
-		if (index >= data.size())
+		if (index >= size)
 			throw std::out_of_range("index is out of range in vector3");
-		return data[index];
+		return *(&x + index);
 	}
 
 	// Member Overloads
@@ -327,36 +313,6 @@ namespace mpml
 	inline constexpr Vector3<T> Vector3<T>::operator-() const noexcept
 	{
 		return Vector3<T>{-x, -y};
-	}
-
-	template<typename T>
-	inline constexpr bool Vector3<T>::operator<(const Vector3<T>& vec) const noexcept
-	{
-		return (x < vec.x && y < vec.y && z < vec.z);
-	}
-
-	template<typename T>
-	inline constexpr bool Vector3<T>::operator>(const Vector3<T>& vec) const noexcept
-	{
-		return (x > vec.x && y > vec.y && z > vec.z);
-	}
-
-	template<typename T>
-	inline constexpr bool Vector3<T>::operator<=(const Vector3<T>& vec) const noexcept
-	{
-		return *this < vec || *this == vec;
-	}
-
-	template<typename T>
-	inline constexpr bool Vector3<T>::operator>=(const Vector3<T>& vec) const noexcept
-	{
-		return *this > vec || *this == vec;
-	}
-
-	template<typename T>
-	inline constexpr bool Vector3<T>::operator==(const Vector3<T>& vec) const noexcept
-	{
-		return (x == vec.x && y == vec.y && z == vec.z);
 	}
 
 

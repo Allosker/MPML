@@ -23,7 +23,7 @@ class Quaternion
 public:
 
 	// Initialization
-	constexpr Quaternion() noexcept;
+	constexpr Quaternion() noexcept = default;
 
 	constexpr Quaternion(const T& s, const T& x, const T& y, const T& z) noexcept;
 
@@ -55,26 +55,32 @@ public:
 	// Data Related
 
 	[[nodiscard]] constexpr T* data_ptr() const noexcept;
+	[[nodiscard]] constexpr const T* data_ptr() const noexcept;
+
+	[[nodiscard]] constexpr T& operator[](size_t index);
+	[[nodiscard]] constexpr const T& operator[](size_t index) const;
+
 
 	// Member Overloads
 
-	constexpr Quaternion<T>& operator*=(const Quaternion<T>& q) noexcept;
+	[[nodiscard]] constexpr Quaternion<T>& operator*=(const Quaternion<T>& q) noexcept;
 	
-	constexpr Quaternion<T>& operator*=(const T& scalar) noexcept;
-	constexpr Quaternion<T>& operator/=(const T& scalar) noexcept;
+	[[nodiscard]] constexpr Quaternion<T>& operator*=(const T& scalar) noexcept;
+	[[nodiscard]] constexpr Quaternion<T>& operator/=(const T& scalar) noexcept;
+
+	[[nodiscard]] constexpr auto operator<=>(const Quaternion<T>&) const noexcept = default;
 
 
 // Class Members
 
-	union
-	{
-		struct { T s, x, y, z; };
-		struct { T a, bi, cj, dk; };
-
-		std::array<T, 4> data;
-	};
+	T s{};
+	T x{};
+	T y{};
+	T z{};
 	
+	static constexpr size_t size{ 4 };
 
+	static_assert(std::is_standard_layout_v<Quaternion<T>>, "All members of Quaternion must be contiguous in memory");
 };
 
 
@@ -83,29 +89,23 @@ public:
 
 
 
-template<typename T>
-inline constexpr Quaternion<T>::Quaternion() noexcept
-	: data{ T{}, T{}, T{}, T{} }
-{
-}
-
 // Initialization
 template<typename T>
-constexpr inline Quaternion<T>::Quaternion(const T& s, const T& x, const T& y, const T& z) noexcept
-	: data{s,x,y,z}
+constexpr inline Quaternion<T>::Quaternion(const T& s_, const T& x_, const T& y_, const T& z_) noexcept
+	: s{ s_ }, x{ x_ }, y{ y_ }, z{ z_ }
 {
 }
 
 template<typename T>
-inline constexpr Quaternion<T>::Quaternion(const T& s, const Vector3<T>& v) noexcept
-	: data{s, v.x, v.y, v.z}
+inline constexpr Quaternion<T>::Quaternion(const T& s_, const Vector3<T>& v) noexcept
+	: s{ s_ }, x{ v.x }, y{ v.y }, z{ v.z }
 {
 }
 
 
 template<typename T>
 constexpr inline Quaternion<T>::Quaternion(const Quaternion<T>& q) noexcept
-	: data{q.s, q.x, q.y, q.z}
+	: s{ q.s }, x{ q.x }, y{ q.y }, z{ q.z }
 {
 }
 
@@ -115,7 +115,10 @@ constexpr inline Quaternion<T>& Quaternion<T>::operator=(const Quaternion<T>& q)
 	if (this == &q)
 		return *this;
 
-	data = q.data;
+	s = q.s;
+	x = q.x;
+	y = q.y;
+	z = q.z;
 
 	return *this;
 }
@@ -123,7 +126,7 @@ constexpr inline Quaternion<T>& Quaternion<T>::operator=(const Quaternion<T>& q)
 template<typename T>
 template<typename U>
 constexpr Quaternion<T>::Quaternion(const Quaternion<U>& q) noexcept
-	: data{static_cast<T>(q.s), static_cast<T>(q.x), static_cast<T>(q.y), static_cast<T>(q.z) }
+	: s{ static_cast<T>(q.s) }, x{ static_cast<T>(q.x) }, y{ static_cast<T>(q.y) }, z{ static_cast<T>(q.z) }
 {
 }
 
@@ -209,7 +212,29 @@ inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle angle) const noexcept
 template<typename T>
 inline constexpr T* Quaternion<T>::data_ptr() const noexcept
 {
-	return data.data();
+	return &s;
+}
+
+template<typename T>
+inline constexpr T* Quaternion<T>::data_ptr() const noexcept
+{
+	return &s;
+}
+
+template<typename T>
+inline constexpr T& Quaternion<T>::operator[](size_t index)
+{
+	if (index >= size)
+		throw std::out_of_range("index is out of range in Quaternion");
+	return *(&s + index);
+}
+
+template<typename T>
+inline constexpr const T& Quaternion<T>::operator[](size_t index) const
+{
+	if (index >= size)
+		throw std::out_of_range("index is out of range in Quaternion");
+	return *(&s + index);
 }
 
 

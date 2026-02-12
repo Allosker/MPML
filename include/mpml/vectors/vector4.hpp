@@ -13,7 +13,6 @@
 
 
 // Dependencies
-#include <array>
 #include <utility>
 #include <algorithm>
 #include <stdexcept> // for: std::out_of_range()
@@ -35,7 +34,7 @@ namespace mpml
 		// Initialization
 
 
-		constexpr Vector4() noexcept;
+		constexpr Vector4() noexcept = default;
 		// Performs a copy of values to all components
 		constexpr Vector4(const T& values) noexcept;
 
@@ -93,21 +92,20 @@ namespace mpml
 
 		[[nodiscard]] constexpr Vector4<T> operator-() const noexcept;
 
-		[[nodiscard]] constexpr bool operator==(const Vector4<T>& vec) const noexcept;
+		[[nodiscard]] constexpr auto operator<=>(const Vector4<T>&) const noexcept = default;
 
 
-	// Class members
-
-		union
-		{
-			struct { T x, y, z, w; };
-			struct { T r, g, b, a; };
-			struct { T u, v, h, t; };
-
-			std::array<T, 4> data;
-		};
+		// Class members
 
 
+		T x{};
+		T y{};
+		T z{};
+		T w{};
+	
+		static constexpr size_t size{ 4 };
+
+		static_assert(std::is_standard_layout_v<Vector4<T>>, "All members of Vector4 must be contiguous in memory");
 	};
 	// Common Types
 	template<typename T>
@@ -129,15 +127,10 @@ namespace mpml
 
 
 	// Intialization
-	template<typename T>
-	inline constexpr Vector4<T>::Vector4() noexcept
-		: data{ T{}, T{}, T{}, T{} }
-	{
-	}
 
 	template<typename T>
 	inline constexpr Vector4<T>::Vector4(const T& values) noexcept
-		: data{ values, values, values, values }
+		: x{ values }, y{ values }, z{ values }, w{ values }
 	{
 	}
 
@@ -155,7 +148,7 @@ namespace mpml
 
 	template<typename T>
 	inline constexpr Vector4<T>::Vector4(const Vector3<T>& vec3, const T& scalar) noexcept
-		: data{ vec3.x, vec3.y, vec3.z, scalar }
+		: x{ vec3.x }, y{ vec3.y }, z{ vec3.z }, w{ scalar }
 	{
 	}
 
@@ -252,29 +245,29 @@ namespace mpml
 	template<typename T>
 	inline constexpr T* Vector4<T>::data_ptr() noexcept
 	{
-		return data.data();
+		return &x;
 	}
 
 	template<typename T>
 	inline constexpr const T* Vector4<T>::data_ptr() const noexcept
 	{
-		return data.data();
+		return &x;
 	}
 
 	template<typename T>
 	inline constexpr T& Vector4<T>::operator[](size_t index)
 	{
-		if (index >= data.size())
+		if (index >= size)
 			throw std::out_of_range("index is out of range in Vector4");
-		return data[index];
+		return *(&x + index);
 	}
 
 	template<typename T>
 	inline constexpr const T& Vector4<T>::operator[](size_t index) const
 	{
-		if (index >= data.size())
+		if (index >= size)
 			throw std::out_of_range("index is out of range in Vector4");
-		return data[index];
+		return *(&x + index);
 	}
 
 	// Member Overloads
