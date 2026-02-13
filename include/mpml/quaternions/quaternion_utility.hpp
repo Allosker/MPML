@@ -57,7 +57,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> rotate(const Matrix4<T>& mat, Angle angle, const Vector3<T>& axis) noexcept
 	{
-		return mat * rotation_matrix<T>(Quaternion<T>{ 0, axis }.rotate(angle));
+		return mat * Matrix4<T>{rotation_matrix<T>(Quaternion<T>{ 0, axis }.rotate(angle))};
 	}
 
 }

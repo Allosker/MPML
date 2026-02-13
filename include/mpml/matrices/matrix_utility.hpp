@@ -52,22 +52,20 @@ namespace mpml
 	[[nodiscard]] constexpr Matrix4<T> perspective(const Angle& fov, const U width, const U height, const T& near, const T& far, bool right_handed = false)
 	{
 		if (near < 0 || far < near)
-			throw std::runtime_error("ERROR::MATH::PERSPECTIVE_MATRIX::Far/Near planes is/are too low");
+			throw std::runtime_error("ERROR::MATH::PERSPECTIVE_MATRIX::Far/Near plane.s is/are too low");
 		if (width == 0 || height == 0)
 			throw std::runtime_error("ERROR::MATH::DIVISION_BY_ZERO");
 
 
-		const T ratio{ static_cast<T>(width) / static_cast<T>(height) };
-
-		const T t{ std::tan(fov.asRadians() / static_cast<T>(2)) };
+		const T S{ static_cast<T>(1) / static_cast<T>(std::tan(fov.asRadians() / static_cast<T>(2))) };
 
 		if (right_handed)
 			return Matrix4<T>
 		{
-			static_cast<T>(1) / (ratio * t), 0, 0, 0,
-				0, static_cast<T>(1) / (t), 0, 0,
-				0, 0, -(far + near) / (far - near), -static_cast<T>(1),
-				0, 0, -(static_cast<T>(2) * far * near) / (far - near), static_cast<T>(1)
+			S, 0, 0, 0,
+				0, S, 0, 0,
+				0, 0, -(far / (far - near)), -static_cast<T>(1),
+				0, 0, -((far * near) / (far - near)), 0
 		};
 		else
 			throw std::runtime_error("ERROR::LEFT_HANDED_PERSPECTIVE_MATRIX::Matrix not defined for now");
