@@ -20,9 +20,9 @@ namespace mpml
 	{
 		return Matrix3<T>
 		{
-			1 - 2 * (q.y * q.y + q.z * q.z), 2 * (q.x * q.y - q.a * q.z), 2 * (q.x * q.z + q.a * q.y),
-			2 * (q.x * q.y + q.a * q.z), 1 - 2 * (q.x * q.x + q.z * q.z), 2 * (q.y * q.z - q.a * q.x),
-			2 * (q.x * q.z - q.a * q.y), 2 * (q.y * q.z + q.a * q.x), 1 - 2 * (q.x * q.x + q.y * q.y)
+			1 - 2 * (q.y * q.y + q.z * q.z), 2 * (q.x * q.y - q.s * q.z), 2 * (q.x * q.z + q.s * q.y),
+			2 * (q.x * q.y + q.s * q.z), 1 - 2 * (q.x * q.x + q.z * q.z), 2 * (q.y * q.z - q.s * q.x),
+			2 * (q.x * q.z - q.s * q.y), 2 * (q.y * q.z + q.s * q.x), 1 - 2 * (q.x * q.x + q.y * q.y)
 		};
 	}
 

@@ -80,7 +80,6 @@ public:
 	
 	static constexpr size_t size{ 4 };
 
-	static_assert(std::is_standard_layout_v<Quaternion<T>>, "All members of Quaternion must be contiguous in memory");
 };
 
 
