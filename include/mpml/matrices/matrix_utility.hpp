@@ -15,25 +15,37 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> translate(const Matrix4<T>& mat, const Vector3<T>& vec) noexcept
 	{
-		Matrix4<T> new_mat{ mat };
+		Matrix4<T> new_mat{ Identity4<float> };
 
-		new_mat.m += vec.x;
-		new_mat.n += vec.y;
-		new_mat.o += vec.z;
+		new_mat.m = vec.x;
+		new_mat.n = vec.y;
+		new_mat.o = vec.z;
 
-		return new_mat;
+		return mat * new_mat;
 	}
 
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> scale(const Matrix4<T>& mat, const T& scalar) noexcept
 	{
-		Matrix4<T> new_mat{ mat };
+		Matrix4<T> new_mat{ Identity4<float> };
 
-		new_mat.a += scalar;
-		new_mat.f += scalar;
-		new_mat.k += scalar;
+		new_mat.a = scalar;
+		new_mat.f = scalar;
+		new_mat.k = scalar;
 
-		return new_mat;
+		return mat * new_mat;
+	}
+
+	template<typename T>
+	[[nodiscard]] constexpr Matrix4<T> scale(const Matrix4<T>& mat, const Vector3<T>& vec) noexcept
+	{
+		Matrix4<T> new_mat{ Identity4<float> };
+
+		new_mat.a = vec.x;
+		new_mat.f = vec.y;
+		new_mat.k = vec.z;
+
+		return mat * new_mat;
 	}
 
 	template<typename T, typename U>
