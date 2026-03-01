@@ -54,7 +54,7 @@ namespace mpml
 
 		T const rad = fov.asRadians();
 		T const h = std::cos(static_cast<T>(0.5) * rad) / std::sin(static_cast<T>(0.5) * rad);
-		T const w = h * height / width; ///todo max(width , Height) / min(width , Height)?
+		T const w = h * std::max(width, height) / std::min(width, height);
 
 		Matrix4<T> Result(static_cast<T>(0));
 		Result[0][0] = w;
