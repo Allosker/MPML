@@ -49,20 +49,19 @@ namespace mpml
 	}
 
 	template<typename T, typename U>
-	[[nodiscard]] constexpr Matrix4<T> perspective(const Angle& fov, const U width, const U height, const T& near, const T& far, bool right_handed = false)
+	[[nodiscard]] constexpr Matrix4<T> perspective(const Angle& fov, const U width, const U height, const T& near, const T& far)
 	{
-
 		T const rad = fov.asRadians();
 		T const h = std::cos(static_cast<T>(0.5) * rad) / std::sin(static_cast<T>(0.5) * rad);
-		T const w = h * std::max(width, height) / std::min(width, height);
+		T const w = h * height / width;
 
-		Matrix4<T> Result(static_cast<T>(0));
-		Result[0][0] = w;
-		Result[1][1] = h;
-		Result[2][2] = far / (near - far);
-		Result[2][3] = -static_cast<T>(1);
-		Result[3][2] = -(far * near) / (far - near);
-		return Result;
+		return Matrix4<T>
+		{
+			w, 0, 0, 0,
+				0, h, 0, 0,
+				0, 0, far / (near - far), -static_cast<T>(1),
+				0, 0, -(far * near) / (far - near), 0,
+		};
 	}
 
 	template<typename T>
