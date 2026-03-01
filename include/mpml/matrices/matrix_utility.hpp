@@ -51,24 +51,18 @@ namespace mpml
 	template<typename T, typename U>
 	[[nodiscard]] constexpr Matrix4<T> perspective(const Angle& fov, const U width, const U height, const T& near, const T& far, bool right_handed = false)
 	{
-		if (near < 0 || far < near)
-			throw std::runtime_error("ERROR::MATH::PERSPECTIVE_MATRIX::Far/Near plane.s is/are too low");
-		if (width == 0 || height == 0)
-			throw std::runtime_error("ERROR::MATH::DIVISION_BY_ZERO");
 
+		T const rad = fov.asRadians();
+		T const h = std::cos(static_cast<T>(0.5) * rad) / std::sin(static_cast<T>(0.5) * rad);
+		T const w = h * height / width; ///todo max(width , Height) / min(width , Height)?
 
-		const T S{ static_cast<T>(1) / static_cast<T>(std::tan(fov.asRadians() / static_cast<T>(2))) };
-
-		if (right_handed)
-			return Matrix4<T>
-		{
-			S, 0, 0, 0,
-				0, S, 0, 0,
-				0, 0, -(far / (far - near)), -static_cast<T>(1),
-				0, 0, -((far * near) / (far - near)), 0
-		};
-		else
-			throw std::runtime_error("ERROR::LEFT_HANDED_PERSPECTIVE_MATRIX::Matrix not defined for now");
+		Matrix4<T> Result(static_cast<T>(0));
+		Result[0][0] = w;
+		Result[1][1] = h;
+		Result[2][2] = far / (near - far);
+		Result[2][3] = -static_cast<T>(1);
+		Result[3][2] = -(far * near) / (far - near);
+		return Result;
 	}
 
 	template<typename T>
@@ -81,9 +75,9 @@ namespace mpml
 		return Matrix4<T>
 		{
 			s.x, u.x, -f.x, 0,
-				s.y, u.y, -f.y, 0,
-				s.z, u.z, -f.z, 0,
-				-(s.dot(eye)), -(u.dot(eye)), f.dot(eye), 1
+			s.y, u.y, -f.y, 0,
+			s.z, u.z, -f.z, 0,
+			-(s.dot(eye)), -(u.dot(eye)), f.dot(eye), 1
 		};
 	}
 
@@ -93,9 +87,9 @@ namespace mpml
 		return Matrix4<T>
 		{
 			camSide.x, camUp.x, -camForward.x, 0,
-				camSide.y, camUp.y, -camForward.y, 0,
-				camSide.z, camUp.z, -camForward.z, 0,
-				-(camSide.dot(camPos)), -(camUp.dot(camPos)), camForward.dot(camPos), 1
+			camSide.y, camUp.y, -camForward.y, 0,
+			camSide.z, camUp.z, -camForward.z, 0,
+			-(camSide.dot(camPos)), -(camUp.dot(camPos)), camForward.dot(camPos), 1
 		};
 	}
 
