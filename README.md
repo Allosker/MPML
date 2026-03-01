@@ -33,11 +33,11 @@ MPML is designed to be Multi-Purpose (even though its current state may say othe
 
 - Provide a consistant interface across various types and mathematical concepts.
 - Maintain balance between flexibility and performances.
-- Remains:
+- Remain:
   - Dependency-free
   - Header-only
   - Easy to integrate and use
-- Provides suitability for modern C++ as the library is *constexpr friendly*.
+- Provide suitability for modern C++ as the library is *constexpr friendly*.
 
 #### Last words
 
