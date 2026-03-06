@@ -49,11 +49,11 @@ namespace mpml
 	}
 
 	template<typename T, typename U>
-	[[nodiscard]] constexpr Matrix4<T> perspective(const Angle& fov, const U width, const U height, const T& near, const T& far)
+	[[nodiscard]] constexpr Matrix4<T> perspective(const Angle& fov, const U& width, const U& height, const T& near, const T& far)
 	{
-		T const rad = fov.asRadians();
-		T const h = std::cos(static_cast<T>(0.5) * rad) / std::sin(static_cast<T>(0.5) * rad);
-		T const w = h * height / width;
+		const T rad = fov.asRadians();
+		const T h = std::cos(static_cast<T>(0.5) * rad) / std::sin(static_cast<T>(0.5) * rad);
+		const T w = h * height / width;
 
 		return Matrix4<T>
 		{
@@ -61,6 +61,23 @@ namespace mpml
 				0, h, 0, 0,
 				0, 0, far / (near - far), -static_cast<T>(1),
 				0, 0, -(far * near) / (far - near), 0,
+		};
+	}
+
+	template<typename T, typename U>
+	[[nodiscard]] constexpr Matrix4<T> orthographic_projection(const U& width, const U& height, const T& near, const T& far)
+	{
+		const T right{ static_cast<T>(width / static_cast<U>(2)) };
+		const T left{ -right };
+		const T top{ static_cast<T>(height / static_cast<U>(2)) };
+		const T bottom{ -top };
+
+		return Matrix4<T>
+		{
+			static_cast<T>(2) / (right - left), 0, 0, 0,
+				0, static_cast<T>(2) / (top - bottom), 0, 0,
+				0, 0, -static_cast<T>(1) / (far - near), 0,
+				-((right + left) / (right - left)), -((top + bottom) / (top - bottom)), near / (far - near), static_cast<T>(1)
 		};
 	}
 
