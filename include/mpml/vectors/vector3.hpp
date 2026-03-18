@@ -41,10 +41,10 @@ namespace mpml
 
 		constexpr Vector3(const T& x_, const T& y_, const T& z_) noexcept;
 
-		constexpr Vector3(const Vector2<T>& vec2, const T& scalar) noexcept;
+		explicit constexpr Vector3(const Vector2<T>& vec2, const T& scalar) noexcept;
 
 		template<typename U>
-		constexpr Vector3(const Vector3<U>& vec) noexcept;
+		explicit constexpr Vector3(const Vector3<U>& vec) noexcept;
 
 
 		// Operations
@@ -310,7 +310,7 @@ namespace mpml
 	template<typename T>
 	inline constexpr Vector3<T> Vector3<T>::operator-() const noexcept
 	{
-		return Vector3<T>{-x, -y};
+		return Vector3<T>{-x, -y, -z};
 	}
 
 
