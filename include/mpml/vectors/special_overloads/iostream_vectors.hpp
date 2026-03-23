@@ -13,20 +13,20 @@
 template<typename T>
 std::ostream& operator<<(std::ostream& out, const mpml::Vector2<T>& vec)
 {
-	out << "\nVector 2:" << "\nx:\t" << vec[0] << "\ny:\t" << vec[1];
+	out << "(" << vec[0] << ", " << vec[1] << ")";
 	return out; 
 }
 
 template<typename T>
 std::ostream& operator<<(std::ostream& out, const mpml::Vector3<T>& vec)
 {
-	out << "\nVector 3:" << "\nx:\t" << vec[0] << "\ny:\t" << vec[1] << "\nz:\t" << vec[2];
+	out << "(" << vec[0] << ", " << vec[1] << ", " << vec[2] << ")";
 	return out;
 }
 
 template<typename T>
 std::ostream& operator<<(std::ostream& out, const mpml::Vector4<T>& vec)
 {
-	out << "\nVector 3:" << "\nx:\t" << vec[0] << "\ny:\t" << vec[1] << "\nz:\t" << vec[2] << "\nw:\t" << vec[3];
+	out << "(" << vec[0] << ", " << vec[1] << ", " << vec[2] ", " << vec[3] << ")";
 	return out;
 }
