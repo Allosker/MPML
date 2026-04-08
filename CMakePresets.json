@@ -78,18 +78,18 @@
             }
         },
         {
-            "name": "macos-debug",
-            "displayName": "macOS Debug",
+            "name": "linux-release",
+            "displayName": "Linux Release",
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "installDir": "${sourceDir}/out/install/${presetName}",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
+                "CMAKE_BUILD_TYPE": "Release"
             },
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
-                "rhs": "Darwin"
+                "rhs": "Linux"
             },
             "vendor": {
                 "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
@@ -97,5 +97,4 @@
                 }
             }
         }
-    ]
 }

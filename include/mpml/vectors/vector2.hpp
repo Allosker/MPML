@@ -15,7 +15,7 @@
 #include <algorithm>
 #include <stdexcept> // for: std::out_of_range()
 
-#include "mpml/utilities/types/angle.hpp"
+#include "mpml/utilities/angle.hpp"
 
 
 namespace mpml
@@ -52,14 +52,14 @@ namespace mpml
 		[[nodiscard]] constexpr T distance(const Vector2<T>& vec) const noexcept;
 		[[nodiscard]] constexpr T distance_squared(const Vector2<T>& vec) const noexcept;
 
-		[[nodiscard]] constexpr Angle angle(const Vector2<T>& vec) const noexcept;
+		[[nodiscard]] constexpr Angle<> angle(const Vector2<T>& vec) const noexcept;
 		[[nodiscard]] constexpr Vector2<T> project(const Vector2<T>& vec) const noexcept;
 		[[nodiscard]] constexpr Vector2<T> reflect(const Vector2<T>& vec) const noexcept;
 		[[nodiscard]] constexpr Vector2<T> reject(const Vector2<T>& vec) const noexcept;
 
 
 		[[nodiscard]] constexpr Vector2<T> perpendicular() const noexcept;
-		[[nodiscard]] constexpr Vector2<T> rotate(Angle angle) const noexcept;
+		[[nodiscard]] constexpr Vector2<T> rotate(Angle<> angle) const noexcept;
 
 		[[nodiscard]] constexpr T length() const noexcept;
 		[[nodiscard]] constexpr T length_squared() const noexcept;
@@ -154,9 +154,9 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Angle Vector2<T>::angle(const Vector2<T>& vec) const noexcept
+	inline constexpr Angle<> Vector2<T>::angle(const Vector2<T>& vec) const noexcept
 	{
-		return static_cast<Angle>(std::acos(dot(vec) / T{length() * vec.length()}));
+		return static_cast<Angle<>>(std::acos(dot(vec) / T{length() * vec.length()}));
 	}
 
 	template<typename T>
@@ -186,9 +186,9 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Vector2<T> Vector2<T>::rotate(Angle angle) const noexcept
+	inline constexpr Vector2<T> Vector2<T>::rotate(Angle<> angle) const noexcept
 	{
-		return Vector2<T>{ x * std::cos(angle.angle) + y * -std::sin(angle.angle), x * std::sin(angle.angle) + y * std::cos(angle.angle)};
+		return Vector2<T>{ x * std::cos(angle.asRadians()) + y * -std::sin(angle.asRadians()), x * std::sin(angle.asRadians()) + y * std::cos(angle.asRadians())};
 	}
 
 	template<typename T>

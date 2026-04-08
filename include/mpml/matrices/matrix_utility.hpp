@@ -7,6 +7,8 @@
 
 #include "mpml/matrices/matrix4.hpp"
 
+#include "mpml/utilities/angle.hpp"
+
 #include "mpml/vectors/vectors.hpp"
 
 
@@ -49,7 +51,7 @@ namespace mpml
 	}
 
 	template<typename T, typename U>
-	[[nodiscard]] constexpr Matrix4<T> perspective(const Angle& fov, const U& width, const U& height, const T& near, const T& far)
+	[[nodiscard]] constexpr Matrix4<T> perspective(const Angle<>& fov, const U& width, const U& height, const T& near, const T& far)
 	{
 		const T rad = fov.asRadians();
 		const T h = std::cos(static_cast<T>(0.5) * rad) / std::sin(static_cast<T>(0.5) * rad);

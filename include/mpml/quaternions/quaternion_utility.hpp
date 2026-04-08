@@ -10,7 +10,7 @@
 #include "mpml/matrices/matrix3.hpp"
 #include "mpml/matrices/matrix4.hpp"
 
-#include "mpml/utilities/types/angle.hpp"
+#include "mpml/utilities/angle.hpp"
 
 namespace mpml
 {
@@ -27,7 +27,7 @@ namespace mpml
 	}
 
 	template<typename T>
-	[[nodiscard]] constexpr Quaternion<T> rotation_as_quaternion(Angle angle, const Vector3<T>& vector, const Vector3<T>& axis) noexcept
+	[[nodiscard]] constexpr Quaternion<T> rotation_as_quaternion(Angle<> angle, const Vector3<T>& vector, const Vector3<T>& axis) noexcept
 	{
 		Quaternion<T> rotation_q{ 0, axis };
 		rotation_q = rotation_q.rotate(angle);
@@ -41,7 +41,7 @@ namespace mpml
 	}
 
 	template<typename T>
-	[[nodiscard]] constexpr Vector3<T> rotation_as_vector(Angle angle, const Vector3<T>& vector, const Vector3<T>& axis) noexcept
+	[[nodiscard]] constexpr Vector3<T> rotation_as_vector(Angle<> angle, const Vector3<T>& vector, const Vector3<T>& axis) noexcept
 	{
 		const Quaternion<T> rotated{ rotation_as_quaternion<T>(angle, vector, axis) };
 
@@ -49,13 +49,13 @@ namespace mpml
 	}
 
 	template<typename T> 
-	[[nodiscard]] constexpr Matrix4<T> rotate(Angle angle, const Vector3<T>& axis) noexcept
+	[[nodiscard]] constexpr Matrix4<T> rotate(Angle<> angle, const Vector3<T>& axis) noexcept
 	{
 		return rotation_matrix<T>(Quaternion<T>{ 0, axis }.rotate(angle));
 	}
 
 	template<typename T>
-	[[nodiscard]] constexpr Matrix4<T> rotate(const Matrix4<T>& mat, Angle angle, const Vector3<T>& axis) noexcept
+	[[nodiscard]] constexpr Matrix4<T> rotate(const Matrix4<T>& mat, Angle<> angle, const Vector3<T>& axis) noexcept
 	{
 		return mat * Matrix4<T>{rotation_matrix<T>(Quaternion<T>{ 0, axis }.rotate(angle))};
 	}

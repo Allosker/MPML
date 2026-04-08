@@ -9,7 +9,7 @@
 #include <array>
 #include <cmath>
 
-#include "mpml/utilities/types/angle.hpp"
+#include "mpml/utilities/angle.hpp"
 
 #include "mpml/vectors/vector3.hpp"
 
@@ -48,8 +48,8 @@ public:
 	[[nodiscard]] constexpr Quaternion<T> normal() const noexcept;
 	[[nodiscard]] constexpr Quaternion<T> inverse() const noexcept;
 
-	[[nodiscard]] constexpr Quaternion<T> rotate(Angle angle, const Vector3<T>& axis) const noexcept;
-	[[nodiscard]] constexpr Quaternion<T> rotate(Angle angle) const noexcept;
+	[[nodiscard]] constexpr Quaternion<T> rotate(Angle<> angle, const Vector3<T>& axis) const noexcept;
+	[[nodiscard]] constexpr Quaternion<T> rotate(Angle<> angle) const noexcept;
 
 
 	// Data Related
@@ -189,7 +189,7 @@ inline constexpr Quaternion<T> Quaternion<T>::inverse() const noexcept
 }
 
 template<typename T>
-inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle angle, const Vector3<T>& axis) const noexcept
+inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle<> angle, const Vector3<T>& axis) const noexcept
 {
 	const Vector3<T> n_axis{ axis.normal() };
 
@@ -198,7 +198,7 @@ inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle angle, const Vector3<
 }
 
 template<typename T>
-inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle angle) const noexcept
+inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle<> angle) const noexcept
 {
 	const Vector3<T> n_axis = Vector3<T>{ x,y,z }.normal();
 

@@ -31,10 +31,32 @@ target_include_directories(MPML
 		$<INSTALL_INTERFACE:include>
 )
 
-target_compile_features(MPML INTERFACE cxx_std_20)
+
+	# set(SRC_DIR "${PROJECT_SOURCE_DIR}/include/") 
+	# set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/") 
+
+	# file(GLOB_RECURSE CPP_FILES CMAKE_CONFIGURE_DEPENDS 
+	# 	"${SRC_DIR}/*.cpp"
+	# 	"${SRC_DIR}/*.c"  
+	# ) 
+	
+	# file(GLOB_RECURSE HPP_FILES CMAKE_CONFIGURE_DEPENDS  
+	# 	"${INCLUDE_DIR}/*.hpp"
+	# 	"${INCLUDE_DIR}/*.h"
+	# ) 
 
 
+	# add_executable( MPML
+	# 	"${PROJECT_SOURCE_DIR}/include/mpml/test.cpp"
+	# 	"${CPP_FILES}"
+	# 	"${HPP_FILES}"  
+	# ) 
 
+	# target_include_directories(MPML PUBLIC ${INCLUDE_DIR})
+
+	# target_compile_features(MPML PRIVATE cxx_std_23)
+
+target_compile_features(MPML INTERFACE cxx_std_23)
 
 # Dowloading Rules
 

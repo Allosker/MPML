@@ -7,7 +7,7 @@
 
 #include "mpml/vectors/vectors.hpp"
 
-#include "mpml/utilities/types/angle.hpp"
+#include "mpml/utilities/angle.hpp"
 
 namespace mpml
 {

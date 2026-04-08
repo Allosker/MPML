@@ -103,15 +103,16 @@ public:
 
 // Common types
 
-
-};
-
-template<typename T>
-constexpr Matrix2<T> Identity2
+static constexpr Matrix2<T> Identity
 {
 	T{1}, T{},
 	T{}, T{1}
 };
+
+
+};
+
+
 
 template<typename T>
 constexpr Matrix2<T> AntiDiagonal_Identity2
