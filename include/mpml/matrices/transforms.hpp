@@ -9,11 +9,104 @@
 
 #include "mpml/utilities/angle.hpp"
 
+#include "mpml/quaternions/quaternions.hpp"
+
 #include "mpml/vectors/vectors.hpp"
 
 
 namespace mpml
 {
+
+	// 2D transforms
+
+	template<typename T>
+	[[nodiscard]] constexpr Matrix3<T> translate(const Matrix3<T>& mat, const Vector2<T>& vec) noexcept
+	{
+		Matrix3<T> trans_mat{ Identity3<T> };
+
+		trans_mat[0][2] = vec.x;
+		trans_mat[1][2] = vec.y;
+
+		return mat * trans_mat;
+	}
+
+	template<typename T>
+	[[nodiscard]] constexpr Matrix3<T> scale(const Matrix3<T>& mat, const Vector2<T>& vec) noexcept
+	{
+		Matrix3<T> trans_mat{ Identity3<T> };
+
+		trans_mat[0][0] = vec.x;
+		trans_mat[1][1] = vec.y;
+
+		return mat * trans_mat;
+	}
+
+	template<typename T>
+	[[nodiscard]] constexpr Matrix3<T> scale(const Matrix3<T>& mat, const T& scalar) noexcept
+	{
+		return scale(mat, Vector2<T>{scalar, scalar});
+	}
+
+
+	template<typename T>
+	[[nodiscard]] constexpr Matrix3<T> rotate(const Matrix3<T>& mat, Angle<> theta) noexcept
+	{
+		Matrix3<T> rot_mat{ Identity3<T> };
+
+		T cos{ std::cos(theta.asRadians()) };
+		T sin{ std::sin(theta.asRadians()) };
+
+		rot_mat[0][0] = cos;
+		rot_mat[0][1] = -sin;
+		rot_mat[1][0] = sin;
+		rot_mat[1][1] = cos;
+
+		return mat * rot_mat;
+	}
+
+
+	template<typename T>
+	[[nodiscard]] constexpr Matrix3<T> view(const Vector2<T>& center, Angle<> theta) noexcept
+	{
+		Matrix3<T> view_mat{ Identity3<T> };
+
+		T cos{ std::cos(theta.asRadians()) };
+		T sin{ std::sin(theta.asRadians()) };
+
+		view_mat[0][0] = cos;
+		view_mat[0][1] = sin;
+		view_mat[0][2] = -(center.x * cos) - (center.y * sin);
+		view_mat[1][0] = -sin;
+		view_mat[1][1] = cos;
+		view_mat[1][2] = center.x * sin - center.y * cos;
+
+		return view_mat;
+	}
+
+	template<typename T, typename U>
+	[[nodiscard]] constexpr Matrix3<T> orthographic_projection(const U& width, const U& height, bool flip_y=true)
+	{
+		Matrix3<T> ort_mat{ Identity3<T> };
+
+		if(!flip_y)
+		{
+			ort_mat[0][0] = static_cast<U>(2) / width;
+			ort_mat[1][1] = static_cast<U>(2) / height;
+		}
+		else
+		{
+			ort_mat[0][0] = static_cast<U>(2) / width;
+			ort_mat[0][2] = -static_cast<T>(1);
+			ort_mat[1][1] = -(static_cast<U>(2) / height);
+			ort_mat[1][2] = static_cast<T>(1);
+		}
+
+		return ort_mat;
+	}
+
+
+	// 3D tranforms
+
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> translate(const Matrix4<T>& mat, const Vector3<T>& vec) noexcept
 	{
@@ -22,18 +115,6 @@ namespace mpml
 		new_mat.m = vec.x;
 		new_mat.n = vec.y;
 		new_mat.o = vec.z;
-
-		return mat * new_mat;
-	}
-
-	template<typename T>
-	[[nodiscard]] constexpr Matrix4<T> scale(const Matrix4<T>& mat, const T& scalar) noexcept
-	{
-		Matrix4<T> new_mat{ Identity4<float> };
-
-		new_mat.a = scalar;
-		new_mat.f = scalar;
-		new_mat.k = scalar;
 
 		return mat * new_mat;
 	}
@@ -48,6 +129,12 @@ namespace mpml
 		new_mat.k = vec.z;
 
 		return mat * new_mat;
+	}
+
+	template<typename T>
+	[[nodiscard]] constexpr Matrix4<T> scale(const Matrix4<T>& mat, const T& scalar) noexcept
+	{
+		return scale(mat, Vector3<T>{ scalar, scalar, scalar });
 	}
 
 	template<typename T, typename U>
