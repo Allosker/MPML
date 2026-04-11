@@ -24,8 +24,8 @@ namespace mpml
 	{
 		Matrix3<T> trans_mat{ Identity3<T> };
 
-		trans_mat[0][2] = vec.x;
-		trans_mat[1][2] = vec.y;
+		trans_mat.c = vec.x;
+		trans_mat.f = vec.y;
 
 		return mat * trans_mat;
 	}
@@ -35,8 +35,8 @@ namespace mpml
 	{
 		Matrix3<T> trans_mat{ Identity3<T> };
 
-		trans_mat[0][0] = vec.x;
-		trans_mat[1][1] = vec.y;
+		trans_mat.a = vec.x;
+		trans_mat.e = vec.y;
 
 		return mat * trans_mat;
 	}
@@ -56,10 +56,10 @@ namespace mpml
 		T cos{ std::cos(theta.asRadians()) };
 		T sin{ std::sin(theta.asRadians()) };
 
-		rot_mat[0][0] = cos;
-		rot_mat[0][1] = -sin;
-		rot_mat[1][0] = sin;
-		rot_mat[1][1] = cos;
+		rot_mat.a = cos;
+		rot_mat.b = -sin;
+		rot_mat.d = sin;
+		rot_mat.e = cos;
 
 		return mat * rot_mat;
 	}
@@ -73,12 +73,12 @@ namespace mpml
 		T cos{ std::cos(theta.asRadians()) };
 		T sin{ std::sin(theta.asRadians()) };
 
-		view_mat[0][0] = cos;
-		view_mat[0][1] = sin;
-		view_mat[0][2] = -(center.x * cos) - (center.y * sin);
-		view_mat[1][0] = -sin;
-		view_mat[1][1] = cos;
-		view_mat[1][2] = center.x * sin - center.y * cos;
+		view_mat.a = cos;
+		view_mat.a = sin;
+		view_mat.c = -(center.x * cos) - (center.y * sin);
+		view_mat.d = -sin;
+		view_mat.e = cos;
+		view_mat.f = center.x * sin - center.y * cos;
 
 		return view_mat;
 	}
@@ -90,15 +90,15 @@ namespace mpml
 
 		if(!flip_y)
 		{
-			ort_mat[0][0] = static_cast<U>(2) / width;
-			ort_mat[1][1] = static_cast<U>(2) / height;
+			ort_mat.a = static_cast<U>(2) / width;
+			ort_mat.e = static_cast<U>(2) / height;
 		}
 		else
 		{
-			ort_mat[0][0] = static_cast<U>(2) / width;
-			ort_mat[0][2] = -static_cast<T>(1);
-			ort_mat[1][1] = -(static_cast<U>(2) / height);
-			ort_mat[1][2] = static_cast<T>(1);
+			ort_mat.a = static_cast<U>(2) / width;
+			ort_mat.c = -static_cast<T>(1);
+			ort_mat.e = -(static_cast<U>(2) / height);
+			ort_mat.f = static_cast<T>(1);
 		}
 
 		return ort_mat;

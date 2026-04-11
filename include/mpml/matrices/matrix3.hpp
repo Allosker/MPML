@@ -111,16 +111,17 @@ namespace mpml
 
 	// Common Types
 
-	static constexpr Matrix3<T> Identity3
+	
+
+	};
+
+	template<typename T>
+	constexpr Matrix3<T> Identity3
 	{
 		T{1}, T{}, T{},
 		T{}, T{1}, T{},
 		T{}, T{}, T{1}
 	};
-
-	};
-
-	
 
 	template<typename T>
 	constexpr Matrix3<T> AntiDiagonal_Identity3
