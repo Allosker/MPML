@@ -51,6 +51,9 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix3<T> rotate(const Matrix3<T>& mat, Angle<> theta) noexcept
 	{
+		if (theta == {})
+			return mat;
+
 		Matrix3<T> rot_mat{ Identity3<T> };
 
 		T cos{ std::cos(theta.asRadians()) };
@@ -110,6 +113,9 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> translate(const Matrix4<T>& mat, const Vector3<T>& vec) noexcept
 	{
+		if (vec.x == {}&& vec.y == {}&& vec.z == {})
+			return mat;
+
 		Matrix4<T> new_mat{ Identity4<float> };
 
 		new_mat.m = vec.x;
@@ -122,6 +128,9 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> scale(const Matrix4<T>& mat, const Vector3<T>& vec) noexcept
 	{
+		if (vec.x == {} && vec.y == {} && vec.z == {})
+			return mat;
+
 		Matrix4<T> new_mat{ Identity4<float> };
 
 		new_mat.a = vec.x;
@@ -134,6 +143,9 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> scale(const Matrix4<T>& mat, const T& scalar) noexcept
 	{
+		if (scalar == {})
+			return mat;
+
 		return scale(mat, Vector3<T>{ scalar, scalar, scalar });
 	}
 
