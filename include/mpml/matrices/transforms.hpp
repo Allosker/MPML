@@ -153,33 +153,20 @@ namespace mpml
 		};
 	}
 
-	// Make a trasnpsoe for that, it doesn't work
-	template<typename T>
-	[[nodiscard]] constexpr Matrix4<T> ortho2D(T width, T height, T near, T far)
+	template<typename T, typename U>
+	[[nodiscard]] constexpr Matrix4<T> orthographic_projection(const U& width, const U& height, const T& near, const T& far)
 	{
-		return Matrix4<T>
-		{
-			static_cast<T>(2) / width, 0, 0, -1,
-				0, -static_cast<T>(2) / height, 0, 1,
-				0, 0, -static_cast<T>(2) / (far - near), -(far + near) / (far - near),
-				0, 0, 0, static_cast<T>(1)
-		};
-	}
-
-	template<typename T>
-	[[nodiscard]] constexpr Matrix4<T> ortho(T width, T height, T near, T far)
-	{
-		const T right{ width / static_cast<T>(2) };
+		const T right{ static_cast<T>(width / static_cast<U>(2)) };
 		const T left{ -right };
-		const T top{ height / static_cast<T>(2) };
+		const T top{ static_cast<T>(height / static_cast<U>(2)) };
 		const T bottom{ -top };
 
 		return Matrix4<T>
 		{
 			static_cast<T>(2) / (right - left), 0, 0, 0,
 				0, static_cast<T>(2) / (top - bottom), 0, 0,
-				0, 0, -static_cast<T>(2) / (far - near), 0,
-				-((right + left) / (right - left)), -((top + bottom) / (top - bottom)), -(far + near) / (far - near), static_cast<T>(1)
+				0, 0, -static_cast<T>(1) / (far - near), 0,
+				-((right + left) / (right - left)), -((top + bottom) / (top - bottom)), near / (far - near), static_cast<T>(1)
 		};
 	}
 
