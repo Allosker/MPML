@@ -34,13 +34,14 @@ MPML is designed to be Multi-Purpose (even though its current state may say othe
 - Maintain balance between flexibility and performances.
 - Remain:
   - Dependency-free
-  - Header-only
+  - Cmake compatible
   - Easy to integrate and use
 - Provide suitability for modern C++ as the library is *constexpr friendly*.
+- Provide a large range of utility functions for *tensors*.
 
 #### Last words
 
-The library is free to use as per its [license](https://github.com/Allosker/MPML/blob/master/LICENSE.txt). Note: this is subject to changes.
+The library is free to use as per its [license](https://github.com/Allosker/MPML/blob/master/LICENSE.txt).
 
 
 
