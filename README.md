@@ -27,7 +27,6 @@ MPML shall feature a wide range of *mathematical operations* but is for now limi
 ### Specialized Types
 
 MPML is designed to be Multi-Purpose (even though its current state may say otherwise), thereby possessing generalized types. As such, generalized *vectors*, *matrices*, and *quaternions* are indexed types and can be accessed via `operator[]`. While less intuitive than an *anonymous struct*, this allows for more flexibility when accessing multi-dimensional matrices/vectors.
-(As of the day of writing no such type is yet availble).
 
 ## Design Goals
 
