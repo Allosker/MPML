@@ -73,7 +73,7 @@ public:
 
 	// Static Members
 
-	static constexpr Quaternion fromAxis(const Vector3<T>& axis, const Angle<>& angle = {}) noexcept;
+	[[nodiscard]] static constexpr Quaternion fromAxis(const Vector3<T>& axis, const Angle<>& angle = {}) noexcept;
 	// TODO: static constexpr Quaternion fromEulers(const Vector3<T>& angles) noexcept;
 
 
