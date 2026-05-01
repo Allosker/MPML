@@ -71,6 +71,12 @@ public:
 	[[nodiscard]] constexpr auto operator<=>(const Quaternion<T>&) const noexcept = default;
 
 
+	// Static Members
+
+	static constexpr Quaternion fromAxis(const Vector3<T>& axis, const Angle<>& angle = {}) noexcept;
+	// TODO: static constexpr Quaternion fromEulers(const Vector3<T>& angles) noexcept;
+
+
 // Class Members
 
 	T s{};
@@ -260,6 +266,22 @@ inline constexpr Quaternion<T>& Quaternion<T>::operator/=(const T& scalar) noexc
 	*this = *this / scalar;
 
 	return *this;
+}
+
+
+// Static Members
+
+template<typename T>
+inline constexpr Quaternion<T> Quaternion<T>::fromAxis(const Vector3<T>& axis, const Angle<>& angle) noexcept
+{
+	auto sin = std::sin(angle.asRadians() / 2.f);
+	return 
+	{
+		std::cos(angle.asRadians() / 2.f),
+		sin * axis.x,
+		sin * axis.y,
+		sin * axis.z
+	};
 }
 
 
