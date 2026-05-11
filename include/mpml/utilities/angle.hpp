@@ -47,9 +47,12 @@ namespace mpml
 			return angle_rad;
 		}
 
-		friend static constexpr Angle<T> operator+(Angle<T> ta, Angle<T> tb);
+		[[nodiscard]] constexpr Angle operator+(Angle t) const noexcept
+		{
+			return Angle::fromRadians(this->angle_rad + t.angle_rad);
+		}
 
-		[[nodiscard]] constexpr Angle<T> operator+=(Angle<T> t) noexcept
+		[[nodiscard]] constexpr Angle operator+=(Angle t) noexcept
 		{
 			*this = *this + t;
 		}
@@ -64,15 +67,6 @@ namespace mpml
 
 		T angle_rad;
 	};
-
-	
-	// = Overloads
-
-	template<typename T>
-	[[nodiscard]] static constexpr Angle<T> operator+(Angle<T> ta, Angle<T> tb)
-	{
-		return ta.angle_rad + tb.angle_rad;
-	}
 
 
 } // mpml
