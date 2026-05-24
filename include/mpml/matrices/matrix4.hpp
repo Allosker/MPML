@@ -721,7 +721,7 @@ namespace mpml
 			mat.a * vec.x + mat.b * vec.y + mat.c * vec.z + mat.d * vec.w,
 			mat.e * vec.x + mat.f * vec.y + mat.g * vec.z + mat.h * vec.w,
 			mat.i * vec.x + mat.j * vec.y + mat.k * vec.z + mat.l * vec.w,
-			vec.w
+			mat.m * vec.x + mat.n * vec.y + mat.o * vec.z + mat.p * vec.w
 		};
 	}
 
