@@ -14,3 +14,4 @@
 
 // -- Utilities
 #include "mpml/vectors/transforms.hpp"
+#include "mpml/vectors/special_overloads/hash_vectors.hpp"
