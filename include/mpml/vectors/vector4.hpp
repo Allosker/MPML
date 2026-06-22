@@ -17,7 +17,7 @@
 #include <algorithm>
 #include <stdexcept> // for: std::out_of_range()
 
-#include "mpml/utilities/angle.hpp"
+#include "mpml/utilities/types/angle.hpp"
 #include "mpml/vectors/vector3.hpp"
 
 
@@ -41,6 +41,10 @@ namespace mpml
 		constexpr Vector4(const Vector4&) noexcept = default;
 		constexpr Vector4& operator=(const Vector4&) noexcept = default;
 
+		constexpr Vector4(Vector4&&) noexcept = default;
+		constexpr Vector4& operator=(Vector4&&) noexcept = default;
+
+
 		constexpr Vector4(const T& x_, const T& y_, const T& z_, const T& w_ = static_cast<T>(1)) noexcept;
 
 		constexpr Vector4(const Vector2<T>& vec2_1, const Vector2<T>& vec2_2) noexcept;
@@ -59,7 +63,7 @@ namespace mpml
 		[[nodiscard]] constexpr T distance(const Vector4<T>& vec) const noexcept;
 		[[nodiscard]] constexpr T distance_squared(const Vector4<T>& vec) const noexcept;
 
-		[[nodiscard]] constexpr Angle<> angle(const Vector4<T>& vec) const noexcept;
+		[[nodiscard]] constexpr Angle angle(const Vector4<T>& vec) const noexcept;
 		[[nodiscard]] constexpr Vector4<T> project(const Vector4<T>& vec) const noexcept;
 		[[nodiscard]] constexpr Vector4<T> reflect(const Vector4<T>& vec) const noexcept;
 		[[nodiscard]] constexpr Vector4<T> reject(const Vector4<T>& vec) const noexcept;
@@ -105,6 +109,7 @@ namespace mpml
 	
 		static constexpr size_t size{ 4 };
 
+		static_assert(std::is_standard_layout_v<Vector4<T>>, "All members of Vector4 must be contiguous in memory");
 	};
 	// Common Types
 	template<typename T>
@@ -189,9 +194,9 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Angle<> Vector4<T>::angle(const Vector4<T>& vec) const noexcept
+	inline constexpr Angle Vector4<T>::angle(const Vector4<T>& vec) const noexcept
 	{
-		return static_cast<Angle<>>(T{ std::acos(dot(vec) / T{length() * vec.length()}) });
+		return static_cast<Angle>(T{ std::acos(dot(vec) / T{length() * vec.length()}) });
 	}
 
 	template<typename T>
@@ -317,6 +322,12 @@ namespace mpml
 	inline constexpr Vector4<T> Vector4<T>::operator-() const noexcept
 	{
 		return Vector4<T>{-x, -y};
+	}
+
+	template<typename T>
+	inline constexpr bool Vector4<T>::operator==(const Vector4<T>& vec) const noexcept
+	{
+		return (x == vec.x && y == vec.y && z == vec.z);
 	}
 
 

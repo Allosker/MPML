@@ -16,7 +16,7 @@
 #include <algorithm>
 #include <stdexcept> // for: std::out_of_range()
 
-#include "mpml/utilities/angle.hpp"
+#include "mpml/utilities/types/angle.hpp"
 #include "mpml/vectors/vector2.hpp"
 
 
@@ -39,12 +39,16 @@ namespace mpml
 		constexpr Vector3(const Vector3&) noexcept = default;
 		constexpr Vector3& operator=(const Vector3&) noexcept = default;
 
+		constexpr Vector3(Vector3&&) noexcept = default;
+		constexpr Vector3& operator=(Vector3&&) noexcept = default;
+
+
 		constexpr Vector3(const T& x_, const T& y_, const T& z_) noexcept;
 
-		explicit constexpr Vector3(const Vector2<T>& vec2, const T& scalar) noexcept;
+		constexpr Vector3(const Vector2<T>& vec2, const T& scalar) noexcept;
 
 		template<typename U>
-		explicit constexpr Vector3(const Vector3<U>& vec) noexcept;
+		constexpr Vector3(const Vector3<U>& vec) noexcept;
 
 
 		// Operations
@@ -55,7 +59,7 @@ namespace mpml
 		[[nodiscard]] constexpr T distance(const Vector3<T>& vec) const noexcept;
 		[[nodiscard]] constexpr T distance_squared(const Vector3<T>& vec) const noexcept;
 
-		[[nodiscard]] constexpr Angle<> angle(const Vector3<T>& vec) const noexcept;
+		[[nodiscard]] constexpr Angle angle(const Vector3<T>& vec) const noexcept;
 		[[nodiscard]] constexpr Vector3<T> project(const Vector3<T>& vec) const noexcept;
 		[[nodiscard]] constexpr Vector3<T> reflect(const Vector3<T>& vec) const noexcept;
 		[[nodiscard]] constexpr Vector3<T> reject(const Vector3<T>& vec) const noexcept;
@@ -101,6 +105,8 @@ namespace mpml
 		T z{};
 
 		static constexpr size_t size{ 3 };
+
+		static_assert(std::is_standard_layout_v<Vector3<T>>, "All members of Vector3 must be contiguous in memory");
 	};
 	// Common Types
 	template<typename T>
@@ -177,9 +183,9 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Angle<> Vector3<T>::angle(const Vector3<T>& vec) const noexcept
+	inline constexpr Angle Vector3<T>::angle(const Vector3<T>& vec) const noexcept
 	{
-		return static_cast<Angle<>>(T{std::acos(dot(vec) / T{length() *  vec.length()})});
+		return static_cast<Angle>(T{std::acos(dot(vec) / T{length() *  vec.length()})});
 	}
 
 	template<typename T>
@@ -310,7 +316,7 @@ namespace mpml
 	template<typename T>
 	inline constexpr Vector3<T> Vector3<T>::operator-() const noexcept
 	{
-		return Vector3<T>{-x, -y, -z};
+		return Vector3<T>{-x, -y};
 	}
 
 

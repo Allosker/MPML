@@ -27,8 +27,12 @@ namespace mpml
 
 		// Initialization
 
-		constexpr Matrix4(const Matrix4<T>& matrix) noexcept;
-		constexpr Matrix4<T>& operator=(const Matrix4<T>& matrix) noexcept;
+		constexpr Matrix4(const Matrix4<T>&) noexcept = default;
+		constexpr Matrix4<T>& operator=(const Matrix4<T>&) noexcept = default;
+
+		constexpr Matrix4(Matrix4<T>&&) noexcept = default;
+		constexpr Matrix4<T>& operator=(Matrix4<T>&&) noexcept = default;
+
 
 		constexpr Matrix4(const Matrix3<T>& matrix) noexcept;
 
@@ -120,25 +124,23 @@ namespace mpml
 
 	// Common Types
 
+		static constexpr Matrix4<T> Identity
+		{
+			T{1}, T{}, T{}, T{},
+			T{}, T{1}, T{}, T{},
+			T{}, T{}, T{1}, T{},
+			T{}, T{}, T{}, T{1}
+		};
 
-	};
+		static constexpr Matrix4<T> AntiDiagonal_Identity
+		{
+			T{}, T{}, T{}, T{1},
+			T{}, T{}, T{1}, T{},
+			T{}, T{1}, T{}, T{},
+			T{1}, T{}, T{}, T{}
+		};
 
-	template<typename T>
-	constexpr Matrix4<T> Identity4
-	{
-		T{1}, T{}, T{}, T{},
-		T{}, T{1}, T{}, T{},
-		T{}, T{}, T{1}, T{},
-		T{}, T{}, T{}, T{1}
-	};
 
-	template<typename T>
-	constexpr Matrix4<T> AntiDiagonal_Identity4
-	{
-		T{}, T{}, T{}, T{1},
-		T{}, T{}, T{1}, T{},
-		T{}, T{1}, T{}, T{},
-		T{1}, T{}, T{}, T{}
 	};
 
 
@@ -146,12 +148,6 @@ namespace mpml
 
 
 	// Initialization
-	template<typename T>
-	inline constexpr Matrix4<T>::Matrix4(const Matrix4<T>& matrix) noexcept
-		: data{ matrix.data }
-	{
-	}
-
 	template<typename T>
 	inline constexpr Matrix4<T>::Matrix4(const Matrix3<T>& matrix) noexcept
 		: data
@@ -162,17 +158,6 @@ namespace mpml
 				   0,		 0,		   0, 1
 		}
 	{
-	}
-
-	template<typename T>
-	inline constexpr Matrix4<T>& Matrix4<T>::operator=(const Matrix4<T>& matrix) noexcept
-	{
-		if (this == &matrix)
-			return *this;
-
-		data = matrix.data;
-
-		return *this;
 	}
 
 	template<typename T>
@@ -721,7 +706,7 @@ namespace mpml
 			mat.a * vec.x + mat.b * vec.y + mat.c * vec.z + mat.d * vec.w,
 			mat.e * vec.x + mat.f * vec.y + mat.g * vec.z + mat.h * vec.w,
 			mat.i * vec.x + mat.j * vec.y + mat.k * vec.z + mat.l * vec.w,
-			mat.m * vec.x + mat.n * vec.y + mat.o * vec.z + mat.p * vec.w
+			vec.w
 		};
 	}
 
