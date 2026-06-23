@@ -27,8 +27,12 @@ namespace mpml
 
 		// Initialization
 
-		constexpr Matrix4(const Matrix4<T>& matrix) noexcept;
-		constexpr Matrix4<T>& operator=(const Matrix4<T>& matrix) noexcept;
+		constexpr Matrix4(const Matrix4<T>&) noexcept = default;
+		constexpr Matrix4<T>& operator=(const Matrix4<T>&) noexcept = default;
+
+		constexpr Matrix4(Matrix4<T>&&) noexcept = default;
+		constexpr Matrix4<T>& operator=(Matrix4<T>&&) noexcept = default;
+
 
 		constexpr Matrix4(const Matrix3<T>& matrix) noexcept;
 
@@ -147,12 +151,6 @@ namespace mpml
 
 	// Initialization
 	template<typename T>
-	inline constexpr Matrix4<T>::Matrix4(const Matrix4<T>& matrix) noexcept
-		: data{ matrix.data }
-	{
-	}
-
-	template<typename T>
 	inline constexpr Matrix4<T>::Matrix4(const Matrix3<T>& matrix) noexcept
 		: data
 		{ 
@@ -162,17 +160,6 @@ namespace mpml
 				   0,		 0,		   0, 1
 		}
 	{
-	}
-
-	template<typename T>
-	inline constexpr Matrix4<T>& Matrix4<T>::operator=(const Matrix4<T>& matrix) noexcept
-	{
-		if (this == &matrix)
-			return *this;
-
-		data = matrix.data;
-
-		return *this;
 	}
 
 	template<typename T>

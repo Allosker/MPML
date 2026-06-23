@@ -41,6 +41,10 @@ namespace mpml
 		constexpr Vector4(const Vector4&) noexcept = default;
 		constexpr Vector4& operator=(const Vector4&) noexcept = default;
 
+		constexpr Vector4(Vector4&&) noexcept = default;
+		constexpr Vector4& operator=(Vector4&&) noexcept = default;
+
+
 		constexpr Vector4(const T& x_, const T& y_, const T& z_, const T& w_ = static_cast<T>(1)) noexcept;
 
 		constexpr Vector4(const Vector2<T>& vec2_1, const Vector2<T>& vec2_2) noexcept;

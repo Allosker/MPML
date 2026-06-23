@@ -26,8 +26,12 @@ public:
 
 	// Initialization
 
-	constexpr Matrix2(const Matrix2<T>& matrix) noexcept;
-	constexpr Matrix2<T>& operator=(const Matrix2<T>& matrix) noexcept;
+	constexpr Matrix2(const Matrix2<T>&) noexcept = default;
+	constexpr Matrix2<T>& operator=(const Matrix2<T>&) noexcept = default;
+
+	constexpr Matrix2(Matrix2<T>&&) noexcept = default;
+	constexpr Matrix2<T>& operator=(Matrix2<T>&&) noexcept = default;
+
 
 	constexpr Matrix2(const std::array<T, 4>& elems) noexcept;
 
@@ -126,24 +130,6 @@ constexpr Matrix2<T> AntiDiagonal_Identity2
 
 
 // Initialization
-template<typename T>
-inline constexpr Matrix2<T>::Matrix2(const Matrix2<T>& matrix) noexcept
-	: data{ matrix.data }
-{
-}
-
-template<typename T>
-inline constexpr Matrix2<T>& Matrix2<T>::operator=(const Matrix2<T>& matrix) noexcept
-{
-	if (this == &matrix)
-		return *this;
-	
-	data = matrix.data;
-
-	return *this;
-}
-
-
 template<typename T>
 inline constexpr Matrix2<T>::Matrix2(const Vector2<T>& vec1, const Vector2<T>& vec2) noexcept
 {

@@ -36,6 +36,10 @@ namespace mpml
 		constexpr Vector2(const Vector2&) noexcept = default;
 		constexpr Vector2& operator=(const Vector2&) noexcept = default;
 
+		constexpr Vector2(Vector2&&) noexcept = default;
+		constexpr Vector2& operator=(Vector2&&) noexcept = default;
+
+
 		constexpr Vector2(const T& x_, const T& y_) noexcept;
 
 		template<typename U>

@@ -26,8 +26,12 @@ namespace mpml
 
 		// Initialization
 
-		constexpr Matrix3(const Matrix3<T>& matrix) noexcept;
-		constexpr Matrix3<T>& operator=(const Matrix3<T>& matrix) noexcept;
+		constexpr Matrix3(const Matrix3<T>&) noexcept = default;
+		constexpr Matrix3<T>& operator=(const Matrix3<T>&) noexcept = default;
+
+		constexpr Matrix3(Matrix3<T>&&) noexcept = default;
+		constexpr Matrix3<T>& operator=(Matrix3<T>&&) noexcept = default;
+
 
 		constexpr Matrix3(const Vector3<T>& vec1, const Vector3<T>& vec2, const Vector3<T>& vec3) noexcept;
 
@@ -136,23 +140,6 @@ namespace mpml
 
 
 	// Initialization
-	template<typename T>
-	inline constexpr Matrix3<T>::Matrix3(const Matrix3<T>& matrix) noexcept
-		: data{ matrix.data }
-	{
-	}
-
-	template<typename T>
-	inline constexpr Matrix3<T>& Matrix3<T>::operator=(const Matrix3<T>& matrix) noexcept
-	{
-		if (this == &matrix)
-			return *this;
-
-		data = matrix.data;
-
-		return *this;
-	}
-
 	template<typename T>
 	inline constexpr Matrix3<T>::Matrix3(const Vector3<T>& vec1, const Vector3<T>& vec2, const Vector3<T>& vec3) noexcept
 	{

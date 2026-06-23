@@ -39,6 +39,10 @@ namespace mpml
 		constexpr Vector3(const Vector3&) noexcept = default;
 		constexpr Vector3& operator=(const Vector3&) noexcept = default;
 
+		constexpr Vector3(Vector3&&) noexcept = default;
+		constexpr Vector3& operator=(Vector3&&) noexcept = default;
+
+
 		constexpr Vector3(const T& x_, const T& y_, const T& z_) noexcept;
 
 		explicit constexpr Vector3(const Vector2<T>& vec2, const T& scalar) noexcept;
