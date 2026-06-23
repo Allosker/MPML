@@ -9,7 +9,7 @@
 #include <array>
 #include <cmath>
 
-#include "mpml/utilities/types/angle.hpp"
+#include "mpml/utilities/angle.hpp"
 
 #include "mpml/vectors/vector3.hpp"
 
@@ -48,13 +48,13 @@ public:
 	[[nodiscard]] constexpr Quaternion<T> normal() const noexcept;
 	[[nodiscard]] constexpr Quaternion<T> inverse() const noexcept;
 
-	[[nodiscard]] constexpr Quaternion<T> rotate(Angle angle, const Vector3<T>& axis) const noexcept;
-	[[nodiscard]] constexpr Quaternion<T> rotate(Angle angle) const noexcept;
+	[[nodiscard]] constexpr Quaternion<T> rotate(Angle<> angle, const Vector3<T>& axis) const noexcept;
+	[[nodiscard]] constexpr Quaternion<T> rotate(Angle<> angle) const noexcept;
 
 
 	// Data Related
 
-	[[nodiscard]] constexpr T* data_ptr() const noexcept;
+	[[nodiscard]] constexpr T* data_ptr() noexcept;
 	[[nodiscard]] constexpr const T* data_ptr() const noexcept;
 
 	[[nodiscard]] constexpr T& operator[](size_t index);
@@ -71,6 +71,12 @@ public:
 	[[nodiscard]] constexpr auto operator<=>(const Quaternion<T>&) const noexcept = default;
 
 
+	// Static Members
+
+	[[nodiscard]] static constexpr Quaternion fromAxis(const Vector3<T>& axis, const Angle<>& angle = {}) noexcept;
+	// TODO: static constexpr Quaternion fromEulers(const Vector3<T>& angles) noexcept;
+
+
 // Class Members
 
 	T s{};
@@ -80,7 +86,6 @@ public:
 	
 	static constexpr size_t size{ 4 };
 
-	static_assert(std::is_standard_layout_v<Quaternion<T>>, "All members of Quaternion must be contiguous in memory");
 };
 
 
@@ -190,7 +195,7 @@ inline constexpr Quaternion<T> Quaternion<T>::inverse() const noexcept
 }
 
 template<typename T>
-inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle angle, const Vector3<T>& axis) const noexcept
+inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle<> angle, const Vector3<T>& axis) const noexcept
 {
 	const Vector3<T> n_axis{ axis.normal() };
 
@@ -199,7 +204,7 @@ inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle angle, const Vector3<
 }
 
 template<typename T>
-inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle angle) const noexcept
+inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle<> angle) const noexcept
 {
 	const Vector3<T> n_axis = Vector3<T>{ x,y,z }.normal();
 
@@ -210,13 +215,13 @@ inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle angle) const noexcept
 
 // Data Related
 template<typename T>
-inline constexpr T* Quaternion<T>::data_ptr() const noexcept
+inline constexpr T* Quaternion<T>::data_ptr() noexcept
 {
 	return &s;
 }
 
 template<typename T>
-inline constexpr T* Quaternion<T>::data_ptr() const noexcept
+inline constexpr const T* Quaternion<T>::data_ptr() const noexcept
 {
 	return &s;
 }
@@ -261,6 +266,22 @@ inline constexpr Quaternion<T>& Quaternion<T>::operator/=(const T& scalar) noexc
 	*this = *this / scalar;
 
 	return *this;
+}
+
+
+// Static Members
+
+template<typename T>
+inline constexpr Quaternion<T> Quaternion<T>::fromAxis(const Vector3<T>& axis, const Angle<>& angle) noexcept
+{
+	auto sin = std::sin(angle.asRadians() / 2.f);
+	return 
+	{
+		std::cos(angle.asRadians() / 2.f),
+		sin * axis.x,
+		sin * axis.y,
+		sin * axis.z
+	};
 }
 
 
