@@ -11,7 +11,7 @@ endif()
  
 project ( 
 	MPML
-	VERSION 1.0.12
+	VERSION 1.1.0
 	LANGUAGES C CXX
 )
 
