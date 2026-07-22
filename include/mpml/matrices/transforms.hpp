@@ -5,13 +5,13 @@
 // Mostly for Graphics Matrix functions, defines some utility functions to create matrices
 // ===================================================
 
-#include "mpml/matrices/matrix4.hpp"
+#include "matrices/matrix4.hpp"
 
-#include "mpml/utilities/angle.hpp"
+#include "utilities/angle.hpp"
 
-#include "mpml/quaternions/quaternions.hpp"
+#include "quaternions/quaternions.hpp"
 
-#include "mpml/vectors/vectors.hpp"
+#include "vectors/vectors.hpp"
 
 
 namespace mpml
@@ -22,7 +22,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix3<T> translate(const Matrix3<T>& mat, const Vector2<T>& vec) noexcept
 	{
-		Matrix3<T> trans_mat{ Identity3<T> };
+		Matrix3<T> trans_mat{ Matrix3<T>::Identity };
 
 		trans_mat[0][2] = vec.x;
 		trans_mat[1][2] = vec.y;
@@ -33,7 +33,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix3<T> scale(const Matrix3<T>& mat, const Vector2<T>& vec) noexcept
 	{
-		Matrix3<T> trans_mat{ Identity3<T> };
+		Matrix3<T> trans_mat{};
 
 		trans_mat[0][0] = vec.x;
 		trans_mat[1][1] = vec.y;
@@ -51,10 +51,10 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix3<T> rotate(const Matrix3<T>& mat, Angle<> theta) noexcept
 	{
-		Matrix3<T> rot_mat{ Identity3<T> };
+		Matrix3<T> rot_mat{ Matrix3<T>::Identity };
 
-		T cos{ std::cos(theta.asRadians()) };
-		T sin{ std::sin(theta.asRadians()) };
+		T cos{ std::cos(theta.as_radians()) };
+		T sin{ std::sin(theta.as_radians()) };
 
 		rot_mat[0][0] = cos;
 		rot_mat[0][1] = -sin;
@@ -68,10 +68,10 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix3<T> view(const Vector2<T>& center, Angle<> theta) noexcept
 	{
-		Matrix3<T> view_mat{ Identity3<T> };
+		Matrix3<T> view_mat{ Matrix3<T>::Identity };
 
-		T cos{ std::cos(theta.asRadians()) };
-		T sin{ std::sin(theta.asRadians()) };
+		T cos{ std::cos(theta.as_radians()) };
+		T sin{ std::sin(theta.as_radians()) };
 
 		view_mat[0][0] = cos;
 		view_mat[0][1] = sin;
@@ -86,7 +86,7 @@ namespace mpml
 	template<typename T, typename U>
 	[[nodiscard]] constexpr Matrix3<T> orthographic_projection(const U& width, const U& height, bool flip_y=true)
 	{
-		Matrix3<T> ort_mat{ Identity3<T> };
+		Matrix3<T> ort_mat{ Matrix3<T>::Identity };
 
 		if(!flip_y)
 		{
@@ -110,7 +110,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> translate(const Matrix4<T>& mat, const Vector3<T>& vec) noexcept
 	{
-		Matrix4<T> new_mat{ Identity4<T> };
+		Matrix4<T> new_mat{ Matrix4<T>::Identity };
 
 		new_mat.m = vec.x;
 		new_mat.n = vec.y;
@@ -122,7 +122,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> scale(const Matrix4<T>& mat, const Vector3<T>& vec) noexcept
 	{
-		Matrix4<T> new_mat{ Identity4<T> };
+		Matrix4<T> new_mat{};
 
 		new_mat.a = vec.x;
 		new_mat.f = vec.y;
@@ -140,16 +140,16 @@ namespace mpml
 	template<typename T, typename U>
 	[[nodiscard]] constexpr Matrix4<T> perspective(const Angle<>& fov, const U& width, const U& height, const T& near, const T& far)
 	{
-		const T rad = fov.asRadians();
+		const T rad = fov.as_radians();
 		const T h = std::cos(static_cast<T>(0.5) * rad) / std::sin(static_cast<T>(0.5) * rad);
 		const T w = h * height / width;
 
 		return Matrix4<T>
 		{
 			w, 0, 0, 0,
-				0, h, 0, 0,
-				0, 0, far / (near - far), -static_cast<T>(1),
-				0, 0, -(far * near) / (far - near), 0,
+			0, h, 0, 0,
+			0, 0, far / (near - far), -static_cast<T>(1),
+			0, 0, -(far * near) / (far - near), 0,
 		};
 	}
 

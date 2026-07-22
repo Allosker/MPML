@@ -5,12 +5,12 @@
 // Defines some overload for Quaternions as well as rotation utilities
 // ===================================================
 
-#include "mpml/quaternions/quaternion.hpp"
+#include "quaternions/quaternion.hpp"
 
-#include "mpml/matrices/matrix3.hpp"
-#include "mpml/matrices/matrix4.hpp"
+#include "matrices/matrix3.hpp"
+#include "matrices/matrix4.hpp"
 
-#include "mpml/utilities/angle.hpp"
+#include "utilities/angle.hpp"
 
 namespace mpml
 {

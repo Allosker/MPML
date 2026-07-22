@@ -15,7 +15,7 @@
 #include <algorithm>
 #include <stdexcept> // for: std::out_of_range()
 
-#include "mpml/utilities/angle.hpp"
+#include "utilities/angle.hpp"
 
 
 namespace mpml
@@ -51,24 +51,24 @@ namespace mpml
 
 		// Operations
 
-		[[nodiscard]] constexpr T dot(const Vector2<T>& vec) const noexcept;
+		[[nodiscard]] constexpr T dot(const Vector2& vec) const noexcept;
 
-		[[nodiscard]] constexpr T distance(const Vector2<T>& vec) const noexcept;
-		[[nodiscard]] constexpr T distance_squared(const Vector2<T>& vec) const noexcept;
+		[[nodiscard]] constexpr T distance(const Vector2& vec) const noexcept;
+		[[nodiscard]] constexpr T distance_squared(const Vector2& vec) const noexcept;
 
-		[[nodiscard]] constexpr Angle<> angle(const Vector2<T>& vec) const noexcept;
-		[[nodiscard]] constexpr Vector2<T> project(const Vector2<T>& vec) const noexcept;
-		[[nodiscard]] constexpr Vector2<T> reflect(const Vector2<T>& vec) const noexcept;
-		[[nodiscard]] constexpr Vector2<T> reject(const Vector2<T>& vec) const noexcept;
+		[[nodiscard]] constexpr Angle<> angle(const Vector2& vec) const noexcept;
+		[[nodiscard]] constexpr Vector2 project(const Vector2& vec) const noexcept;
+		[[nodiscard]] constexpr Vector2 reflect(const Vector2& vec) const noexcept;
+		[[nodiscard]] constexpr Vector2 reject(const Vector2& vec) const noexcept;
 
 
-		[[nodiscard]] constexpr Vector2<T> perpendicular() const noexcept;
-		[[nodiscard]] constexpr Vector2<T> rotate(Angle<> angle) const noexcept;
+		[[nodiscard]] constexpr Vector2 perpendicular() const noexcept;
+		[[nodiscard]] constexpr Vector2 rotate(Angle<> angle) const noexcept;
 
 		[[nodiscard]] constexpr T length() const noexcept;
 		[[nodiscard]] constexpr T length_squared() const noexcept;
 
-		[[nodiscard]] constexpr Vector2<T> normal() const noexcept;
+		[[nodiscard]] constexpr Vector2 normal() const noexcept;
 
 		[[nodiscard]] constexpr T det(const Vector2& vec) const noexcept;
 
@@ -84,17 +84,17 @@ namespace mpml
 
 		// Overloads
 
-		constexpr Vector2<T>& operator+=(const Vector2<T>& vec) noexcept;
-		constexpr Vector2<T>& operator-=(const Vector2<T>& vec) noexcept;
+		constexpr Vector2& operator+=(const Vector2& vec) noexcept;
+		constexpr Vector2& operator-=(const Vector2& vec) noexcept;
 
-		constexpr Vector2<T>& operator+=(const T& scalar) noexcept;
-		constexpr Vector2<T>& operator-=(const T& scalar) noexcept;
-		constexpr Vector2<T>& operator*=(const T& scalar) noexcept;
-		constexpr Vector2<T>& operator/=(const T& scalar) noexcept;
+		constexpr Vector2& operator+=(const T& scalar) noexcept;
+		constexpr Vector2& operator-=(const T& scalar) noexcept;
+		constexpr Vector2& operator*=(const T& scalar) noexcept;
+		constexpr Vector2& operator/=(const T& scalar) noexcept;
 
-		[[nodiscard]] constexpr Vector2<T> operator-() const noexcept;
+		[[nodiscard]] constexpr Vector2 operator-() const noexcept;
 
-		[[nodiscard]] constexpr auto operator<=>(const Vector2<T>&) const noexcept = default;
+		[[nodiscard]] constexpr auto operator<=>(const Vector2&) const noexcept = default;
 
 	
 	// Class members
@@ -104,13 +104,21 @@ namespace mpml
 
 		static constexpr size_t size{ 2 };
 
+
+		static const Vector2 Xaxis;
+		static const Vector2 Yaxis;
+
 	};
-	// Common Types
-	template<typename T>
-	inline constexpr Vector2 Xaxis2{ 1,0 };
+
+
+
+	// Common Types Defs
 
 	template<typename T>
-	inline constexpr Vector2 Yaxis2{ 0,1 };
+	inline constexpr Vector2<T> Vector2<T>::Xaxis{ 1,0 };
+
+	template<typename T>
+	inline constexpr Vector2<T> Vector2<T>::Yaxis{ 0,1 };
 
 
 
@@ -192,7 +200,7 @@ namespace mpml
 	template<typename T>
 	inline constexpr Vector2<T> Vector2<T>::rotate(Angle<> angle) const noexcept
 	{
-		return Vector2<T>{ x * std::cos(angle.asRadians()) + y * -std::sin(angle.asRadians()), x * std::sin(angle.asRadians()) + y * std::cos(angle.asRadians())};
+		return Vector2<T>{ x * std::cos(angle.as_radians()) + y * -std::sin(angle.as_radians()), x * std::sin(angle.as_radians()) + y * std::cos(angle.as_radians())};
 	}
 
 	template<typename T>

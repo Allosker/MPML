@@ -13,11 +13,11 @@
 */
 
 // Lib Files
-#include "mpml/matrices/matrix.hpp"
+#include "matrices/matrices.hpp"
 
-#include "mpml/vectors/vectors.hpp"
+#include "vectors/vectors.hpp"
 
-#include "mpml/quaternions/quaternions.hpp"
+#include "quaternions/quaternions.hpp"
 
-#include "mpml/utilities/angle.hpp"
+#include "utilities/angle.hpp"
 

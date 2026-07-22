@@ -16,8 +16,8 @@
 #include <algorithm>
 #include <stdexcept> // for: std::out_of_range()
 
-#include "mpml/utilities/angle.hpp"
-#include "mpml/vectors/vector2.hpp"
+#include "utilities/angle.hpp"
+#include "vectors/vector2.hpp"
 
 
 namespace mpml
@@ -53,22 +53,22 @@ namespace mpml
 
 		// Operations
 
-		[[nodiscard]] constexpr T dot(const Vector3<T>& vec) const noexcept;
-		[[nodiscard]] constexpr Vector3<T> cross(const Vector3<T>& vec) const noexcept;
+		[[nodiscard]] constexpr T dot(const Vector3& vec) const noexcept;
+		[[nodiscard]] constexpr Vector3 cross(const Vector3& vec) const noexcept;
 
-		[[nodiscard]] constexpr T distance(const Vector3<T>& vec) const noexcept;
-		[[nodiscard]] constexpr T distance_squared(const Vector3<T>& vec) const noexcept;
+		[[nodiscard]] constexpr T distance(const Vector3& vec) const noexcept;
+		[[nodiscard]] constexpr T distance_squared(const Vector3& vec) const noexcept;
 
-		[[nodiscard]] constexpr Angle<> angle(const Vector3<T>& vec) const noexcept;
-		[[nodiscard]] constexpr Vector3<T> project(const Vector3<T>& vec) const noexcept;
-		[[nodiscard]] constexpr Vector3<T> reflect(const Vector3<T>& vec) const noexcept;
-		[[nodiscard]] constexpr Vector3<T> reject(const Vector3<T>& vec) const noexcept;
+		[[nodiscard]] constexpr Angle<> angle(const Vector3& vec) const noexcept;
+		[[nodiscard]] constexpr Vector3 project(const Vector3& vec) const noexcept;
+		[[nodiscard]] constexpr Vector3 reflect(const Vector3& vec) const noexcept;
+		[[nodiscard]] constexpr Vector3 reject(const Vector3& vec) const noexcept;
 
 
 		[[nodiscard]] constexpr T length() const noexcept;
 		[[nodiscard]] constexpr T length_squared() const noexcept;
 
-		[[nodiscard]] constexpr Vector3<T> normal() const noexcept;
+		[[nodiscard]] constexpr Vector3 normal() const noexcept;
 
 		[[nodiscard]] constexpr T det(const Vector3& vec) const noexcept;
 
@@ -84,17 +84,17 @@ namespace mpml
 
 		// Overloads
 
-		constexpr Vector3<T>& operator+=(const Vector3<T>& vec) noexcept;
-		constexpr Vector3<T>& operator-=(const Vector3<T>& vec) noexcept;
+		constexpr Vector3& operator+=(const Vector3& vec) noexcept;
+		constexpr Vector3& operator-=(const Vector3& vec) noexcept;
 
-		constexpr Vector3<T>& operator+=(const T& scalar) noexcept;
-		constexpr Vector3<T>& operator-=(const T& scalar) noexcept;
-		constexpr Vector3<T>& operator*=(const T& scalar) noexcept;
-		constexpr Vector3<T>& operator/=(const T& scalar) noexcept;
+		constexpr Vector3& operator+=(const T& scalar) noexcept;
+		constexpr Vector3& operator-=(const T& scalar) noexcept;
+		constexpr Vector3& operator*=(const T& scalar) noexcept;
+		constexpr Vector3& operator/=(const T& scalar) noexcept;
 
-		[[nodiscard]] constexpr Vector3<T> operator-() const noexcept;
+		[[nodiscard]] constexpr Vector3 operator-() const noexcept;
 
-		[[nodiscard]] constexpr auto operator<=>(const Vector3<T>&) const noexcept = default;
+		[[nodiscard]] constexpr auto operator<=>(const Vector3&) const noexcept = default;
 
 
 		// Class members
@@ -105,16 +105,25 @@ namespace mpml
 		T z{};
 
 		static constexpr size_t size{ 3 };
+
+		static const Vector3 Xaxis;
+		static const Vector3 Yaxis;
+		static const Vector3 Zaxis;
+
 	};
-	// Common Types
-	template<typename T>
-	inline constexpr Vector3<T> Xaxis3{ 1,0,0 };
+
+
+
+	// Common Types Defs
 
 	template<typename T>
-	inline constexpr Vector3<T> Yaxis3{ 0,1,0 };
+	inline constexpr Vector3<T> Vector3<T>::Xaxis{ 1,0,0 };
 
 	template<typename T>
-	inline constexpr Vector3<T> Zaxis3{ 0,0,1 };
+	inline constexpr Vector3<T> Vector3<T>::Yaxis{ 0,1,0 };
+
+	template<typename T>
+	inline constexpr Vector3<T> Vector3<T>::Zaxis{ 0,0,1 };
 
 
 

@@ -8,10 +8,10 @@
 
 
 // -- Classes
-#include "mpml/vectors/vector2.hpp"
-#include "mpml/vectors/vector3.hpp"
-#include "mpml/vectors/vector4.hpp"
+#include "vectors/vector2.hpp"
+#include "vectors/vector3.hpp"
+#include "vectors/vector4.hpp"
 
 // -- Utilities
-#include "mpml/vectors/transforms.hpp"
-#include "mpml/vectors/special_overloads/hash_vectors.hpp"
+#include "vectors/transforms.hpp"
+#include "vectors/special_overloads/hash_vectors.hpp"

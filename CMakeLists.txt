@@ -12,7 +12,7 @@ endif()
 project ( 
 	MPML
 	VERSION 1.0.12
-	LANGUAGES CXX
+	LANGUAGES C CXX
 )
 
 # Make library
@@ -23,7 +23,7 @@ add_library(MPML::MPML ALIAS MPML)
 
  
 
-target_include_directories(MPML
+target_include_directories(MPML  
 	INTERFACE
 
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -32,31 +32,30 @@ target_include_directories(MPML
 )
 
 
-	# set(SRC_DIR "${PROJECT_SOURCE_DIR}/include/") 
-	# set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/") 
-
-	# file(GLOB_RECURSE CPP_FILES CMAKE_CONFIGURE_DEPENDS 
-	# 	"${SRC_DIR}/*.cpp"
-	# 	"${SRC_DIR}/*.c"  
-	# ) 
-	
-	# file(GLOB_RECURSE HPP_FILES CMAKE_CONFIGURE_DEPENDS  
-	# 	"${INCLUDE_DIR}/*.hpp"
-	# 	"${INCLUDE_DIR}/*.h"
-	# ) 
-
-
-	# add_executable( MPML
-	# 	"${PROJECT_SOURCE_DIR}/include/mpml/test.cpp"
-	# 	"${CPP_FILES}"
-	# 	"${HPP_FILES}"  
-	# ) 
-
-	# target_include_directories(MPML PUBLIC ${INCLUDE_DIR})
-
-	# target_compile_features(MPML PRIVATE cxx_std_23)
+	#set(SRC_DIR "${PROJECT_SOURCE_DIR}/include/") 
+	#set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include/") 
+	#
+	#file(GLOB_RECURSE CPP_FILES CMAKE_CONFIGURE_DEPENDS 
+	#	"${SRC_DIR}/*.cpp"
+	#	"${SRC_DIR}/*.c"  
+	#) 
+	#
+	#file(GLOB_RECURSE HPP_FILES CMAKE_CONFIGURE_DEPENDS  
+	#	"${INCLUDE_DIR}/*.hpp"
+	#	"${INCLUDE_DIR}/*.h"
+	#) 
+	#
+	#
+	#add_executable( MPML
+	#	"${PROJECT_SOURCE_DIR}/include/mpml/test.cpp"
+	#	${CPP_FILES}
+	#	${HPP_FILES}
+	#) 
+	#
+	#set_property(TARGET MPML PROPERTY CXX_STANDARD 23) 
 
 target_compile_features(MPML INTERFACE cxx_std_23)
+
 
 # Dowloading Rules
 

@@ -1,17 +1,17 @@
 #pragma once
 // MIT
-// Allosker - 2025
+// Allosker - 2026
 // ===================================================
-// Defines quaternions - acts as a four-tuple of complex numbers, hence its place here.
+// Defines quaternions - base complex tuple for encrypting 3D rotation
 // ===================================================
 
 
 #include <array>
 #include <cmath>
 
-#include "mpml/utilities/angle.hpp"
+#include "utilities/angle.hpp"
 
-#include "mpml/vectors/vector3.hpp"
+#include "vectors/vector3.hpp"
 
 namespace mpml
 {
@@ -26,12 +26,14 @@ public:
 	constexpr Quaternion() noexcept = default;
 
 	constexpr Quaternion(const T& s, const T& x, const T& y, const T& z) noexcept;
-
 	constexpr Quaternion(const T& s, const Vector3<T>& v) noexcept;
 
-	constexpr Quaternion(const Quaternion<T>& q) noexcept;
+	constexpr Quaternion(const Quaternion<T>&) noexcept = default;
+	constexpr Quaternion<T>& operator=(const Quaternion<T>&) noexcept = default;
 
-	constexpr Quaternion<T>& operator=(const Quaternion<T>& q) noexcept;
+	constexpr Quaternion(Quaternion<T>&&) noexcept = default;
+	constexpr Quaternion<T>& operator=(Quaternion<T>&&) noexcept = default;
+
 
 	template<typename U>
 	constexpr Quaternion(const Quaternion<U>& q) noexcept;
@@ -73,9 +75,9 @@ public:
 
 	// Static Members
 
-	[[nodiscard]] static constexpr Quaternion fromAxis(const Vector3<T>& axis, const Angle<>& angle = {}) noexcept;
-	// TODO: static constexpr Quaternion fromEulers(const Vector3<T>& angles) noexcept;
-
+	[[nodiscard]] static constexpr Quaternion axis(const Vector3<T>& axis, const Angle<>& angle = {}) noexcept;
+	[[nodiscard]] static constexpr Quaternion eulers(const Angle<T>& phi, const Angle<T>& theta, const Angle<T>& psi) noexcept;
+	 
 
 // Class Members
 
@@ -105,27 +107,6 @@ template<typename T>
 inline constexpr Quaternion<T>::Quaternion(const T& s_, const Vector3<T>& v) noexcept
 	: s{ s_ }, x{ v.x }, y{ v.y }, z{ v.z }
 {
-}
-
-
-template<typename T>
-constexpr inline Quaternion<T>::Quaternion(const Quaternion<T>& q) noexcept
-	: s{ q.s }, x{ q.x }, y{ q.y }, z{ q.z }
-{
-}
-
-template<typename T>
-constexpr inline Quaternion<T>& Quaternion<T>::operator=(const Quaternion<T>& q) noexcept
-{
-	if (this == &q)
-		return *this;
-
-	s = q.s;
-	x = q.x;
-	y = q.y;
-	z = q.z;
-
-	return *this;
 }
 
 template<typename T>
@@ -199,8 +180,8 @@ inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle<> angle, const Vector
 {
 	const Vector3<T> n_axis{ axis.normal() };
 
-	const T s{ static_cast<T>(std::sin(angle.asRadians() / 2.)) };
-	return Quaternion<T>{ static_cast<T>(std::cos(angle.asRadians() / 2.)), n_axis.x * s, n_axis.y * s, n_axis.z * s};
+	const T s{ static_cast<T>(std::sin(angle.as_radians() / 2.)) };
+	return Quaternion<T>{ static_cast<T>(std::cos(angle.as_radians() / 2.)), n_axis.x * s, n_axis.y * s, n_axis.z * s};
 }
 
 template<typename T>
@@ -208,8 +189,8 @@ inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle<> angle) const noexce
 {
 	const Vector3<T> n_axis = Vector3<T>{ x,y,z }.normal();
 
-	const T s{ static_cast<T>(std::sin(angle.asRadians() / 2.)) };
-	return Quaternion<T>{ static_cast<T>(std::cos(angle.asRadians() / 2.)), n_axis.x * s, n_axis.y * s, n_axis.z * s };
+	const T s{ static_cast<T>(std::sin(angle.as_radians() / 2.)) };
+	return Quaternion<T>{ static_cast<T>(std::cos(angle.as_radians() / 2.)), n_axis.x * s, n_axis.y * s, n_axis.z * s };
 }
 
 
@@ -272,16 +253,40 @@ inline constexpr Quaternion<T>& Quaternion<T>::operator/=(const T& scalar) noexc
 // Static Members
 
 template<typename T>
-inline constexpr Quaternion<T> Quaternion<T>::fromAxis(const Vector3<T>& axis, const Angle<>& angle) noexcept
+inline constexpr Quaternion<T> Quaternion<T>::axis(const Vector3<T>& axis, const Angle<>& angle) noexcept
 {
-	auto sin = std::sin(angle.asRadians() / 2.f);
+	auto sin = std::sin(angle.as_radians() / 2.f);
 	return 
 	{
-		std::cos(angle.asRadians() / 2.f),
+		std::cos(angle.as_radians() / 2.f),
 		sin * axis.x,
 		sin * axis.y,
 		sin * axis.z
 	};
+}
+
+template<typename T>
+inline constexpr Quaternion<T> Quaternion<T>::eulers(const Angle<T>& phi, const Angle<T>& theta, const Angle<T>& psi) noexcept
+{
+	T hphi = phi.as_radians() / static_cast<T>(2);
+	T htheta = theta.as_radians() / static_cast<T>(2);
+	T hpsi = psi.as_radians() / static_cast<T>(2);
+
+	T cphi = std::cos(hphi);
+	T sphi = std::sin(hphi);
+	T ctheta = std::cos(htheta);
+	T stheta = std::sin(htheta);
+	T cpsi = std::cos(hpsi);
+	T spsi = std::sin(hpsi);
+
+	Quaternion<T> ret{};
+
+	ret.s = cphi * ctheta * cpsi + sphi * stheta * spsi;
+	ret.x = sphi * ctheta * cpsi - cphi * stheta * spsi;
+	ret.y = cphi * stheta * cpsi + sphi * ctheta * spsi;
+	ret.z = cphi * ctheta * spsi - sphi * stheta * cpsi;
+
+	return ret;
 }
 
 

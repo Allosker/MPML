@@ -5,5 +5,5 @@
 // This file acts as the umbrella header for all quaternions
 // ===================================================
 
-#include "mpml/quaternions/quaternion.hpp"
-#include "mpml/quaternions/transforms.hpp"
+#include "quaternions/quaternion.hpp"
+#include "quaternions/transforms.hpp"

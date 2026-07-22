@@ -10,8 +10,8 @@
 #include <numbers>
 #include <vector>
 
-#include "mpml/vectors/vector2.hpp"
-#include "mpml/vectors/vector3.hpp"
+#include "vectors/vector2.hpp"
+#include "vectors/vector3.hpp"
 
 namespace mpml::func
 {

@@ -5,9 +5,9 @@
 // Defines some utility functions for all the types MPML provides
 // ===================================================
 
-#include "mpml/vectors/vectors.hpp"
+#include "vectors/vectors.hpp"
 
-#include "mpml/utilities/angle.hpp"
+#include "utilities/angle.hpp"
 
 namespace mpml
 {

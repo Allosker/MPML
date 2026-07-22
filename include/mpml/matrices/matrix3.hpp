@@ -11,8 +11,8 @@
 #include <algorithm>
 #include <optional>
 
-#include "mpml/vectors/vector3.hpp"
-#include "mpml/matrices/matrix2.hpp"
+#include "vectors/vector3.hpp"
+#include "matrices/matrix2.hpp"
 
 
 namespace mpml
@@ -26,16 +26,14 @@ namespace mpml
 
 		// Initialization
 
-		constexpr Matrix3(const Matrix3<T>&) noexcept = default;
-		constexpr Matrix3<T>& operator=(const Matrix3<T>&) noexcept = default;
+		constexpr Matrix3(const Matrix3&) noexcept = default;
+		constexpr Matrix3& operator=(const Matrix3&) noexcept = default;
 
-		constexpr Matrix3(Matrix3<T>&&) noexcept = default;
-		constexpr Matrix3<T>& operator=(Matrix3<T>&&) noexcept = default;
+		constexpr Matrix3(Matrix3&&) noexcept = default;
+		constexpr Matrix3& operator=(Matrix3&&) noexcept = default;
 
 
 		constexpr Matrix3(const Vector3<T>& vec1, const Vector3<T>& vec2, const Vector3<T>& vec3) noexcept;
-
-		constexpr Matrix3(const std::array<T, 9>& elems) noexcept;
 
 		constexpr Matrix3(
 			const T& a = {}, const T& b = {}, const T& c = {},
@@ -56,14 +54,14 @@ namespace mpml
 		[[nodiscard]] constexpr Matrix2<T> minor(const size_t& index) const;
 
 		[[nodiscard]] constexpr T cofactor(const size_t& index) const noexcept;
-		[[nodiscard]] constexpr Matrix3<T> cofactor_matrix() const noexcept;
+		[[nodiscard]] constexpr Matrix3 cofactor_matrix() const noexcept;
 
-		[[nodiscard]] constexpr Matrix3<T> adj() const noexcept;
+		[[nodiscard]] constexpr Matrix3 adj() const noexcept;
 
-		[[nodiscard]] constexpr std::optional<Matrix3<T>> inverse() const;
-		[[nodiscard]] constexpr Matrix3<T> transpose() const noexcept;
+		[[nodiscard]] constexpr std::optional<Matrix3> inverse() const;
+		[[nodiscard]] constexpr Matrix3 transpose() const noexcept;
 
-		[[nodiscard]] constexpr Matrix3<T> pow(size_t pm = 2) const noexcept;
+		[[nodiscard]] constexpr Matrix3 pow(size_t pm = 2) const noexcept;
 
 
 		// Data related
@@ -78,17 +76,17 @@ namespace mpml
 
 		// Overloads
 
-		constexpr Matrix3<T>& operator+=(const Matrix3<T>& mat) noexcept;
-		constexpr Matrix3<T>& operator-=(const Matrix3<T>& mat) noexcept;
+		constexpr Matrix3& operator+=(const Matrix3& mat) noexcept;
+		constexpr Matrix3& operator-=(const Matrix3& mat) noexcept;
+						 
+		constexpr Matrix3& operator*=(const Matrix3& mat) noexcept;
+		constexpr Matrix3& operator/=(const Matrix3& mat);
+						 
+						 
+		constexpr Matrix3& operator*=(const T& k) noexcept;
+		constexpr Matrix3& operator/=(const T& k) noexcept;
 
-		constexpr Matrix3<T>& operator*=(const Matrix3<T>& mat) noexcept;
-		constexpr Matrix3<T>& operator/=(const Matrix3<T>& mat);
-
-
-		constexpr Matrix3<T>& operator*=(const T& k) noexcept;
-		constexpr Matrix3<T>& operator/=(const T& k) noexcept;
-
-		[[nodiscard]] constexpr Matrix3<T> operator-() const noexcept;
+		[[nodiscard]] constexpr Matrix3 operator-() const noexcept;
 
 
 		// Class Members
@@ -102,25 +100,23 @@ namespace mpml
 				T g, h, i;
 			};
 
-			struct
-			{
-				Vector3<T> col0;
-				Vector3<T> col1;
-				Vector3<T> col2;
-			};
-
 			std::array<T, 9> data{};
 		};
 
 
 	// Common Types
 
-	
+		static const Matrix3 Identity;
+		static const Matrix3 AntiDiagonal_Identity;
 
 	};
 
+
+
+	// Common Types Def
+
 	template<typename T>
-	constexpr Matrix3<T> Identity3
+	inline constexpr Matrix3<T> Matrix3<T>::Identity
 	{
 		T{1}, T{}, T{},
 		T{}, T{1}, T{},
@@ -128,12 +124,13 @@ namespace mpml
 	};
 
 	template<typename T>
-	constexpr Matrix3<T> AntiDiagonal_Identity3
+	inline constexpr Matrix3<T> Matrix3<T>::AntiDiagonal_Identity
 	{
 		T{}, T{}, T{1},
 		T{}, T{1}, T{},
 		T{1}, T{}, T{}
 	};
+
 
 
 	// Class definition
@@ -143,25 +140,33 @@ namespace mpml
 	template<typename T>
 	inline constexpr Matrix3<T>::Matrix3(const Vector3<T>& vec1, const Vector3<T>& vec2, const Vector3<T>& vec3) noexcept
 	{
-		data = { vec1.x, vec1.y, vec1.z,
-				 vec2.x, vec2.y, vec2.z,
-				 vec3.x, vec3.y, vec3.z
-		};
-	}
-
-	template<typename T>
-	inline constexpr Matrix3<T>::Matrix3(const std::array<T, 9>& elems) noexcept
-		: data{ elems }
-	{
+		data[0] = vec1[0];
+		data[1] = vec1[1];
+		data[2] = vec1[2];
+			 
+		data[3] = vec2[0];
+		data[4] = vec2[1];
+		data[5] = vec2[2];
+			 
+		data[6] = vec3[0];
+		data[7] = vec3[1];
+		data[8] = vec3[2];
 	}
 
 	template<typename T>
 	inline constexpr Matrix3<T>::Matrix3(const T& a, const T& b, const T& c, const T& d, const T& e, const T& f, const T& g, const T& h, const T& i) noexcept
 	{
-		data = { a, b, c,
-				 d, e, f,
-				 g, h, i
-		};
+		data[0] = a;
+		data[1] = b;
+		data[2] = c;
+			 
+		data[3] = d;
+		data[4] = e;
+		data[5] = f;
+			 
+		data[6] = g;
+		data[7] = h;
+		data[8] = i;
 	}
 
 	template<typename T>
@@ -345,15 +350,15 @@ namespace mpml
 		switch (index)
 		{
 		case 0:
-			return col0;
+			return Vector3<T>{ data[0], data[1], data[2] };
 			break;
 
 		case 1:
-			return col1;
+			return Vector3<T>{ data[3], data[4], data[5] };
 			break;
 
 		case 2:
-			return col2;
+			return Vector3<T>{ data[6], data[7], data[8] };
 			break;
 
 		default:
@@ -368,15 +373,15 @@ namespace mpml
 		switch (index)
 		{
 		case 0:
-			return col0;
+			return Vector3<T>{ data[0], data[1], data[2] };
 			break;
 
 		case 1:
-			return col1;
+			return Vector3<T>{ data[3], data[4], data[5] };
 			break;
 
 		case 2:
-			return col2;
+			return Vector3<T>{ data[6], data[7], data[8] };
 			break;
 
 		default:

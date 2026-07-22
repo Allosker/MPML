@@ -11,13 +11,13 @@ namespace mpml
 {
 	
 	template <typename T = float>
-	[[nodiscard]] static constexpr T toRadians(T deg) noexcept
+	[[nodiscard]] static constexpr T to_radians(T deg) noexcept
 	{
 		return deg * std::numbers::pi_v<T> / static_cast<T>(180.f);
 	}
 
 	template <typename T = float>
-	[[nodiscard]] static constexpr T toDegrees(T rad) noexcept
+	[[nodiscard]] static constexpr T to_degrees(T rad) noexcept
 	{
 		return rad * static_cast<T>(180) / std::numbers::pi_v<T>;
 	}
@@ -26,37 +26,41 @@ namespace mpml
 	template <typename T = float>
 	struct Angle
 	{ 
-		[[nodiscard]] static constexpr Angle fromDegrees(T deg) noexcept
+		[[nodiscard]] static constexpr Angle from_degrees(T deg) noexcept
 		{
 			return Angle{ deg * std::numbers::pi_v<T> / static_cast<T>(180) };
 		}
 
-		[[nodiscard]] static constexpr Angle fromRadians(T rad) noexcept
+		[[nodiscard]] static constexpr Angle from_radians(T rad) noexcept
 		{
 			return Angle{ rad };
 		}
 
 
-		[[nodiscard]] constexpr T asDegrees() const noexcept
+		[[nodiscard]] constexpr T as_degrees() const noexcept
 		{
 			return angle_rad * static_cast<T>(180) / std::numbers::pi_v<T>;
 		}
 
-		[[nodiscard]] constexpr T asRadians() const noexcept
+		[[nodiscard]] constexpr T as_radians() const noexcept
 		{
 			return angle_rad;
 		}
 
 		[[nodiscard]] constexpr Angle operator+(Angle t) const noexcept
 		{
-			return Angle::fromRadians(this->angle_rad + t.angle_rad);
+			return Angle::from_radians(this->angle_rad + t.angle_rad);
 		}
+
+
 
 		[[nodiscard]] constexpr Angle operator+=(Angle t) noexcept
 		{
 			*this = *this + t;
 		}
+		
 
+		[[nodiscard]] static constexpr Angle Zero() noexcept { return Angle{ T{} }; }
 
 	private:
 
@@ -75,11 +79,11 @@ namespace mpml_literals
 {
 	[[nodiscard]] constexpr mpml::Angle<> operator""_rad(long double rad)
 	{
-		return mpml::Angle<>::fromRadians(static_cast<double>(rad));
+		return mpml::Angle<>::from_radians(static_cast<double>(rad));
 	}
 
 	[[nodiscard]] constexpr mpml::Angle<> operator""_deg(long double deg)
 	{
-		return mpml::Angle<>::fromDegrees(static_cast<double>(deg));
+		return mpml::Angle<>::from_degrees(static_cast<double>(deg));
 	}
 }

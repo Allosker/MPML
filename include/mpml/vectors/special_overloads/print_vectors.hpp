@@ -2,14 +2,14 @@
 // MIT
 // Allosker - 2025
 // ===================================================
-// Defines some overloads for the 'iostream' standard library.
+// Defines some overloads for the 'iostream'/'print' standard library.
 // ===================================================
 
 #include <iostream>
 #include <format>
 #include <print>
 
-#include "mpml/vectors/vectors.hpp"
+#include "vectors/vectors.hpp"
 
 
 template <typename T>
@@ -20,7 +20,7 @@ struct std::formatter<mpml::Vector2<T>>
 	}
 
 	auto format(const mpml::Vector2<T>& vec, std::format_context& ctx) const {
-		return std::format_to(ctx.out(), "({}, {})", vec[0], vec[1]);
+		return std::format_to(ctx.out(), "v2({}, {})", vec[0], vec[1]);
 	}
 };
 
@@ -32,7 +32,7 @@ struct std::formatter<mpml::Vector3<T>>
 	}
 
 	auto format(const mpml::Vector3<T>& vec, std::format_context& ctx) const {
-		return std::format_to(ctx.out(), "({}, {}, {})", vec[0], vec[1], vec[2]);
+		return std::format_to(ctx.out(), "v3({}, {}, {})", vec[0], vec[1], vec[2]);
 	}
 };
 
@@ -44,7 +44,7 @@ struct std::formatter<mpml::Vector4<T>>
 	}
 
 	auto format(const mpml::Vector4<T>& vec, std::format_context& ctx) const {
-		return std::format_to(ctx.out(), "({}, {}, {}, {})", vec[0], vec[1], vec[2], vec[3]);
+		return std::format_to(ctx.out(), "v4({}, {}, {}, {})", vec[0], vec[1], vec[2], vec[3]);
 	}
 };
 

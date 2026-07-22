@@ -17,8 +17,8 @@
 #include <algorithm>
 #include <stdexcept> // for: std::out_of_range()
 
-#include "mpml/utilities/angle.hpp"
-#include "mpml/vectors/vector3.hpp"
+#include "utilities/angle.hpp"
+#include "vectors/vector3.hpp"
 
 
 namespace mpml
@@ -57,16 +57,16 @@ namespace mpml
 
 		// Operations
 
-		[[nodiscard]] constexpr T dot(const Vector4<T>& vec) const noexcept;
-		[[nodiscard]] constexpr Vector4<T> cross(const Vector4<T>& vec) const noexcept;
+		[[nodiscard]] constexpr T dot(const Vector4& vec) const noexcept;
+		[[nodiscard]] constexpr Vector4 cross(const Vector4& vec) const noexcept;
 
-		[[nodiscard]] constexpr T distance(const Vector4<T>& vec) const noexcept;
-		[[nodiscard]] constexpr T distance_squared(const Vector4<T>& vec) const noexcept;
+		[[nodiscard]] constexpr T distance(const Vector4& vec) const noexcept;
+		[[nodiscard]] constexpr T distance_squared(const Vector4& vec) const noexcept;
 
-		[[nodiscard]] constexpr Angle<> angle(const Vector4<T>& vec) const noexcept;
-		[[nodiscard]] constexpr Vector4<T> project(const Vector4<T>& vec) const noexcept;
-		[[nodiscard]] constexpr Vector4<T> reflect(const Vector4<T>& vec) const noexcept;
-		[[nodiscard]] constexpr Vector4<T> reject(const Vector4<T>& vec) const noexcept;
+		[[nodiscard]] constexpr Angle<> angle(const Vector4& vec) const noexcept;
+		[[nodiscard]] constexpr Vector4 project(const Vector4& vec) const noexcept;
+		[[nodiscard]] constexpr Vector4 reflect(const Vector4& vec) const noexcept;
+		[[nodiscard]] constexpr Vector4 reject(const Vector4& vec) const noexcept;
 
 
 		[[nodiscard]] constexpr T length() const noexcept;
@@ -86,17 +86,17 @@ namespace mpml
 
 		// Overloads
 
-		constexpr Vector4<T>& operator+=(const Vector4<T>& vec) noexcept;
-		constexpr Vector4<T>& operator-=(const Vector4<T>& vec) noexcept;
+		constexpr Vector4& operator+=(const Vector4& vec) noexcept;
+		constexpr Vector4& operator-=(const Vector4& vec) noexcept;
 
-		constexpr Vector4<T>& operator+=(const T& scalar) noexcept;
-		constexpr Vector4<T>& operator-=(const T& scalar) noexcept;
-		constexpr Vector4<T>& operator*=(const T& scalar) noexcept;
-		constexpr Vector4<T>& operator/=(const T& scalar) noexcept;
+		constexpr Vector4& operator+=(const T& scalar) noexcept;
+		constexpr Vector4& operator-=(const T& scalar) noexcept;
+		constexpr Vector4& operator*=(const T& scalar) noexcept;
+		constexpr Vector4& operator/=(const T& scalar) noexcept;
 
-		[[nodiscard]] constexpr Vector4<T> operator-() const noexcept;
+		[[nodiscard]] constexpr Vector4 operator-() const noexcept;
 
-		[[nodiscard]] constexpr auto operator<=>(const Vector4<T>&) const noexcept = default;
+		[[nodiscard]] constexpr auto operator<=>(const Vector4&) const noexcept = default;
 
 
 		// Class members
@@ -109,19 +109,29 @@ namespace mpml
 	
 		static constexpr size_t size{ 4 };
 
+
+		static const Vector4 Xaxis;
+		static const Vector4 Yaxis;
+		static const Vector4 Zaxis;
+		static const Vector4 Waxis;
+
 	};
-	// Common Types
-	template<typename T>
-	inline constexpr Vector4<T> Xaxis4{ 1,0,0,0 };
+
+
+
+	// Common Types Defs
 
 	template<typename T>
-	inline constexpr Vector4<T> Yaxis4{ 0,1,0,0 };
+	inline constexpr Vector4<T> Vector4<T>::Xaxis{ 1,0,0,0 };
 
 	template<typename T>
-	inline constexpr Vector4<T> Zaxis4{ 0,0,1,0 };
+	inline constexpr Vector4<T> Vector4<T>::Yaxis{ 0,1,0,0 };
 
 	template<typename T>
-	inline constexpr Vector4<T> Waxis4{ 0,0,0,1 };
+	inline constexpr Vector4<T> Vector4<T>::Zaxis{ 0,0,1,0 };
+
+	template<typename T>
+	inline constexpr Vector4<T> Vector4<T>::Waxis{ 0,0,0,1 };
 
 
 

@@ -9,7 +9,7 @@
 #include <format>
 #include <print>
 
-#include "mpml/matrices/matrix.hpp"
+#include "matrices/matrices.hpp"
 
 #ifndef NO_MATRIX_LINEAR_PRINTING
 #	define MATRIX_LINEAR_PRINTING "\n"
@@ -28,7 +28,7 @@ struct std::formatter<mpml::Matrix2<T>>
 	auto format(const mpml::Matrix2<T>& m, std::format_context& ctx) const {
 		return std::format_to(ctx.out(), "[{}, {}]" MATRIX_LINEAR_PRINTING "[{}, {}]", 
 		m[0][0], m[0][1],
-		 m[1][0], m[1][1]);
+		m[1][0], m[1][1] );
 	}
 };
 
@@ -58,7 +58,8 @@ struct std::formatter<mpml::Matrix4<T>>
 		return std::format_to(ctx.out(), "[{}, {}, {}, {}]" MATRIX_LINEAR_PRINTING "[{}, {}, {}, {}]" MATRIX_LINEAR_PRINTING "[{}, {}, {}, {}]" MATRIX_LINEAR_PRINTING "[{}, {}, {}, {}]",
 		 m[0][0], m[0][1], m[0][2], m[0][3],
 		 m[1][0], m[1][1], m[1][2], m[1][3],
-		 m[2][0], m[2][1], m[2][2], m[2][3]);
+		 m[2][0], m[2][1], m[2][2], m[2][3],
+		 m[3][0], m[3][1], m[3][2], m[3][3] );
 	}
 };
 

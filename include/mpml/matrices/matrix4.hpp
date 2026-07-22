@@ -11,9 +11,9 @@
 #include <algorithm>
 #include <optional>
 
-#include "mpml/vectors/vector3.hpp"
-#include "mpml/vectors/vector4.hpp"
-#include "mpml/matrices/matrix3.hpp"
+#include "vectors/vector3.hpp"
+#include "vectors/vector4.hpp"
+#include "matrices/matrix3.hpp"
 
 
 namespace mpml
@@ -27,18 +27,16 @@ namespace mpml
 
 		// Initialization
 
-		constexpr Matrix4(const Matrix4<T>&) noexcept = default;
-		constexpr Matrix4<T>& operator=(const Matrix4<T>&) noexcept = default;
+		constexpr Matrix4(const Matrix4&) noexcept = default;
+		constexpr Matrix4& operator=(const Matrix4&) noexcept = default;
 
-		constexpr Matrix4(Matrix4<T>&&) noexcept = default;
-		constexpr Matrix4<T>& operator=(Matrix4<T>&&) noexcept = default;
+		constexpr Matrix4(Matrix4&&) noexcept = default;
+		constexpr Matrix4& operator=(Matrix4&&) noexcept = default;
 
 
 		constexpr Matrix4(const Matrix3<T>& matrix) noexcept;
 
 		constexpr Matrix4(const Vector4<T>& vec1, const Vector4<T>& vec2, const Vector4<T>& vec3, const Vector4<T>& vec4) noexcept;
-
-		constexpr Matrix4(const std::array<T, 16>& elems) noexcept;
 
 		constexpr Matrix4(
 			const T& a = {}, const T& b = {}, const T& c = {}, const T& d = {}, 
@@ -64,14 +62,14 @@ namespace mpml
 		[[nodiscard]] constexpr Matrix3<T> minor(const size_t& index) const;
 
 		[[nodiscard]] constexpr T cofactor(const size_t& index) const noexcept;
-		[[nodiscard]] constexpr Matrix4<T> cofactor_matrix() const noexcept;
+		[[nodiscard]] constexpr Matrix4 cofactor_matrix() const noexcept;
 
-		[[nodiscard]] constexpr Matrix4<T> adj() const noexcept;
+		[[nodiscard]] constexpr Matrix4 adj() const noexcept;
 
 		[[nodiscard]] constexpr std::optional<Matrix4<T>> inverse() const;
-		[[nodiscard]] constexpr Matrix4<T> transpose() const noexcept;
+		[[nodiscard]] constexpr Matrix4 transpose() const noexcept;
 
-		[[nodiscard]] constexpr Matrix4<T> pow(size_t pm = 2) const noexcept;
+		[[nodiscard]] constexpr Matrix4 pow(size_t pm = 2) const noexcept;
 
 
 		// Data related
@@ -85,17 +83,17 @@ namespace mpml
 
 		// Overloads
 
-		constexpr Matrix4<T>& operator+=(const Matrix4<T>& mat) noexcept;
-		constexpr Matrix4<T>& operator-=(const Matrix4<T>& mat) noexcept;
+		constexpr Matrix4& operator+=(const Matrix4& mat) noexcept;
+		constexpr Matrix4& operator-=(const Matrix4& mat) noexcept;
 
-		constexpr Matrix4<T>& operator*=(const Matrix4<T>& mat) noexcept;
-		constexpr Matrix4<T>& operator/=(const Matrix4<T>& mat);
+		constexpr Matrix4& operator*=(const Matrix4& mat) noexcept;
+		constexpr Matrix4& operator/=(const Matrix4& mat);
 
 
-		constexpr Matrix4<T>& operator*=(const T& k) noexcept;
-		constexpr Matrix4<T>& operator/=(const T& k);
+		constexpr Matrix4& operator*=(const T& k) noexcept;
+		constexpr Matrix4& operator/=(const T& k);
 
-		[[nodiscard]] constexpr Matrix4<T> operator-() const noexcept;
+		[[nodiscard]] constexpr Matrix4 operator-() const noexcept;
 
 
 		// Class Members
@@ -110,25 +108,23 @@ namespace mpml
 				T m, n, o, p;
 			};
 
-			struct
-			{
-				Vector4<T> col0;
-				Vector4<T> col1;
-				Vector4<T> col2;
-				Vector4<T> col3;
-			};
-
 			std::array<T, 16> data{};
 		};
 
 
 	// Common Types
 
+		static const Matrix4 Identity;
+
+		static const Matrix4 AntiDiagonalIdentity;
 
 	};
 
+
+	// Common Types Def
+
 	template<typename T>
-	constexpr Matrix4<T> Identity4
+	inline constexpr Matrix4<T> Matrix4<T>::Identity 
 	{
 		T{1}, T{}, T{}, T{},
 		T{}, T{1}, T{}, T{},
@@ -137,14 +133,14 @@ namespace mpml
 	};
 
 	template<typename T>
-	constexpr Matrix4<T> AntiDiagonal_Identity4
+	inline constexpr Matrix4<T> Matrix4<T>::AntiDiagonalIdentity
 	{
 		T{}, T{}, T{}, T{1},
 		T{}, T{}, T{1}, T{},
 		T{}, T{1}, T{}, T{},
 		T{1}, T{}, T{}, T{}
 	};
-
+	
 
 	// Class definition
 
@@ -152,30 +148,50 @@ namespace mpml
 	// Initialization
 	template<typename T>
 	inline constexpr Matrix4<T>::Matrix4(const Matrix3<T>& matrix) noexcept
-		: data
-		{ 
-			matrix.a, matrix.b, matrix.c, 0,
-			matrix.d, matrix.e, matrix.f, 0,
-			matrix.g, matrix.h, matrix.i, 0,
-				   0,		 0,		   0, 1
-		}
 	{
+		data[0x0] = matrix[0][0];
+		data[0x1] = matrix[0][1];
+		data[0x2] = matrix[0][2];
+		data[0x3] = T{};
+
+		data[0x4] = matrix[1][0];
+		data[0x5] = matrix[1][1];
+		data[0x6] = matrix[1][2];
+		data[0x7] = T{};
+
+		data[0x8] = matrix[2][0];
+		data[0x9] = matrix[2][1];
+		data[0xA] = matrix[2][2];
+		data[0xB] = T{};
+
+		data[0xC] = T{};
+		data[0xD] = T{};
+		data[0xE] = T{};
+		data[0xF] = static_cast<T>(1);
 	}
 
 	template<typename T>
 	inline constexpr Matrix4<T>::Matrix4(const Vector4<T>& vec1, const Vector4<T>& vec2, const Vector4<T>& vec3, const Vector4<T>& vec4) noexcept
 	{
-		data = { vec1.x, vec1.y, vec1.z, vec1.w,
-				 vec2.x, vec2.y, vec2.z, vec2.w,
-				 vec3.x, vec3.y, vec3.z, vec3.w,
-				 vec4.x, vec4.y, vec4.z, vec4.w
-		};
-	}
+		data[0x0] = vec1[0];
+		data[0x1] = vec1[1];
+		data[0x2] = vec1[2];
+		data[0x3] = vec1[3];
 
-	template<typename T>
-	inline constexpr Matrix4<T>::Matrix4(const std::array<T, 16>& elems) noexcept
-		: data{ elems }
-	{
+		data[0x4] = vec2[0];
+		data[0x5] = vec2[1];
+		data[0x6] = vec2[2];
+		data[0x7] = vec2[3];
+
+		data[0x8] = vec3[0];
+		data[0x9] = vec3[1];
+		data[0xA] = vec3[2];
+		data[0xB] = vec3[3];
+
+		data[0xC] = vec4[0];
+		data[0xD] = vec4[1];
+		data[0xE] = vec4[2];
+		data[0xF] = vec4[3];
 	}
 
 	template<typename T>
@@ -186,11 +202,25 @@ namespace mpml
 		const T& m, const T& n, const T& o, const T& p
 	) noexcept
 	{
-		data = { a, b, c, d, 
-				 e, f, g, h,
-				 i, j, k, l,
-				 m, n, o, p
-		};
+		data[0x0] = a;
+		data[0x1] = b;
+		data[0x2] = c;
+		data[0x3] = d;
+
+		data[0x4] = e;
+		data[0x5] = f;
+		data[0x6] = g;
+		data[0x7] = h;
+
+		data[0x8] = i;
+		data[0x9] = j;
+		data[0xA] = k;
+		data[0xB] = l;
+
+		data[0xC] = m;
+		data[0xD] = n;
+		data[0xE] = o;
+		data[0xF] = p;
 	}
 
 	template<typename T>
@@ -417,7 +447,7 @@ namespace mpml
 	inline constexpr Matrix4<T> Matrix4<T>::pow(size_t pm) const noexcept
 	{
 		if (pm == 0)
-			return Identity4<T>;
+			return Matrix4<T>::Identity;
 
 		Matrix4<T> mat{ *this };
 
@@ -449,19 +479,19 @@ namespace mpml
 		switch (index)
 		{
 		case 0:
-			return col0;
+			return Vector4<T>{ data[0], data[1], data[2], data[3] };
 			break;
 
 		case 1:
-			return col1;
+			return Vector4<T>{ data[4], data[5], data[6], data[7] };
 			break;
 
 		case 2:
-			return col2;
+			return Vector4<T>{ data[8], data[9], data[10], data[11] };
 			break;
 
 		case 3:
-			return col3;
+			return Vector4<T>{ data[12], data[13], data[14], data[15] };
 			break;
 
 		default:
@@ -476,19 +506,19 @@ namespace mpml
 		switch (index)
 		{
 		case 0:
-			return col0;
+			return Vector4<T>{ data[0], data[1], data[2], data[3] };
 			break;
 
 		case 1:
-			return col1;
+			return Vector4<T>{ data[4], data[5], data[6], data[7] };
 			break;
 
 		case 2:
-			return col2;
+			return Vector4<T>{ data[8], data[9], data[10], data[11] };
 			break;
 
 		case 3:
-			return col3;
+			return Vector4<T>{ data[12], data[13], data[14], data[15] };
 			break;
 
 		default:
