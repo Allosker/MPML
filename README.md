@@ -25,12 +25,13 @@ MPML features a wide range of *mathematical operations*:
 
 ### Data Organization
 
-Matrices are ordered following the Column-Major convention and so do their multiplication operations, 
+Matrices are ordered following the Row-Major convention.
 
 ## Design Goals
 
 - Provide a consistant interface across various types and mathematical concepts.
-- Maintain balance between flexibility and performances.
+- Maintain balance between flexibility and performances:
+    - All operations for all threee matrices/vector types are hardcoded, which performs better.
 - Remain:
   - Dependency-free
   - Cmake compatible
@@ -40,7 +41,7 @@ Matrices are ordered following the Column-Major convention and so do their multi
 
 #### Last words
 
-The library is currently under maintenance — some types may behave differently as of now.
+The library is currently under maintenance — new updates may come at any time.
 
 The library is free to use as per its [license](https://github.com/Allosker/MPML/blob/master/LICENSE.txt).
 
