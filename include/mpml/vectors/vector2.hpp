@@ -192,7 +192,7 @@ namespace mpml
 	template<typename T>
 	inline constexpr Vector2<T> Vector2<T>::rotate(Angle<> angle) const noexcept
 	{
-		return Vector2<T>{ x * std::cos(angle.asRadians()) + y * -std::sin(angle.asRadians()), x * std::sin(angle.asRadians()) + y * std::cos(angle.asRadians())};
+		return Vector2<T>{ x * std::cos(angle.as_radians()) + y * -std::sin(angle.as_radians()), x * std::sin(angle.as_radians()) + y * std::cos(angle.as_radians())};
 	}
 
 	template<typename T>

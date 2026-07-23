@@ -53,8 +53,8 @@ namespace mpml
 	{
 		Matrix3<T> rot_mat{ Matrix3<T>::Identity };
 
-		T cos{ std::cos(theta.asRadians()) };
-		T sin{ std::sin(theta.asRadians()) };
+		T cos{ std::cos(theta.as_radians()) };
+		T sin{ std::sin(theta.as_radians()) };
 
 		rot_mat[0][0] = cos;
 		rot_mat[0][1] = -sin;
@@ -70,8 +70,8 @@ namespace mpml
 	{
 		Matrix3<T> view_mat{ Matrix3<T>::Identity };
 
-		T cos{ std::cos(theta.asRadians()) };
-		T sin{ std::sin(theta.asRadians()) };
+		T cos{ std::cos(theta.as_radians()) };
+		T sin{ std::sin(theta.as_radians()) };
 
 		view_mat[0][0] = cos;
 		view_mat[0][1] = sin;
@@ -140,7 +140,7 @@ namespace mpml
 	template<typename T, typename U>
 	[[nodiscard]] constexpr Matrix4<T> perspective(const Angle<>& fov, const U& width, const U& height, const T& near, const T& far)
 	{
-		const T rad = fov.asRadians();
+		const T rad = fov.as_radians();
 		const T h = std::cos(static_cast<T>(0.5) * rad) / std::sin(static_cast<T>(0.5) * rad);
 		const T w = h * height / width;
 

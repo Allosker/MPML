@@ -199,8 +199,8 @@ inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle<> angle, const Vector
 {
 	const Vector3<T> n_axis{ axis.normal() };
 
-	const T s{ static_cast<T>(std::sin(angle.asRadians() / 2.)) };
-	return Quaternion<T>{ static_cast<T>(std::cos(angle.asRadians() / 2.)), n_axis.x * s, n_axis.y * s, n_axis.z * s};
+	const T s{ static_cast<T>(std::sin(angle.as_radians() / 2.)) };
+	return Quaternion<T>{ static_cast<T>(std::cos(angle.as_radians() / 2.)), n_axis.x * s, n_axis.y * s, n_axis.z * s};
 }
 
 template<typename T>
@@ -208,8 +208,8 @@ inline constexpr Quaternion<T> Quaternion<T>::rotate(Angle<> angle) const noexce
 {
 	const Vector3<T> n_axis = Vector3<T>{ x,y,z }.normal();
 
-	const T s{ static_cast<T>(std::sin(angle.asRadians() / 2.)) };
-	return Quaternion<T>{ static_cast<T>(std::cos(angle.asRadians() / 2.)), n_axis.x * s, n_axis.y * s, n_axis.z * s };
+	const T s{ static_cast<T>(std::sin(angle.as_radians() / 2.)) };
+	return Quaternion<T>{ static_cast<T>(std::cos(angle.as_radians() / 2.)), n_axis.x * s, n_axis.y * s, n_axis.z * s };
 }
 
 
@@ -274,10 +274,10 @@ inline constexpr Quaternion<T>& Quaternion<T>::operator/=(const T& scalar) noexc
 template<typename T>
 inline constexpr Quaternion<T> Quaternion<T>::fromAxis(const Vector3<T>& axis, const Angle<>& angle) noexcept
 {
-	auto sin = std::sin(angle.asRadians() / 2.f);
+	auto sin = std::sin(angle.as_radians() / 2.f);
 	return 
 	{
-		std::cos(angle.asRadians() / 2.f),
+		std::cos(angle.as_radians() / 2.f),
 		sin * axis.x,
 		sin * axis.y,
 		sin * axis.z

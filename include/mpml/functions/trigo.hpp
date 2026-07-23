@@ -22,7 +22,7 @@ namespace mpml::func
 		for (std::int32_t k{0}; k < SPAN; k++)
 		{
 			const auto coef{static_cast<T>(2) * static_cast<T>(k)};
-			n += (static_cast<T>(alt_sign(k)) * std::pow(x.asRadians(), coef)) / fact(coef);
+			n += (static_cast<T>(alt_sign(k)) * std::pow(x.as_radians(), coef)) / fact(coef);
 		}
 
 		return n;
@@ -36,7 +36,7 @@ namespace mpml::func
 		for (std::int32_t k{0}; k < SPAN; k++)
 		{
 			const auto coef{ static_cast<T>(2) * static_cast<T>(k) + static_cast<T>(1) };
-			n += (static_cast<T>(alt_sign(k)) * std::pow(x.asRadians(), coef)) / fact(coef);
+			n += (static_cast<T>(alt_sign(k)) * std::pow(x.as_radians(), coef)) / fact(coef);
 		}
 
 		return n;
@@ -55,7 +55,7 @@ namespace mpml::func
 			temp += 
 			((alt_sign(n - 1) * coef * (coef - 1) * bernoulli<T>(mult)) /
 			fact(mult)) * 
-			std::pow(x.asRadians(), mult - 1);
+			std::pow(x.as_radians(), mult - 1);
 		}
 
 		return temp;
