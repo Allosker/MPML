@@ -38,8 +38,6 @@ namespace mpml
 
 		constexpr Matrix4(const Vector4<T>& vec1, const Vector4<T>& vec2, const Vector4<T>& vec3, const Vector4<T>& vec4) noexcept;
 
-		constexpr Matrix4(const std::array<T, 16>& elems) noexcept;
-
 		constexpr Matrix4(
 			const T& a = {}, const T& b = {}, const T& c = {}, const T& d = {}, 
 			const T& e = {}, const T& f = {}, const T& g = {}, const T& h = {},
@@ -173,12 +171,6 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Matrix4<T>::Matrix4(const std::array<T, 16>& elems) noexcept
-		: data{ elems }
-	{
-	}
-
-	template<typename T>
 	inline constexpr Matrix4<T>::Matrix4(
 		const T& a, const T& b, const T& c, const T& d, 
 		const T& e, const T& f, const T& g, const T& h, 
@@ -197,7 +189,7 @@ namespace mpml
 	template<typename U>
 	inline constexpr Matrix4<T>::Matrix4(const Matrix4<U>& mat) noexcept
 	{
-		std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const T& x) { return static_cast<T>(x); });
+		std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const U& x) { return static_cast<T>(x); });
 	}
 
 

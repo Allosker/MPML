@@ -138,12 +138,6 @@ inline constexpr Matrix2<T>::Matrix2(const Vector2<T>& vec1, const Vector2<T>& v
 }
 
 template<typename T>
-constexpr Matrix2<T>::Matrix2(const std::array<T, 4>& elems) noexcept
-	: data{elems}
-{
-}
-
-template<typename T>
 inline constexpr Matrix2<T>::Matrix2(const T& a, const T& b, const T& c, const T& d) noexcept
 {
 	data = { a, b, 
@@ -154,7 +148,7 @@ template<typename T>
 template<typename U>
 inline constexpr Matrix2<T>::Matrix2(const Matrix2<U>& mat) noexcept
 {
-	std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const T& x) { return static_cast<T>(x); });
+	std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const U& x) { return static_cast<T>(x); });
 }
 
 

@@ -35,8 +35,6 @@ namespace mpml
 
 		constexpr Matrix3(const Vector3<T>& vec1, const Vector3<T>& vec2, const Vector3<T>& vec3) noexcept;
 
-		constexpr Matrix3(const std::array<T, 9>& elems) noexcept;
-
 		constexpr Matrix3(
 			const T& a = {}, const T& b = {}, const T& c = {},
 			const T& d = {}, const T& e = {}, const T& f = {},
@@ -150,12 +148,6 @@ namespace mpml
 	}
 
 	template<typename T>
-	inline constexpr Matrix3<T>::Matrix3(const std::array<T, 9>& elems) noexcept
-		: data{ elems }
-	{
-	}
-
-	template<typename T>
 	inline constexpr Matrix3<T>::Matrix3(const T& a, const T& b, const T& c, const T& d, const T& e, const T& f, const T& g, const T& h, const T& i) noexcept
 	{
 		data = { a, b, c,
@@ -168,7 +160,7 @@ namespace mpml
 	template<typename U>
 	inline constexpr Matrix3<T>::Matrix3(const Matrix3<U>& mat) noexcept
 	{
-		std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const T& x) { return static_cast<T>(x); });
+		std::transform(mat.data.begin(), mat.data.end(), data.begin(), [](const U& x) { return static_cast<T>(x); });
 	}
 
 
