@@ -110,15 +110,18 @@ namespace mpml
 			std::array<T, 9> data{};
 		};
 
-
-	// Common Types
-
-	
+		
+		static const Matrix3 Identity;
+		static const Matrix3 AntiDiagonal_Identity;
 
 	};
 
+
+
+	// Common Types
+
 	template<typename T>
-	constexpr Matrix3<T> Identity3
+	constexpr Matrix3<T> Matrix3<T>::Identity
 	{
 		T{1}, T{}, T{},
 		T{}, T{1}, T{},
@@ -126,7 +129,7 @@ namespace mpml
 	};
 
 	template<typename T>
-	constexpr Matrix3<T> AntiDiagonal_Identity3
+	constexpr Matrix3<T> Matrix3<T>::AntiDiagonal_Identity
 	{
 		T{}, T{}, T{1},
 		T{}, T{1}, T{},

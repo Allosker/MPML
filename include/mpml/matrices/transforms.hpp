@@ -22,7 +22,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix3<T> translate(const Matrix3<T>& mat, const Vector2<T>& vec) noexcept
 	{
-		Matrix3<T> trans_mat{ Identity3<T> };
+		Matrix3<T> trans_mat{ Matrix3<T>::Identity };
 
 		trans_mat[0][2] = vec.x;
 		trans_mat[1][2] = vec.y;
@@ -33,7 +33,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix3<T> scale(const Matrix3<T>& mat, const Vector2<T>& vec) noexcept
 	{
-		Matrix3<T> trans_mat{ Identity3<T> };
+		Matrix3<T> trans_mat{ Matrix3<T>::Identity };
 
 		trans_mat[0][0] = vec.x;
 		trans_mat[1][1] = vec.y;
@@ -51,7 +51,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix3<T> rotate(const Matrix3<T>& mat, Angle<> theta) noexcept
 	{
-		Matrix3<T> rot_mat{ Identity3<T> };
+		Matrix3<T> rot_mat{ Matrix3<T>::Identity };
 
 		T cos{ std::cos(theta.asRadians()) };
 		T sin{ std::sin(theta.asRadians()) };
@@ -68,7 +68,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix3<T> view(const Vector2<T>& center, Angle<> theta) noexcept
 	{
-		Matrix3<T> view_mat{ Identity3<T> };
+		Matrix3<T> view_mat{ Matrix3<T>::Identity };
 
 		T cos{ std::cos(theta.asRadians()) };
 		T sin{ std::sin(theta.asRadians()) };
@@ -86,7 +86,7 @@ namespace mpml
 	template<typename T, typename U>
 	[[nodiscard]] constexpr Matrix3<T> orthographic_projection(const U& width, const U& height, bool flip_y=true)
 	{
-		Matrix3<T> ort_mat{ Identity3<T> };
+		Matrix3<T> ort_mat{ Matrix3<T>::Identity };
 
 		if(!flip_y)
 		{

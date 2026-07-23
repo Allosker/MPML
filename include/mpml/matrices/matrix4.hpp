@@ -120,13 +120,17 @@ namespace mpml
 		};
 
 
-	// Common Types
-
+		static const Matrix4 Identity;
+		static const Matrix4 AntiDiagonal_Identity;
 
 	};
 
+
+
+	// Common Types
+
 	template<typename T>
-	constexpr Matrix4<T> Identity4
+	constexpr Matrix4<T> Matrix4<T>::Identity
 	{
 		T{1}, T{}, T{}, T{},
 		T{}, T{1}, T{}, T{},
@@ -135,7 +139,7 @@ namespace mpml
 	};
 
 	template<typename T>
-	constexpr Matrix4<T> AntiDiagonal_Identity4
+	constexpr Matrix4<T> Matrix4<T>::AntiDiagonal_Identity
 	{
 		T{}, T{}, T{}, T{1},
 		T{}, T{}, T{1}, T{},
