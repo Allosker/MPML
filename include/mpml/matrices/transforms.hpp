@@ -110,7 +110,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> translate(const Matrix4<T>& mat, const Vector3<T>& vec) noexcept
 	{
-		Matrix4<T> new_mat{ Identity4<T> };
+		Matrix4<T> new_mat{ Matrix4<T>::Identity };
 
 		new_mat.m = vec.x;
 		new_mat.n = vec.y;
@@ -122,7 +122,7 @@ namespace mpml
 	template<typename T>
 	[[nodiscard]] constexpr Matrix4<T> scale(const Matrix4<T>& mat, const Vector3<T>& vec) noexcept
 	{
-		Matrix4<T> new_mat{ Identity4<T> };
+		Matrix4<T> new_mat{ Matrix4<T>::Identity };
 
 		new_mat.a = vec.x;
 		new_mat.f = vec.y;

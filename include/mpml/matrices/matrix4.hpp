@@ -413,7 +413,7 @@ namespace mpml
 	inline constexpr Matrix4<T> Matrix4<T>::pow(size_t pm) const noexcept
 	{
 		if (pm == 0)
-			return Identity4<T>;
+			return Matrix4<T>::Identity;
 
 		Matrix4<T> mat{ *this };
 
