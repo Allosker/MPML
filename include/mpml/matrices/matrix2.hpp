@@ -114,14 +114,14 @@ namespace mpml
 	// Common types
 
 	template<typename T>
-	static constexpr Matrix2<T> Matrix2<T>::Identity
+	inline constexpr Matrix2<T> Matrix2<T>::Identity
 	{
 		T{1}, T{},
 		T{}, T{1}
 	};
 
 	template<typename T>
-	constexpr Matrix2<T> Matrix2<T>::AntiDiagonal_Identity
+	inline constexpr Matrix2<T> Matrix2<T>::AntiDiagonal_Identity
 	{
 		T{}, T{1},
 		T{1}, T{}
